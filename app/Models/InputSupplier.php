@@ -1,12 +1,11 @@
-<?php namespace App;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VillageAgent extends Model {
-    
-    protected $table = 'va';
+class InputSupplier extends Model {
 
     protected $fillable = [];
+    protected $table = 'input';
 
     protected $dates = [];
 
