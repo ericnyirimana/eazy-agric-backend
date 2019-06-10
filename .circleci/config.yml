@@ -1,15 +1,34 @@
-# Use the latest 2.1 version of CircleCI pipeline processing engine, see https://circleci.com/docs/2.0/configuration-reference/
-version: 2.1
+version: 3
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.1-node-browsers
+    working_directory: ~/repo
+    environment:
+        CC_TEST_REPORTER_ID: 3b36fb234cae45c64699aaa223749a0fbcf7d052698a5d919cf1c1964f5426d7
+    steps:
+      - checkout
+      - run: sudo docker-php-ext-install zip
+      - run: sudo composer self-update
+      - run: wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-6-amd64.deb
+      - run: sudo dpkg -i couchbase-release-1.0-6-amd64.deb
+      - run: sudo apt-get update
+      - run: sudo apt-get install libcouchbase-dev build-essential zlib1g-dev
+      - run: sudo pecl install couchbase
+      - run: echo "extension=couchbase.so" | sudo tee /usr/local/etc/php/php.ini > /dev/null
 
-# Use a package of configuration called an orb, see https://circleci.com/docs/2.0/orb-intro/
-orbs:
-  # Declare a dependency on the welcome-orb
-  welcome: circleci/welcome-orb@0.3.1
-
-# Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
-workflows:
-  # Name the workflow "Welcome"
-  Welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
+      - run: composer install -n --prefer-dist
+      - run: cp -fr ./.circleci/HybridRelations.php ./vendor/developermarshak/laravel-couchbase/src/Mpociot/Couchbase/Eloquent/HybridRelations.php
+      - run: cp -fr ./.circleci/Model.php ./vendor/developermarshak/laravel-couchbase/src/Mpociot/Couchbase/Eloquent/Model.php
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter 
+      - run: ./cc-test-reporter before-build
+      - run:
+          name: run tests
+          command: ./vendor/bin/phpunit
+      - run:
+          name: Report code coverage
+          command: ./cc-test-reporter after-build -t clover --exit-code $?
