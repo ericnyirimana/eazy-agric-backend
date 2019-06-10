@@ -1,11 +1,111 @@
 # EzyAgric Backend
-[![CircleCI](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev.svg?style=svg)](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev)  <a href="https://codeclimate.com/repos/5ce2b0943e13e4019f00cbd5/test_coverage"><img src="https://api.codeclimate.com/v1/badges/cfa77d4d54b520a72130/test_coverage" /></a>
+
+[![CircleCI](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev.svg?style=svg)](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev) <a href="https://codeclimate.com/repos/5ce2b0943e13e4019f00cbd5/test_coverage"><img src="https://api.codeclimate.com/v1/badges/cfa77d4d54b520a72130/test_coverage" /></a>
 
 ========================================
-### Get all input suppliers
+
+### User Login
+
 #### Request
-`GET /api/v1/input-suppliers`
+
+`POST /api/v1/auth/login`
+
+#### Request Body
+
+```
+{
+    "email": "valid email",
+    "password": "valid password"
+}
+```
+
 #### Response
+
+Admin
+
+```
+{
+    "success": true,
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs",
+    "user": {
+        "admin_address": "Rukungiri",
+        "manager_phonenumber": "789394948",
+        "admin_name": "Kubiri Youth Agents For Development",
+        "_id": "ABAHAJOH788007645ADMIN",
+        "status": "Open",
+        "admin_id": "AK/MA/0421",
+        "manager_name": "Nyesiga Benadeth",
+        "time": "2018-07-05T20:12:21:662094",
+        "type": "admin",
+        "admin_email": "kubiri@akorion.com",
+        "admin_value_chain": "crop",
+        "manager_location": "Rukungiri",
+        "manager_email": "nbenadeth@gmail.com",
+        "email": "nbenadeth@gmail.com",
+        "eloquent_type": "admin"
+    }
+}
+```
+
+Master Agent
+
+```
+{
+    "success": true,
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs",
+    "user": {
+        "ma_address": "Rukungiri",
+        "manager_phonenumber": "789394948",
+        "ma_name": "Kubiri Youth Agents For Development",
+        "_id": "AK/MA/0421",
+        "status": "Open",
+        "ma_id": "AK/MA/0421",
+        "manager_name": "Nyesiga Benadeth",
+        "time": "2018-07-05T20:12:21:662094",
+        "type": "ma",
+        "ma_email": "kubiri@akorion.com",
+        "ma_value_chain": "crop",
+        "manager_location": "Rukungiri",
+        "manager_email": "nbenadeth@gmail.com",
+         "email": "nbenadeth@gmail.com",
+        "eloquent_type": "admin"
+    }
+}
+```
+
+offtaker
+
+```
+{
+    "success": true,
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs",
+    "user": {
+        "partner_id": "AK/OT/0001",
+        "ot_phonenumber": "256788345623",
+        "type": "offtaker",
+        "status": "active",
+        "time": "2019-03-19 12:31:13.114047",
+        "ot_name": "Luparelia",
+        "_id": "AK/OT/0001",
+        "ot_email": "ray@gmail.com",
+        "ot_district": "Masaka",
+        "ot_address": "lums",
+         "email": "masteragent1234@gmail.com",
+        "eloquent_type": "admin"
+    }
+}
+```
+
+========================================
+
+### Get all input suppliers
+
+#### Request
+
+`GET /api/v1/input-suppliers`
+
+#### Response
+
 ```
 {
     "success": true,
@@ -41,9 +141,13 @@
 ```
 
 ### Get all village agents
+
 #### Request
+
 `GET /api/v1/village-agents`
+
 #### Response
+
 ```
 {
     "success": true,

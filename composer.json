@@ -1,12 +1,17 @@
 {
     "name": "laravel/lumen",
     "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "keywords": [
+        "framework",
+        "laravel",
+        "lumen"
+    ],
     "license": "MIT",
     "type": "project",
     "require": {
         "php": ">=7.1.3",
         "developermarshak/laravel-couchbase": "^0.4.0",
+        "firebase/php-jwt": "^5.0",
         "laravel/lumen-framework": "5.8.*",
         "vlucas/phpdotenv": "^3.3",
         "wn/lumen-generators": "^1.3"
