@@ -23,9 +23,7 @@ class Helpers extends BaseController
             'exp' => time() + 60 * 60, // Expiration time
         ];
         return JWT::encode($payload, env('JWT_SECRET'));
-
     }
-
     /**
      * Generate Random Numbers
      * @return string

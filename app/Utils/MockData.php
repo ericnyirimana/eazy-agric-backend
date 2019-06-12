@@ -19,6 +19,17 @@ class MockData
         'adminRole' => 'Analyst',
     ];
 
+    protected $newOffTaker = [
+        'password' => 'offtaker123456',
+        'ot_name' => 'offtaker',
+        'ot_account_type' => 'Custom Account',
+        'ot_contact_person' => 'Samuel',
+        'ot_phonenumber' => '324897654e78',
+        'ot_district' => 'fghjklkjhgf',
+        'ot_address' => 'fgyuhijokjhgf',
+        'ot_valuechain' => 'Diary',
+    ];
+
     public $shortid;
     /**
      * Class constructor.
@@ -26,13 +37,6 @@ class MockData
     public function __construct()
     {
         $this->shortid = ShortId::create();
-
-        $this->passwordMismatchData = [
-            'email' => $this->shortid->generate() . '@gmail.com',
-            'password' => 'admin12346',
-            'confirmPassword' => 'admin12345',
-            'adminRole' => 'Analyst',
-        ];
 
     }
     public function getAdminData()
@@ -56,5 +60,13 @@ class MockData
     {
         $this->newAdmin['email'] = $this->shortid->generate() . '@gmail.com';
         return $this->newAdmin;
+    }
+
+    public function getNewOffTaker()
+    {
+        $this->newOffTaker['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newOffTaker['ot_username'] = $this->shortid->generate();
+        return $this->newOffTaker;
+
     }
 }
