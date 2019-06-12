@@ -1,6 +1,7 @@
 <?php
 namespace App\Utils;
 
+use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
@@ -23,6 +24,18 @@ class Helpers extends BaseController
         ];
         return JWT::encode($payload, env('JWT_SECRET'));
 
+    }
+
+    /**
+     * Generate Random Numbers
+     * @return string
+     */
+
+    public static function generateId()
+    {
+        $shortid = ShortId::create();
+
+        return $shortid->generate();
     }
 
 }

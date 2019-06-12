@@ -38,41 +38,25 @@ class AuthController extends BaseController
     public function authenticate(User $user)
     {
         try {
-
             $this->validate($this->request, [
-                'email' => 'required|email',
-                'password' => 'required',
+                'email' => 'required|email', 'password' => 'required',
             ]);
             $db = getenv('DB_DATABASE');
             $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
 
             if (!$user) {
                 return response()->json([
-                    'success' => false,
-                    'error' => 'The Email or password supplied is incorrect',
-                ], 404);
+                    'success' => false, 'error' => 'The Email or password supplied is incorrect.'], 404);
             }
-
             // Verify the password and generate the token
-
             if (Hash::check($this->request->input('password'), $user[0][$db]['password'])) {
-
                 $token = Helpers::jwt($user, $db);
                 unset($user[0][$db]['password']);
-                return response()->json([
-                    'success' => true,
-                    'token' => $token,
-                    'user' => $user[0][$db],
+                return response()->json(['success' => true, 'token' => $token, 'user' => $user[0][$db],
                 ], 200);
             }
-            return response()->json([
-                'success' => false,
-                'error' => 'The Email or password supplied is incorrect',
-            ], 404);
-        } catch (Exception $e) {
-            return response()->json([
-                'error' => $e->getMessage(),
-            ]);
+            return response()->json(['success' => false, 'error' => 'The Email or password supplied is incorrect.'], 404);
+        } catch (Exception $e) {return response()->json(['error' => 'Something went wrong.']);
         }
 
     }
