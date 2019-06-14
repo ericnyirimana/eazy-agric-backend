@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\VillageAgent;
+use App\Models\VillageAgent;
 
 class VillageAgentController extends Controller
 {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\InputSupplier;
+use App\Models\InputSupplier;
 
 class InputSupplierController extends Controller
 {
