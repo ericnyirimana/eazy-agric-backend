@@ -3,7 +3,7 @@ use App\Utils\MockData;
 
 class CreateMasterAgentTest extends TestCase
 {
-    public $response, $token, $wrongUser, $mock;
+    protected $response, $token, $wrongUser, $mock;
 
     const URL = '/api/v1/masteragent';
 
@@ -35,7 +35,7 @@ class CreateMasterAgentTest extends TestCase
         $this->post(self::URL,
             ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
             eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
-            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs', ]);
+            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']);
         $this->seeStatusCode(401);
 
     }

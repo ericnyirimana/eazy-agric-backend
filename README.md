@@ -355,3 +355,52 @@ offtaker
     ]
 }
 ```
+
+==========================================================
+
+### Create a Development Partner account
+
+#### Request
+
+`POST /api/v1/devpartner`
+
+#### Request Body
+
+```
+{
+    "email": "devpartner1234@gmail.com",
+    "password": "devpartner1234",
+    "dp_username": "devpartner",
+    "dp_name": "devpartner",
+    "account_type": "Custom",
+    "dp_contact_person": "Samuel",
+    "dp_phonenumber": "34567898765",
+    "dp_district": "somewheere",
+    "dp_address": "somewhere",
+    "value_chain": "Crop"
+}
+```
+
+#### Response
+
+```
+{
+    "success": true,
+    "devPartner": {
+        "type": "partner",
+        "category": "development-partner",
+        "status": "closed",
+        "email": "devpartner12345@gmail.com",
+        "dp_username": "devpartner",
+        "dp_name": "devpartner",
+        "account_type": "Custom",
+        "dp_phonenumber": "34567898765",
+        "dp_district": "somewheere",
+        "dp_address": "somewhere",
+        "value_chain": "Crop",
+        "_id": "7Svw6w0",
+        "updated_at": "2019-06-18 15:53:04",
+        "created_at": "2019-06-18 15:53:04"
+    }
+}
+```

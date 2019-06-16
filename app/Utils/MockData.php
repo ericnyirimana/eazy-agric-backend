@@ -6,6 +6,8 @@ use Crisu83\ShortId\ShortId;
 class MockData
 {
     protected $adminData = ['email' => 'someone@gmail.com', 'password' => '123456'];
+    protected $wrongEmail = ['email' => 'someone@gmail.com', 'password' => '1234567'];
+    protected $wrongPassword = ['email' => 'admin1234@gmail.com', 'password' => '1234567'];
     protected $loginDetails = ['email' => 'admin1234@gmail.com', 'password' => 'admin1234'];
     protected $masterAgentData = ['email' => 'masteragent1234@gmail.com', 'password' => 'masteragent1234'];
     protected $passwordMismatchData = [
@@ -26,18 +28,18 @@ class MockData
     protected $newOffTaker = [
         'password' => 'offtaker123456',
         'ot_name' => 'offtaker',
-        'ot_account_type' => 'Custom',
+        'account_type' => 'Custom',
         'ot_contact_person' => 'Samuel',
         'ot_phonenumber' => '324897654e78',
         'ot_district' => 'fghjklkjhgf',
         'ot_address' => 'fgyuhijokjhgf',
-        'ot_valuechain' => 'Dairy',
+        'value_chain' => 'Dairy',
     ];
 
     protected $newMasterAgent = [
         'password' => 'masterAgent12345',
-        'ma_account_type' => 'Custom',
-        'ma_valuechain' => 'Crop',
+        'account_type' => 'Custom',
+        'value_chain' => 'Crop',
         'ma_name' => 'masteragent',
         'ma_manager_name' => 'Samuel',
         'ma_phonenumber' => '234567897654',
@@ -47,8 +49,8 @@ class MockData
 
     protected $wrongMasterAgentAccount = [
         'password' => 'masterAgent12345',
-        'ma_account_type' => 'Customs',
-        'ma_valuechain' => 'Crop',
+        'account_type' => 'Customs',
+        'value_chain' => 'Crop',
         'ma_name' => 'masteragent',
         'ma_manager_name' => 'Samuel',
         'ma_phonenumber' => '234567897654',
@@ -56,15 +58,26 @@ class MockData
         'ma_address' => 'somewhere',
     ];
 
-    protected $wrongMasterAgentValuchain = [
+    protected $wrongMasterAgentValuechain = [
         'password' => 'masterAgent12345',
-        'ma_account_type' => 'Custom',
-        'ma_valuechain' => 'Crops',
+        'account_type' => 'Custom',
+        'value_chain' => 'Crops',
         'ma_name' => 'masteragent',
         'ma_manager_name' => 'Samuel',
         'ma_phonenumber' => '234567897654',
         'ma_district' => 'somewhere',
         'ma_address' => 'somewhere',
+    ];
+
+    protected $newDevtPartner = [
+        'password' => 'masterAgent12345',
+        'account_type' => 'Custom',
+        'value_chain' => 'Crop',
+        'dp_name' => 'masteragent',
+        'dp_contact_person' => 'Samuel',
+        'dp_phonenumber' => '234567897654',
+        'dp_district' => 'somewhere',
+        'dp_address' => 'somewhere',
     ];
 
     public $shortid;
@@ -78,6 +91,14 @@ class MockData
     public function getAdminData()
     {
         return $this->adminData;
+    }
+    public function getWrongEmail()
+    {
+        return $this->wrongEmail;
+    }
+    public function getWrongPassword()
+    {
+        return $this->wrongPassword;
     }
     public function getLoginDetails()
     {
@@ -133,5 +154,11 @@ class MockData
     public function getNonsenseToken()
     {
         return $this->nonsenseToken;
+    }
+    public function getNewDevtPartner()
+    {
+        $this->newDevtPartner['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newDevtPartner['dp_username'] = $this->shortid->generate();
+        return $this->newDevtPartner;
     }
 }
