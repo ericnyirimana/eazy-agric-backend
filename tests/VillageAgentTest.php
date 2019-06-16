@@ -4,7 +4,7 @@ class VillageAgentTest extends TestCase
     public $response;
     public $token;
     public $wrong_user;
-    const URL = '/api/v1/create-admin';
+    const URL = '/api/v1/admin';
     public function setUp(): void
     {
         parent::setUp();

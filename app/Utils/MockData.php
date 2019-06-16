@@ -22,12 +22,45 @@ class MockData
     protected $newOffTaker = [
         'password' => 'offtaker123456',
         'ot_name' => 'offtaker',
-        'ot_account_type' => 'Custom Account',
+        'ot_account_type' => 'Custom',
         'ot_contact_person' => 'Samuel',
         'ot_phonenumber' => '324897654e78',
         'ot_district' => 'fghjklkjhgf',
         'ot_address' => 'fgyuhijokjhgf',
-        'ot_valuechain' => 'Diary',
+        'ot_valuechain' => 'Dairy',
+    ];
+
+    protected $newMasterAgent = [
+        'password' => 'masterAgent12345',
+        'ma_account_type' => 'Custom',
+        'ma_valuechain' => 'Crop',
+        'ma_name' => 'masteragent',
+        'ma_manager_name' => 'Samuel',
+        'ma_phonenumber' => '234567897654',
+        'ma_district' => 'somewhere',
+        'ma_address' => 'somewhere',
+    ];
+
+    protected $wrongMasterAgentAccount = [
+        'password' => 'masterAgent12345',
+        'ma_account_type' => 'Customs',
+        'ma_valuechain' => 'Crop',
+        'ma_name' => 'masteragent',
+        'ma_manager_name' => 'Samuel',
+        'ma_phonenumber' => '234567897654',
+        'ma_district' => 'somewhere',
+        'ma_address' => 'somewhere',
+    ];
+
+    protected $wrongMasterAgentValuchain = [
+        'password' => 'masterAgent12345',
+        'ma_account_type' => 'Custom',
+        'ma_valuechain' => 'Crops',
+        'ma_name' => 'masteragent',
+        'ma_manager_name' => 'Samuel',
+        'ma_phonenumber' => '234567897654',
+        'ma_district' => 'somewhere',
+        'ma_address' => 'somewhere',
     ];
 
     public $shortid;
@@ -68,5 +101,26 @@ class MockData
         $this->newOffTaker['ot_username'] = $this->shortid->generate();
         return $this->newOffTaker;
 
+    }
+
+    public function getNewMasterAgent()
+    {
+        $this->newMasterAgent['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newMasterAgent['ma_username'] = $this->shortid->generate();
+        return $this->newMasterAgent;
+    }
+
+    public function getWrongMasterAgentAccount()
+    {
+        $this->wrongMasterAgentAccount['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->wrongMasterAgentAccount['ma_username'] = $this->shortid->generate();
+        return $this->wrongMasterAgentAccount;
+    }
+
+    public function getWrongMasterAgentValuchain()
+    {
+        $this->wrongMasterAgentValuchain['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->wrongMasterAgentValuchain['ma_username'] = $this->shortid->generate();
+        return $this->wrongMasterAgentValuchain;
     }
 }

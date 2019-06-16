@@ -1,11 +1,11 @@
 <?php
-
 use App\Utils\MockData;
 
-class CreateAdmin extends TestCase
+class CreateMasterAgentTest extends TestCase
 {
     public $response, $token, $wrongUser, $mock;
-    const URL = '/api/v1/admin';
+
+    const URL = '/api/v1/masteragent';
 
     public function setUp(): void
     {
@@ -28,7 +28,6 @@ class CreateAdmin extends TestCase
         $this->post(self::URL, $this->mock->getAdminData());
         $this->seeStatusCode(401);
         $this->seeJson(['error' => 'Please log in first.']);
-
     }
 
     public function testShouldReturnErrorIfInvalidToken()
@@ -40,28 +39,34 @@ class CreateAdmin extends TestCase
         $this->seeStatusCode(401);
 
     }
-
     public function testShouldReturnUserIfTokenIsValid()
     {
-        $this->post(self::URL, $this->mock->getNewAdmin(),
+        $this->post(self::URL, $this->mock->getNewMasterAgent(),
             ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
-
     }
-    public function testShouldReturnErrorIfPasswordMismatch()
+    public function testShouldReturnErrorIfNonsenseToken()
     {
-        $this->post(self::URL, $this->mock->getPasswordMismatchData(),
-            ['Authorization' => $this->token]);
-        $this->seeJson(['error' => 'Passwords does not match.']);
+        $this->post(self::URL, $this->mock->getNewMasterAgent(),
+            ['Authorization' => 'xfdgghhjk']);
+        $this->seeStatusCode(400);
+        $this->seeJson(['error' => 'An error occured while decoding token.']);
+    }
 
+    public function testShouldReturnErrorIfExpiredToken()
+    {
+        $this->post(self::URL, $this->mock->getNewMasterAgent(),
+            ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJuMjlCQjB4IiwiaWF0IjoxNTYwNzk3OTYwLCJleHAiOjE1NjA4MDE1NjB9.htsI-0CmYkZom0_KDJokLc3AnaBovVmzRejKxw4Ffcs']);
+        $this->seeStatusCode(400);
+        $this->seeJson(['error' => 'Your current session has expired, please log in again.']);
     }
 
     public function testShouldReturnErrorIfUserIsNotAdmin()
     {
-        $this->post(self::URL, $this->mock->getNewAdmin(),
+        $this->post(self::URL, $this->mock->getNewMasterAgent(),
             ['Authorization' => $this->wrongUser]);
         $this->seeStatusCode(403);
-
     }
+
 }

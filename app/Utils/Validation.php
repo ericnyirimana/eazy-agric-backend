@@ -33,4 +33,19 @@ class Validation extends BaseController
             'ot_valuechain' => ['required', new ValueChain()],
         ]);
     }
+    public function validateMasterAgent($data)
+    {
+        $this->validate($data, [
+            'email' => 'required|email|unique:ma',
+            'password' => 'required|min:6',
+            'ma_account_type' => ['required', new AccountType()],
+            'ma_name' => 'required',
+            'ma_manager_name' => 'required',
+            'ma_phonenumber' => 'required',
+            'ma_username' => 'required',
+            'ma_district' => 'required',
+            'ma_address' => 'required',
+            'ma_valuechain' => ['required', new ValueChain()],
+        ]);
+    }
 }

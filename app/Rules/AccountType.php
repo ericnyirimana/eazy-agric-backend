@@ -14,7 +14,7 @@ class AccountType implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value === 'Custom Account' || $value === 'Generic Account' || $value === 'Test Account';
+        return $value === 'Custom' || $value === 'Generic' || $value === 'Test';
     }
     /**
      * Get the validation error message.
