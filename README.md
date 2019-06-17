@@ -195,3 +195,38 @@ offtaker
     ]
 }
 ```
+
+==========================================================
+
+### Create an Admin
+
+#### Request
+
+`GET /api/v1/create-admin`
+
+#### Request Body
+
+```
+{
+         "email": "admin123@gmail.com",
+        "password": "admin123",
+        "confirmPassword":"admin123",
+        "adminRole": "Super Admin"
+}
+```
+
+#### Response
+
+```
+{
+    "success": true,
+    "admin": {
+        "type": "admin",
+        "email": "admincomeere@gnail.com",
+        "adminRole": "Super Admin",
+        "_id": "ClW9iT9",
+        "updated_at": "2019-06-17 11:01:40",
+        "created_at": "2019-06-17 11:01:40"
+    }
+}
+```

@@ -18,7 +18,11 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->post('login', ['uses' => 'AuthController@authenticate']);
     });
-    $router->get('/village-agents', 'VillageAgentController@getVillageAgents');
-    $router->get('/input-suppliers', 'InputSupplierController@getInputSuppliers');
-    $router->get('/offtakers', 'OfftakerController@getOfftakers');
+    $router->group(['middleware' => 'auth'], function () use ($router) {
+
+        $router->get('/village-agents', 'VillageAgentController@getVillageAgents');
+        $router->get('/input-suppliers', 'InputSupplierController@getInputSuppliers');
+        $router->get('/offtakers', 'OfftakerController@getOfftakers');
+        $router->post('create-admin', 'AdminController@createAdmin');
+    });
 });

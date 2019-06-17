@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
 class Admin extends Model
 {
@@ -10,22 +11,43 @@ class Admin extends Model
      * @var string
      */
     protected $table = 'admin';
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'username', 'admin_password',
+        'email',
+        'password',
+        'adminRole',
+        'type',
+        '_id',
     ];
-
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'password',
+        'password', 'id',
     ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+
+    protected $attributes = [
+        'type' => 'admin',
+    ];
+
+    /**
+     * Hash password
+     * @var array
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = Hash::make($password);
+    }
 }
