@@ -20,4 +20,5 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     });
     $router->get('/village-agents', 'VillageAgentController@getVillageAgents');
     $router->get('/input-suppliers', 'InputSupplierController@getInputSuppliers');
+    $router->get('/offtakers', 'OfftakerController@getOfftakers');
 });
