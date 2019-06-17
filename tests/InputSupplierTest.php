@@ -5,7 +5,6 @@ class InputSupplierTest extends TestCase
     public $token;
     public $wrong_user;
     const URL = '/api/v1/create-admin';
-
     public function setUp(): void
     {
         parent::setUp();

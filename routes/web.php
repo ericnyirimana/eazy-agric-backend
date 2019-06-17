@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -10,7 +9,6 @@
 | and give it the Closure to call when that URI is requested.
 |
  */
-
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
@@ -24,5 +22,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         $router->get('/input-suppliers', 'InputSupplierController@getInputSuppliers');
         $router->get('/offtakers', 'OfftakerController@getOfftakers');
         $router->post('create-admin', 'AdminController@createAdmin');
+        $router->post('create-offtaker', 'OfftakerController@createOfftaker');
+
     });
 });
