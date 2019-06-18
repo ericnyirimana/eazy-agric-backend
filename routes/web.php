@@ -21,8 +21,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         $router->get('/village-agents', 'VillageAgentController@getVillageAgents');
         $router->get('/input-suppliers', 'InputSupplierController@getInputSuppliers');
         $router->get('/offtakers', 'OfftakerController@getOfftakers');
-        $router->post('create-admin', 'AdminController@createAdmin');
-        $router->post('create-offtaker', 'OfftakerController@createOfftaker');
+        $router->post('/admin', 'AdminController@createAdmin');
+        $router->post('/offtaker', 'OfftakerController@createOfftaker');
+        $router->post('/masteragent', 'MasterAgentController@createMasterAgent');
 
     });
 });

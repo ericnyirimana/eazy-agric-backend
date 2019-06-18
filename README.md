@@ -198,11 +198,11 @@ offtaker
 
 ==========================================================
 
-### Create an Admin
+### Create an Admin account
 
 #### Request
 
-`GET /api/v1/create-admin`
+`POST /api/v1/create-admin`
 
 #### Request Body
 
@@ -227,6 +227,101 @@ offtaker
         "_id": "ClW9iT9",
         "updated_at": "2019-06-17 11:01:40",
         "created_at": "2019-06-17 11:01:40"
+    }
+}
+```
+
+==========================================================
+
+### Create an Offtaker account
+
+#### Request
+
+`POST /api/v1/create-offtaker`
+
+#### Request Body
+
+```
+{
+        "email": "offtakehgjr@gmail.com",
+        "password": "offtaker123456",
+        "ot_username":"offtaker123456",
+        "ot_name": "offtaker",
+        "ot_account_type": "Custom Account",
+        "ot_contact_person": "samuel",
+        "ot_phonenumber":"32456789765",
+        "ot_district": "somewhere",
+         "ot_address": "somewhere",
+        "ot_valuechain":"Diary"
+}
+```
+
+#### Response
+
+```
+{
+    "success": true,
+    "offtaker": {
+        "type": "offtaker",
+        "email": "offtakehgjr@gmail.com",
+        "ot_username": "offtaker123456",
+        "ot_name": "offtaker",
+        "ot_account_type": "Custom Account",
+        "ot_contact_person": "samuel",
+        "ot_phonenumber": "32456789765",
+        "ot_district": "somewhere",
+        "ot_address": "somewhere",
+        "ot_valuechain": "Diary",
+        "_id": "koPgF9Z",
+        "updated_at": "2019-06-17 17:04:43",
+        "created_at": "2019-06-17 17:04:43"
+    }
+}
+```
+
+==========================================================
+
+### Create a MasterAgent account
+
+#### Request
+
+`POST /api/v1/create-masteragent`
+
+#### Request Body
+
+```
+{
+		"ma_manager_name": "AK/OT/0001",
+        "ma_phonenumber": "256788345623",
+        "password": "masteragent123456",
+        "ma_name": "Luparelia",
+        "email": "masteragent123456@gmail.com",
+        "ma_district": "Masaka",
+        "ma_username": "masteragent",
+        "ma_address": "lums",
+        "ma_valuechain":"Dairy",
+        "ma_account_type":"Custom Account"
+}
+```
+
+#### Response
+
+```
+{
+    "success": true,
+    "masterAgent": {
+        "type": "ma",
+        "status": "inactive",
+        "ma_manager_name": "AK/OT/0001",
+        "ma_phonenumber": "256788345623",
+        "ma_name": "Luparelia",
+        "email": "masteragent123456@gmail.com",
+        "ma_district": "Masaka",
+        "ma_address": "lums",
+        "ma_account_type": "Custom Account",
+        "_id": "xs8VF4Y",
+        "updated_at": "2019-06-17 19:29:36",
+        "created_at": "2019-06-17 19:29:36"
     }
 }
 ```
