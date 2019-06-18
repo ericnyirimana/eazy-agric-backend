@@ -196,13 +196,11 @@ offtaker
 }
 ```
 
-==========================================================
-
 ### Create an Admin account
 
 #### Request
 
-`POST /api/v1/create-admin`
+`POST /api/v1/admin`
 
 #### Request Body
 
@@ -231,13 +229,11 @@ offtaker
 }
 ```
 
-==========================================================
-
 ### Create an Offtaker account
 
 #### Request
 
-`POST /api/v1/create-offtaker`
+`POST /api/v1/offtaker`
 
 #### Request Body
 
@@ -323,5 +319,39 @@ offtaker
         "updated_at": "2019-06-17 19:29:36",
         "created_at": "2019-06-17 19:29:36"
     }
+}
+```
+
+### Get all development partners
+
+#### Request
+
+`GET /api/v1/devt-partners`
+
+#### Response
+
+```
+{
+    "success": true,
+    "count": 1,
+    "devtPartners": [
+        {
+            "_id": "AK/DP/0001",
+            "account_type": "generic",
+            "category": "development-partner",
+            "dp_address": "NA",
+            "dp_email": "devtest1@akorion.com",
+            "dp_location": "NA",
+            "dp_name": "Akorion Dev",
+            "dp_password": "o2A8oo40^L",
+            "dp_phonenumber": "256703276434",
+            "eloquent_type": "partner",
+            "partner_id": "AK/DP/0001",
+            "status": "Open",
+            "time": "2019-04-23 20:05:56.502024",
+            "type": "partner",
+            "value_chain": "crop"
+        }
+    ]
 }
 ```

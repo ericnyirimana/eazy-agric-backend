@@ -18,6 +18,10 @@ class MockData
         'confirmPassword' => 'admin12345',
         'adminRole' => 'Analyst',
     ];
+    protected $invalidToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
+    eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
+    jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs';
+    protected $nonsenseToken = 'eyJ0eXAipPs';
 
     protected $newOffTaker = [
         'password' => 'offtaker123456',
@@ -70,7 +74,6 @@ class MockData
     public function __construct()
     {
         $this->shortid = ShortId::create();
-
     }
     public function getAdminData()
     {
@@ -122,5 +125,13 @@ class MockData
         $this->wrongMasterAgentValuchain['email'] = $this->shortid->generate() . '@gmail.com';
         $this->wrongMasterAgentValuchain['ma_username'] = $this->shortid->generate();
         return $this->wrongMasterAgentValuchain;
+    }
+    public function getInvalidToken()
+    {
+        return $this->invalidToken;
+    }
+    public function getNonsenseToken()
+    {
+        return $this->nonsenseToken;
     }
 }
