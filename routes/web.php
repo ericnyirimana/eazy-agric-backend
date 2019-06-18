@@ -17,13 +17,12 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         $router->post('login', ['uses' => 'AuthController@authenticate']);
     });
     $router->group(['middleware' => 'auth'], function () use ($router) {
-
         $router->get('/village-agents', 'VillageAgentController@getVillageAgents');
         $router->get('/input-suppliers', 'InputSupplierController@getInputSuppliers');
         $router->get('/offtakers', 'OfftakerController@getOfftakers');
         $router->post('/admin', 'AdminController@createAdmin');
         $router->post('/offtaker', 'OfftakerController@createOfftaker');
         $router->post('/masteragent', 'MasterAgentController@createMasterAgent');
-
+        $router->get('devt-partners', 'DevtPartnerController@getDevtPartners');
     });
 });

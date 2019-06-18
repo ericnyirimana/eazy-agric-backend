@@ -1,10 +1,10 @@
 <?php
 use App\Utils\MockData;
 
-class InputSupplierTest extends TestCase
+class DevtPartnerTest extends TestCase
 {
-    protected $token, $mock;
-    
+    protected $token;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -12,18 +12,18 @@ class InputSupplierTest extends TestCase
         $this->response = $this->call('POST', '/api/v1/auth/login', $this->mock->getLoginDetails());
         $data = json_decode($this->response->getContent(), true);
         $this->token = $data['token'];
-    }
 
-    public function testShouldReturnInputSuppliers()
+    }
+    public function testShouldReturnDevtPartners()
     {
-        $this->get('/api/v1/input-suppliers', ['Authorization' => $this->token]);
+        $this->get('/api/v1/devt-partners', ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);
     }
     public function testShouldReturnErrorForNoToken()
     {
-        $this->get('/api/v1/input-suppliers');
+        $this->get('/api/v1/devt-partners');
         $this->seeStatusCode(401);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
@@ -31,7 +31,7 @@ class InputSupplierTest extends TestCase
     }
     public function testShouldReturnErrorIfNonsenseToken()
     {
-        $this->get('/api/v1/input-suppliers', ['Authorization' => $this->mock->getNonsenseToken()]);
+        $this->get('/api/v1/devt-partners', ['Authorization' => $this->mock->getNonsenseToken()]);
         $this->seeStatusCode(400);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
@@ -39,7 +39,7 @@ class InputSupplierTest extends TestCase
     }
     public function testShouldReturnErrorIfInvalidToken()
     {
-        $this->get('/api/v1/input-suppliers', ['Authorization' => $this->mock->getInvalidToken()]);
+        $this->get('/api/v1/devt-partners', ['Authorization' => $this->mock->getInvalidToken()]);
         $this->seeStatusCode(400);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
