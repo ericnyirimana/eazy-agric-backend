@@ -62,7 +62,6 @@ jobs:
               kubectl set image deployment/ezyagric-backend-andela ezyagric-backend-image-sha256=gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1
             fi
               echo "${CIRCLE_BRANCH}"
-          
 
 workflows:
   version: 2
