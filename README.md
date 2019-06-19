@@ -356,13 +356,12 @@ offtaker
 }
 ```
 
-==========================================================
 
 ### Create a Development Partner account
 
 #### Request
 
-`POST /api/v1/devpartner`
+`POST /api/v1/dev-partner`
 
 #### Request Body
 
@@ -402,5 +401,28 @@ offtaker
         "updated_at": "2019-06-18 15:53:04",
         "created_at": "2019-06-18 15:53:04"
     }
+  "success": true,
+  "topDistricts": {
+    "Lagos": 2,
+    "Rukungiri": 1
+  }
+}
+```
+=======
+### Get top districts
+
+#### Request
+
+`GET /api/v1/top-districts`
+
+#### Response
+
+```
+{
+  "success": true,
+  "topDistricts": {
+    "Lagos": 2,
+    "Rukungiri": 1
+  }
 }
 ```

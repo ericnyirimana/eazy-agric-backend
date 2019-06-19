@@ -27,7 +27,7 @@ class AuthenticateAdmin
     {
         $user_id = $this->request->auth;
         $admin = Admin::where('_id', '=', $user_id)
-            ->where('admin_role', 'Super Admin')->first();
+            ->where('adminRole', 'Super Admin')->first();
 
         if (!$admin) {
             return response()->json([
