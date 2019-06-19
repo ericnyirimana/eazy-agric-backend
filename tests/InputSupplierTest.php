@@ -4,7 +4,7 @@ use App\Utils\MockData;
 class InputSupplierTest extends TestCase
 {
     protected $token, $mock;
-    
+    const URL = '/api/v1/input-suppliers';
     public function setUp(): void
     {
         parent::setUp();
@@ -16,14 +16,14 @@ class InputSupplierTest extends TestCase
 
     public function testShouldReturnInputSuppliers()
     {
-        $this->get('/api/v1/input-suppliers', ['Authorization' => $this->token]);
+        $this->get(self::URL, ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);
     }
     public function testShouldReturnErrorForNoToken()
     {
-        $this->get('/api/v1/input-suppliers');
+        $this->get(self::URL);
         $this->seeStatusCode(401);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
@@ -31,7 +31,7 @@ class InputSupplierTest extends TestCase
     }
     public function testShouldReturnErrorIfNonsenseToken()
     {
-        $this->get('/api/v1/input-suppliers', ['Authorization' => $this->mock->getNonsenseToken()]);
+        $this->get(self::URL, ['Authorization' => $this->mock->getNonsenseToken()]);
         $this->seeStatusCode(400);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
@@ -39,7 +39,7 @@ class InputSupplierTest extends TestCase
     }
     public function testShouldReturnErrorIfInvalidToken()
     {
-        $this->get('/api/v1/input-suppliers', ['Authorization' => $this->mock->getInvalidToken()]);
+        $this->get(self::URL, ['Authorization' => $this->mock->getInvalidToken()]);
         $this->seeStatusCode(400);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);

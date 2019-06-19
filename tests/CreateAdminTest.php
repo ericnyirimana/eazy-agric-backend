@@ -4,7 +4,7 @@ use App\Utils\MockData;
 
 class CreateAdmin extends TestCase
 {
-    public $response, $token, $wrongUser, $mock;
+    protected $response, $token, $wrongUser, $mock;
     const URL = '/api/v1/admin';
 
     public function setUp(): void
@@ -28,7 +28,6 @@ class CreateAdmin extends TestCase
         $this->post(self::URL, $this->mock->getAdminData());
         $this->seeStatusCode(401);
         $this->seeJson(['error' => 'Please log in first.']);
-
     }
 
     public function testShouldReturnErrorIfInvalidToken()
@@ -38,7 +37,6 @@ class CreateAdmin extends TestCase
             eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
             jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs', ]);
         $this->seeStatusCode(401);
-
     }
 
     public function testShouldReturnUserIfTokenIsValid()
@@ -47,14 +45,12 @@ class CreateAdmin extends TestCase
             ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
-
     }
     public function testShouldReturnErrorIfPasswordMismatch()
     {
         $this->post(self::URL, $this->mock->getPasswordMismatchData(),
             ['Authorization' => $this->token]);
         $this->seeJson(['error' => 'Passwords does not match.']);
-
     }
 
     public function testShouldReturnErrorIfUserIsNotAdmin()
@@ -62,6 +58,5 @@ class CreateAdmin extends TestCase
         $this->post(self::URL, $this->mock->getNewAdmin(),
             ['Authorization' => $this->wrongUser]);
         $this->seeStatusCode(403);
-
     }
 }

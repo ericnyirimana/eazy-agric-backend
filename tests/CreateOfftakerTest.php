@@ -3,7 +3,7 @@ use App\Utils\MockData;
 
 class CreateOfftakerTest extends TestCase
 {
-    public $response, $token, $wrongUser, $mock;
+    protected $response, $token, $wrongUser, $mock;
 
     const URL = '/api/v1/offtaker';
 
@@ -28,7 +28,6 @@ class CreateOfftakerTest extends TestCase
         $this->post(self::URL, $this->mock->getAdminData());
         $this->seeStatusCode(401);
         $this->seeJson(['error' => 'Please log in first.']);
-
     }
     public function testShouldReturnErrorIfInvalidToken()
     {
@@ -37,7 +36,6 @@ class CreateOfftakerTest extends TestCase
             eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
             jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']);
         $this->seeStatusCode(401);
-
     }
     public function testShouldReturnUserIfTokenIsValid()
     {
@@ -45,7 +43,6 @@ class CreateOfftakerTest extends TestCase
             ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
-
     }
 
     public function testShouldReturnErrorIfUserIsNotAdmin()
@@ -53,6 +50,5 @@ class CreateOfftakerTest extends TestCase
         $this->post(self::URL, $this->mock->getNewOffTaker(),
             ['Authorization' => $this->wrongUser]);
         $this->seeStatusCode(403);
-
     }
 }

@@ -56,12 +56,15 @@ $app->singleton(
 |
  */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class,
-// ]);
+$app->middleware([
+    App\Http\Middleware\Cors::class,
+]);
 
 $app->routeMiddleware([
+
     'auth' => App\Http\Middleware\Authenticate::class,
+    'admin' => App\Http\Middleware\AuthenticateAdmin::class,
+
 ]);
 
 /*

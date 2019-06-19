@@ -12,6 +12,12 @@ class AdminController extends BaseController
     private $request;
     private $validate;
 
+    /**
+     * Create a new controller instance.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
     public function __construct(Request $request)
     {
         $this->request = $request;
@@ -19,27 +25,32 @@ class AdminController extends BaseController
 
     }
 
+    /**
+     * Create Admin Account
+     * @return object http response
+     */
     public function createAdmin()
     {
         try {
             $this->validate->validateAdmin($this->request);
             if ($this->request->password === $this->request->confirmPassword) {
-                $user_id = $this->request->auth;
-                $admin = Admin::where('_id', '=', $user_id)
-                    ->where('admin_role', 'Super Admin')->first();
-
-                if (!$admin) {
-                    return response()->json(['error' => 'You are not an authorized user.'], 403);
-                }
 
                 $data = Admin::create($this->request->all() + ['_id' => Helpers::generateId()]);
 
-                return $data ? response()->json(['success' => true, 'admin' => $data]) :
-                response()->json(['success' => false, 'error' => 'Could not create user.']);
+                return $data ? response()->json([
+                    'success' => true,
+                    'admin' => $data], 200) :
+                response()->json([
+                    'success' => false,
+                    'error' => 'Could not create user.'], 408);
             }
-            return response()->json(['error' => 'Passwords does not match.']);
+            return response()->json([
+                'success' => false,
+                'error' => 'Passwords does not match.'], 401);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Something went wrong.']);
+            return response()->json([
+                'success' => false,
+                'error' => 'Something went wrong.'], 408);
         }
     }
 }

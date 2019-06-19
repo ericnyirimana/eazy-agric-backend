@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\OffTaker;
 use App\Utils\Helpers;
 use App\Utils\Validation;
@@ -12,11 +11,18 @@ class OfftakerController extends BaseController
 {
     private $request;
     private $userData;
+
+    /**
+     * Offtaker constructor
+     * @param object http request
+     * @return void
+     */
     public function __construct(Request $request)
     {
         $this->request = $request;
         $this->validate = new Validation();
     }
+
     /**
      * Get all input suppliers
      *
@@ -32,25 +38,30 @@ class OfftakerController extends BaseController
         ], 200);
     }
 
+    /**
+     * Create offtaker
+     * @return object http response
+     */
+
     public function createOfftaker()
     {
         try {
             $this->validate->validateOfftaker($this->request);
-            $user_id = $this->request->auth;
-            $admin = Admin::where('_id', '=', $user_id)
-                ->where('admin_role', 'Super Admin')->first();
-            if (!$admin) {
-                return response()->json(['error' => 'You are not an authorized user.'], 403);
-            }
 
             $offtaker = OffTaker::create($this->request->all() + ['_id' => Helpers::generateId()]);
 
             if (!$offtaker) {
-                return response()->json(['success' => false, 'error' => 'Could not create user.']);
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Could not create user.'], 408);
             }
-            return response()->json(['success' => true, 'offtaker' => $offtaker]);
+            return response()->json([
+                'success' => true,
+                'offtaker' => $offtaker], 200);
         } catch (Exception $e) {
-            return response()->json(["error" => 'Something went wrong.']);
+            return response()->json([
+                'success' => false,
+                'error' => 'Something went wrong.'], 408);
         }
     }
 }

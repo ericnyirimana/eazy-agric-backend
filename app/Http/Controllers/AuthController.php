@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Utils\Helpers;
+use App\Utils\Validation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,7 @@ class AuthController extends BaseController
     public function __construct(Request $request)
     {
         $this->request = $request;
+        $this->validate = new Validation();
 
     }
 
@@ -38,9 +40,8 @@ class AuthController extends BaseController
     public function authenticate(User $user)
     {
         try {
-            $this->validate($this->request, [
-                'email' => 'required|email', 'password' => 'required',
-            ]);
+            $this->validate->validateLogin($this->request);
+
             $db = getenv('DB_DATABASE');
             $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
 

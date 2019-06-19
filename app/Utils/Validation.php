@@ -15,9 +15,18 @@ class Validation extends BaseController
             'password' => 'required|min:6',
             'confirmPassword' => 'required',
             'adminRole' => ['required', new AdminRole],
+        ]);
+    }
+
+    public function validateLogin($data)
+    {
+        $this->validate($data, [
+            'email' => 'required|email',
+            'password' => 'required',
 
         ]);
     }
+
     public function validateOfftaker($data)
     {
         $this->validate($data, [
@@ -25,27 +34,44 @@ class Validation extends BaseController
             'password' => 'required|min:6',
             'ot_username' => 'required',
             'ot_name' => 'required',
-            'ot_account_type' => ['required', new AccountType()],
+            'account_type' => ['required', new AccountType()],
             'ot_contact_person' => 'required',
             'ot_phonenumber' => 'required',
             'ot_district' => 'required',
             'ot_address' => 'required',
-            'ot_valuechain' => ['required', new ValueChain()],
+            'value_chain' => ['required', new ValueChain()],
         ]);
     }
+
     public function validateMasterAgent($data)
     {
         $this->validate($data, [
             'email' => 'required|email|unique:ma',
             'password' => 'required|min:6',
-            'ma_account_type' => ['required', new AccountType()],
+            'account_type' => ['required', new AccountType()],
             'ma_name' => 'required',
             'ma_manager_name' => 'required',
             'ma_phonenumber' => 'required',
             'ma_username' => 'required',
             'ma_district' => 'required',
             'ma_address' => 'required',
-            'ma_valuechain' => ['required', new ValueChain()],
+            'value_chain' => ['required', new ValueChain()],
+        ]);
+    }
+
+    public function validateDevtPartner($data)
+    {
+        $this->validate($data, [
+            'email' => 'required|email|unique:ma',
+            'password' => 'required|min:6',
+            'account_type' => ['required', new AccountType()],
+            'dp_name' => 'required',
+            'dp_contact_person' => 'required',
+            'dp_phonenumber' => 'required',
+            'dp_username' => 'required',
+            'dp_district' => 'required',
+            'dp_address' => 'required',
+            'value_chain' => ['required', new ValueChain()],
         ]);
     }
 }

@@ -4,6 +4,8 @@ use App\Utils\MockData;
 class OfftakerTest extends TestCase
 {
     protected $mock;
+    const URL = 'api/v1/offtakers';
+
     public function setUp(): void
     {
         parent::setUp();
@@ -15,14 +17,14 @@ class OfftakerTest extends TestCase
 
     public function testShouldReturnOfftakers()
     {
-        $this->get('/api/v1/offtakers', ['Authorization' => $this->token]);
+        $this->get(self::URL, ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);
     }
     public function testShouldReturnErrorForNoToken()
     {
-        $this->get('/api/v1/offtakers');
+        $this->get(self::URL);
         $this->seeStatusCode(401);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
@@ -30,7 +32,7 @@ class OfftakerTest extends TestCase
     }
     public function testShouldReturnErrorIfNonsenseToken()
     {
-        $this->get('/api/v1/offtakers', ['Authorization' => $this->mock->getNonsenseToken()]);
+        $this->get(self::URL, ['Authorization' => $this->mock->getNonsenseToken()]);
         $this->seeStatusCode(400);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
@@ -38,7 +40,7 @@ class OfftakerTest extends TestCase
     }
     public function testShouldReturnErrorIfInvalidToken()
     {
-        $this->get('/api/v1/offtakers', ['Authorization' => $this->mock->getInvalidToken()]);
+        $this->get(self::URL, ['Authorization' => $this->mock->getInvalidToken()]);
         $this->seeStatusCode(400);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
