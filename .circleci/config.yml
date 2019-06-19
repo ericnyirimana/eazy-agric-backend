@@ -1,11 +1,14 @@
 version: 3
 jobs:
-  build:
+  test-locally:
     docker:
       - image: circleci/php:7.1-node-browsers
+    
     working_directory: ~/repo
+    
     environment:
       CC_TEST_REPORTER_ID: 3b36fb234cae45c64699aaa223749a0fbcf7d052698a5d919cf1c1964f5426d7
+      
     steps:
       - checkout
       - run: sudo docker-php-ext-install zip
@@ -32,3 +35,40 @@ jobs:
       - run:
           name: Report code coverage
           command: ./cc-test-reporter after-build -t clover --exit-code $?
+          
+
+  push-image:
+    docker:
+      - image: google/cloud-sdk
+
+    steps:
+      - checkout
+      - setup_remote_docker
+      
+      - run: 
+          name: Build and Push
+          command: |
+            if [ "${CIRCLE_BRANCH}" = "dev" ]; then
+              echo ${SERVICE_ACCOUNT} > ${HOME}/gcp-key.json
+              docker build --build-arg db_connection="${DB_CONNECTION}" --build-arg db_host="${DB_HOST}" --build-arg db_port="${DB_PORT}" --build-arg db_database="${DB_DATABASE}" --build-arg db_username="${DB_USERNAME}" --build-arg db_password="${DB_PASSWORD}" --build-arg cache_driver="${CACHE_DRIVER}" --build-arg queue_connection="${QUEUE_CONNECTION}" --build-arg jwt_secret="${JWT_SECRET}" --rm=false -t gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1 .
+              gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
+              gcloud --quiet config set project ${PROJECT_NAME}
+              gcloud docker -- push gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1
+              
+              gcloud --quiet config set container/cluster akorion
+              gcloud config set compute/zone europe-west2-a
+              export GOOGLE_APPLICATION_CREDENTIALS=${HOME}/gcp-key.json
+              gcloud --quiet container clusters get-credentials akorion
+              kubectl set image deployment/ezyagric-backend-andela ezyagric-backend-image-sha256=gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1
+            fi
+              echo "${CIRCLE_BRANCH}"
+          
+
+workflows:
+  version: 2
+  test_and_build:
+    jobs:
+      - test-locally
+      - push-image:
+          requires:
+            - test-locally
