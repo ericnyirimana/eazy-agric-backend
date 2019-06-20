@@ -426,3 +426,19 @@ offtaker
   }
 }
 ```
+=======
+### Get total acreage for farmers
+
+#### Request
+
+`GET /api/v1/total-acreage`
+
+#### Response
+
+```
+{
+  "success": true,
+  "totalAcreage": 6
+}
+```
+
