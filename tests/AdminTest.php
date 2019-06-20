@@ -2,7 +2,7 @@
 
 use App\Utils\MockData;
 
-class CreateAdmin extends TestCase
+class AdminTest extends TestCase
 {
     protected $response, $token, $wrongUser, $mock;
     const URL = '/api/v1/admin';
@@ -58,5 +58,12 @@ class CreateAdmin extends TestCase
         $this->post(self::URL, $this->mock->getNewAdmin(),
             ['Authorization' => $this->wrongUser]);
         $this->seeStatusCode(403);
+    }
+    public function testShouldReturnActivitySummary()
+    {
+        $this->get('/api/v1/activity-summary', ['Authorization' => $this->token]);
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
     }
 }

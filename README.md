@@ -420,13 +420,13 @@ offtaker
 ```
 {
   "success": true,
+  "count": 2,
   "topDistricts": {
     "Lagos": 2,
     "Rukungiri": 1
   }
 }
 ```
-=======
 ### Get total acreage for farmers
 
 #### Request
@@ -434,7 +434,6 @@ offtaker
 `GET /api/v1/total-acreage`
 
 #### Response
-
 ```
 {
   "success": true,
@@ -442,3 +441,20 @@ offtaker
 }
 ```
 
+### Get activity summary
+
+#### Request
+
+`GET /api/v1/activity-summary`
+
+#### Response
+
+```
+{
+  "success": true,
+  "inputOrders": 3340000,
+  "acresPlanted": 12,
+  "soilTestAcreage": 25,
+  "gardenMapped": 81.684316
+}
+```

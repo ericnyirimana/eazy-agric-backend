@@ -2,6 +2,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\InputOrder;
+use App\Models\Planting;
+use App\Models\SoilTest;
+use App\Models\MapCoordinate;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
@@ -52,5 +56,20 @@ class AdminController extends BaseController
                 'success' => false,
                 'error' => 'Something went wrong.'], 408);
         }
+    }
+
+    public function getActivitySummary()
+    {
+        $inputOrders = InputOrder::pluck('details')->toArray();
+        $acresPlanted = Planting::pluck('acreage')->toArray();
+        $soilTestAcreage = SoilTest::pluck('acreage')->toArray();
+        $gardenMapped = MapCoordinate::pluck('acreage')->toArray();
+        return response()->json([
+            'success' => true,
+            'inputOrders' => array_sum(array_column($inputOrders, 'totalCost')),
+            'acresPlanted' => array_sum($acresPlanted),
+            'soilTestAcreage' => array_sum($soilTestAcreage),
+            'gardenMapped' => array_sum($gardenMapped)
+        ], 200);
     }
 }
