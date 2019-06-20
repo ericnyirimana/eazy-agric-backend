@@ -92,6 +92,8 @@ ARG queue_connection=default_value
 ENV QUEUE_CONNECTION=$queue_connection
 ARG jwt_secret=default_value
 ENV JWT_SECRET=$jwt_secret
+ARG frontend_url=default_value
+ENV FRONTEND_URL=$frontend_url
 
 RUN composer update --no-scripts
 
