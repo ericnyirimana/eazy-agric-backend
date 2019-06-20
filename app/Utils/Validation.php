@@ -18,6 +18,14 @@ class Validation extends BaseController
         ]);
     }
 
+    public function validateForgotPassword($data)
+    {
+        $this->validate($data, [
+            'email' => 'required|email',
+        ]);
+    }
+
+
     public function validateLogin($data)
     {
         $this->validate($data, [
