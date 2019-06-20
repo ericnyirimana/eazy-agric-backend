@@ -20,7 +20,7 @@ class Helpers extends BaseController
             'iss' => "lumen-jwt", // Issuer of the token
             'sub' => $user[0][$db]['_id'], // Subject of the token
             'iat' => time(), // Time when JWT was issued.
-            'exp' => time() + 60 * 60, // Expiration time
+            'exp' => time() + 60 * 60 * 24 * 7, // Expiration time
         ];
         return JWT::encode($payload, env('JWT_SECRET'));
     }

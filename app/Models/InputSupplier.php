@@ -14,5 +14,4 @@ class InputSupplier extends Model {
     ];
 
     // Relationships
-
 }
