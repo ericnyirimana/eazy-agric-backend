@@ -13,7 +13,7 @@ class DistrictController extends Controller
      */
     public function getTopDistricts()
     {
-        $districts = Farmer::pluck('farmer_district')->take(4);
+        $districts = Farmer::pluck('farmer_district')->toArray();
         $districtsFarmerCount = [];
         foreach ($districts as $district) {
             if (array_key_exists($district, $districtsFarmerCount)) {
@@ -23,9 +23,10 @@ class DistrictController extends Controller
             }
         }
         arsort($districtsFarmerCount);
+        $districtsFarmerCount = array_slice($districtsFarmerCount, 0, 4, true);
         return response()->json([
             'success' => true,
-            'count' => count($districtsFarmerCount),
+            'count' => count($districts),
             'topDistricts' => $districtsFarmerCount,
         ], 200);
     }
