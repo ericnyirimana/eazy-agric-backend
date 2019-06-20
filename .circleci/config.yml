@@ -50,7 +50,7 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" = "dev" ]; then
               echo ${SERVICE_ACCOUNT} > ${HOME}/gcp-key.json
-              docker build --build-arg db_connection="${DB_CONNECTION}" --build-arg db_host="${DB_HOST}" --build-arg db_port="${DB_PORT}" --build-arg db_database="${DB_DATABASE}" --build-arg db_username="${DB_USERNAME}" --build-arg db_password="${DB_PASSWORD}" --build-arg cache_driver="${CACHE_DRIVER}" --build-arg queue_connection="${QUEUE_CONNECTION}" --build-arg jwt_secret="${JWT_SECRET}" --rm=false -t gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1 .
+              docker build --build-arg db_connection="${DB_CONNECTION}" --build-arg db_host="${DB_HOST}" --build-arg db_port="${DB_PORT}" --build-arg db_database="${DB_DATABASE}" --build-arg db_username="${DB_USERNAME}" --build-arg db_password="${DB_PASSWORD}" --build-arg cache_driver="${CACHE_DRIVER}" --build-arg queue_connection="${QUEUE_CONNECTION}" --build-arg jwt_secret="${JWT_SECRET}" --build-arg frontend_url="${FRONTEND_URL}" --rm=false -t gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1 .
               gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
               gcloud --quiet config set project ${PROJECT_NAME}
               gcloud docker -- push gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1
