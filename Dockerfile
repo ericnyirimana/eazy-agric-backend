@@ -1,8 +1,8 @@
 FROM php:7.3.6-apache-stretch
 
-#RUN cat /etc/apt/preferences.d/no-debian-php
-#RUN rm /etc/apt/preferences.d/no-debian-php
-#ENV DEBIAN_FRONTEND noninteractive
+RUN cat /etc/apt/preferences.d/no-debian-php
+RUN rm /etc/apt/preferences.d/no-debian-php
+ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
 
@@ -15,6 +15,20 @@ RUN apt -y update
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 RUN apt -y install zip unzip
+
+RUN apt -y install php7.3-zip
+
+RUN dpkg -s php7.3-zip |  grep Status
+
+RUN cat /usr/local/etc/php/conf.d/docker-php-ext-sodium.ini
+
+RUN apt-get install -y zlib1g-dev libzip-dev
+
+RUN docker-php-ext-install zip
+
+RUN cat /usr/local/etc/php/conf.d/docker-php-ext-sodium.ini
+
+RUN composer global require "laravel/lumen-installer"
 
 RUN cat /etc/apache2/apache2.conf
 
@@ -31,6 +45,8 @@ COPY . .
 COPY apache/000-default.conf /etc/apache2/sites-available/
 
 RUN cat /etc/apache2/sites-available/000-default.conf
+
+RUN a2enmod rewrite
 
 RUN ls /var/www/html
 
@@ -80,4 +96,3 @@ ENV JWT_SECRET=$jwt_secret
 RUN composer update --no-scripts
 
 RUN ./vendor/bin/phpunit --debug
-
