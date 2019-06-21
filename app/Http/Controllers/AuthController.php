@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Models\RequestPassword;
 
 class AuthController extends BaseController
 {/**
@@ -78,13 +79,21 @@ class AuthController extends BaseController
 
             $db = getenv('DB_DATABASE');
             $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
-
             if ($user) {
                 $token = Helpers::jwt($user, $db);
+                $time = time();
+
+                $data = RequestPassword::create([
+                    '_id' => Helpers::generateId(),
+                    'token' => $token,
+                    'timestamp' => $time
+                ]);
+
                 $result = $this->email->mailWithTemplate('RESET_PASSWORD',
                     $this->request->input('email'),
-                    getenv('APP_URL')."/reset-password?token=$token&tstamp=".time()
+                    getenv('FRONTEND_URL')."/confirm-password?token=$token&tstamp=".$time
                 );
+
                 return response()->json([
                     'success' => true,
                     'message' => 'An email with password reset instructions has been sent to your email address. It would expire in 1 hour.',
@@ -101,5 +110,4 @@ class AuthController extends BaseController
         }
 
     }
-
 }

@@ -4,33 +4,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 
-class Admin extends Model
+class RequestPassword extends Model
 {
     /**
      * The document type
      * @var string
      */
-    protected $table = 'admin';
+    protected $table = 'request-password';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
     protected $fillable = [
-        'email',
-        'password',
-        'adminRole',
+        'timestamp',
+        'token',
         'type',
         '_id',
     ];
-    
+
     /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'id',
+        'id',
     ];
 
     /**
@@ -40,15 +40,6 @@ class Admin extends Model
      */
 
     protected $attributes = [
-        'type' => 'admin',
+        'type' => 'request-password',
     ];
-
-    /**
-     * Hash password
-     * @var array
-     */
-    public function setPasswordAttribute($password)
-    {
-        $this->attributes['password'] = Hash::make($password);
-    }
 }

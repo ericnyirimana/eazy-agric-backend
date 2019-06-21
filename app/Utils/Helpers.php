@@ -24,6 +24,19 @@ class Helpers extends BaseController
         ];
         return JWT::encode($payload, env('JWT_SECRET'));
     }
+
+    /**
+     * decode jwt token.
+     *
+     * @param  \App\User   $user
+     * @param $db
+     * @return string
+     */
+    public static function jwtDecode($token)
+    {
+        return JWT::decode($token, env('JWT_SECRET'));
+    }
+
     /**
      * Generate Random Numbers
      * @return string
