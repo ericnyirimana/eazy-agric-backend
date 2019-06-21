@@ -3,9 +3,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\InputOrder;
+use App\Models\MapCoordinate;
 use App\Models\Planting;
 use App\Models\SoilTest;
-use App\Models\MapCoordinate;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
@@ -66,10 +66,13 @@ class AdminController extends BaseController
         $gardenMapped = MapCoordinate::pluck('acreage')->toArray();
         return response()->json([
             'success' => true,
-            'inputOrders' => array_sum(array_column($inputOrders, 'totalCost')),
-            'acresPlanted' => array_sum($acresPlanted),
-            'soilTestAcreage' => array_sum($soilTestAcreage),
-            'gardenMapped' => array_sum($gardenMapped)
+            'activities' => [
+                'Input orders' => array_sum(array_column($inputOrders, 'totalCost')),
+                'Planting' => array_sum($acresPlanted). ' Acres',
+                'Soil testing' => array_sum($soilTestAcreage). ' Acres',
+                'Garden Mapping' => array_sum($gardenMapped). ' Acres',
+                'Produce Sold' => 0 .' Tons'
+            ],
         ], 200);
     }
 }
