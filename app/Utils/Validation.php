@@ -36,7 +36,7 @@ class Validation extends BaseController
             'ot_name' => 'required',
             'account_type' => ['required', new AccountType()],
             'ot_contact_person' => 'required',
-            'ot_phonenumber' => 'required',
+            'phonenumber' => 'required',
             'ot_district' => 'required',
             'ot_address' => 'required',
             'value_chain' => ['required', new ValueChain()],
@@ -51,7 +51,7 @@ class Validation extends BaseController
             'account_type' => ['required', new AccountType()],
             'ma_name' => 'required',
             'ma_manager_name' => 'required',
-            'ma_phonenumber' => 'required',
+            'phonenumber' => 'required',
             'ma_username' => 'required',
             'ma_district' => 'required',
             'ma_address' => 'required',
@@ -67,11 +67,23 @@ class Validation extends BaseController
             'account_type' => ['required', new AccountType()],
             'dp_name' => 'required',
             'dp_contact_person' => 'required',
-            'dp_phonenumber' => 'required',
+            'phonenumber' => 'required',
             'dp_username' => 'required',
             'dp_district' => 'required',
             'dp_address' => 'required',
             'value_chain' => ['required', new ValueChain()],
+        ]);
+    }
+
+    public function validateAccountRequest($data)
+    {
+        $this->validate($data, [
+            'email' => 'required|email',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'phonenumber' => 'required',
+            'organization' => 'required',
+
         ]);
     }
 }
