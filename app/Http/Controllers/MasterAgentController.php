@@ -48,4 +48,26 @@ class MasterAgentController extends BaseController
                 'error' => 'Something went wrong.'], 408);
         }
     }
+
+    public function AccountRequest()
+    {
+        try {
+            $this->validate->validateAccountRequest($this->request);
+
+            $masterAgent = MasterAgent::create($this->request->all());
+
+            if (!$masterAgent) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Could not create user.'], 408);
+            }
+            return response()->json([
+                'success' => true,
+                'masterAgent' => $masterAgent], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Something went wrong.'], 408);
+        }
+    }
 }

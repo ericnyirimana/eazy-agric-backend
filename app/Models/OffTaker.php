@@ -21,12 +21,15 @@ class OffTaker extends Model
      */
     protected $fillable = [
         'email',
+        'firstname',
+        'lastname',
+        'organization',
+        'phonenumber',
         'password',
         'ot_username',
         'ot_name',
         'ot_account_type',
         'ot_contact_person',
-        'ot_phonenumber',
         'ot_district',
         'ot_address',
         'ot_valuechain',

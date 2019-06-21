@@ -16,7 +16,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->post('/login', 'AuthController@authenticate');
     });
-    
+
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->group(['middleware' => 'admin'], function () use ($router) {
             $router->post('/admin', 'AdminController@createAdmin');
@@ -32,4 +32,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/total-acreage', 'MapCordinatesController@getTotalAcreage');
         });
     });
+    $router->post('/offtaker-request', 'OfftakerController@AccountRequest');
+    $router->post('/masteragent-request', 'MasterAgentController@AccountRequest');
+
 });

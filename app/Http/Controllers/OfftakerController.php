@@ -64,4 +64,26 @@ class OfftakerController extends BaseController
                 'error' => 'Something went wrong.'], 408);
         }
     }
+
+    public function AccountRequest()
+    {
+        try {
+            $this->validate->validateAccountRequest($this->request);
+
+            $offtaker = OffTaker::create($this->request->all());
+
+            if (!$offtaker) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Could not create user.'], 408);
+            }
+            return response()->json([
+                'success' => true,
+                'offtaker' => $offtaker], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Something went wrong.'], 408);
+        }
+    }
 }

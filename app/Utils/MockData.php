@@ -30,10 +30,17 @@ class MockData
         'ot_name' => 'offtaker',
         'account_type' => 'Custom',
         'ot_contact_person' => 'Samuel',
-        'ot_phonenumber' => '324897654e78',
+        'phonenumber' => '324897654e78',
         'ot_district' => 'fghjklkjhgf',
         'ot_address' => 'fgyuhijokjhgf',
         'value_chain' => 'Dairy',
+    ];
+
+    protected $accountRequest = [
+        'phonenumber' => '324897654e78',
+        'firstname' => 'fghjklkjhgf',
+        'lastname' => 'fgyuhijokjhgf',
+        'organization' => 'somewhere',
     ];
 
     protected $newMasterAgent = [
@@ -42,7 +49,7 @@ class MockData
         'value_chain' => 'Crop',
         'ma_name' => 'masteragent',
         'ma_manager_name' => 'Samuel',
-        'ma_phonenumber' => '234567897654',
+        'phonenumber' => '234567897654',
         'ma_district' => 'somewhere',
         'ma_address' => 'somewhere',
     ];
@@ -53,7 +60,7 @@ class MockData
         'value_chain' => 'Crop',
         'ma_name' => 'masteragent',
         'ma_manager_name' => 'Samuel',
-        'ma_phonenumber' => '234567897654',
+        'phonenumber' => '234567897654',
         'ma_district' => 'somewhere',
         'ma_address' => 'somewhere',
     ];
@@ -64,7 +71,7 @@ class MockData
         'value_chain' => 'Crops',
         'ma_name' => 'masteragent',
         'ma_manager_name' => 'Samuel',
-        'ma_phonenumber' => '234567897654',
+        'phonenumber' => '234567897654',
         'ma_district' => 'somewhere',
         'ma_address' => 'somewhere',
     ];
@@ -75,7 +82,7 @@ class MockData
         'value_chain' => 'Crop',
         'dp_name' => 'masteragent',
         'dp_contact_person' => 'Samuel',
-        'dp_phonenumber' => '234567897654',
+        'phonenumber' => '234567897654',
         'dp_district' => 'somewhere',
         'dp_address' => 'somewhere',
     ];
@@ -160,5 +167,10 @@ class MockData
         $this->newDevtPartner['email'] = $this->shortid->generate() . '@gmail.com';
         $this->newDevtPartner['dp_username'] = $this->shortid->generate();
         return $this->newDevtPartner;
+    }
+    public function getAccountRequest()
+    {
+        $this->accountRequest['email'] = $this->shortid->generate() . '@gmail.com';
+        return $this->accountRequest;
     }
 }

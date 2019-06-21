@@ -17,6 +17,10 @@ class MasterAgent extends Model
      * @var array
      */
     protected $fillable = [
+        'firstname',
+        'lastname',
+        'organization',
+        'phonenumber',
         'ma_password',
         'ma_address',
         'ma_phonenumber',
