@@ -94,6 +94,13 @@ ARG jwt_secret=default_value
 ENV JWT_SECRET=$jwt_secret
 ARG frontend_url=default_value
 ENV FRONTEND_URL=$frontend_url
+ARG mj_apikey_public=default_value
+ENV MJ_APIKEY_PUBLIC=$mj_apikey_public
+ARG mj_api_email=default_value
+ENV MJ_API_EMAIL=$mj_api_email
+ARG mj_api_secret_key=default_value
+ENV MJ_API_SECRET_KEY=$mj_api_secret_key
+
 
 RUN composer update --no-scripts
 
