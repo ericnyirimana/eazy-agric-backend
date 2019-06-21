@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Utils\Helpers;
 use App\Utils\Validation;
+use App\Utils\Email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Models\RequestPassword;
 
 class AuthController extends BaseController
 {/**
@@ -16,7 +18,7 @@ class AuthController extends BaseController
  * @var \Illuminate\Http\Request
  */
     private $request;
-
+    private $email;
     /**
      * Create a new controller instance.
      *
@@ -27,6 +29,7 @@ class AuthController extends BaseController
     {
         $this->request = $request;
         $this->validate = new Validation();
+        $this->email = new Email();
 
     }
 
@@ -62,4 +65,49 @@ class AuthController extends BaseController
 
     }
 
+    /**
+     * Check if user credencial exists, if it does, send an email
+     *
+     * @param  \App\User   $user
+     * @return array
+     */
+
+    public function forgotPassword(User $user)
+    {
+        try {
+            $this->validate->validateForgotPassword($this->request);
+
+            $db = getenv('DB_DATABASE');
+            $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
+            if ($user) {
+                $token = Helpers::jwt($user, $db);
+                $time = time();
+
+                $data = RequestPassword::create([
+                    '_id' => Helpers::generateId(),
+                    'token' => $token,
+                    'timestamp' => $time
+                ]);
+
+                $result = $this->email->mailWithTemplate('RESET_PASSWORD',
+                    $this->request->input('email'),
+                    getenv('FRONTEND_URL')."/confirm-password?token=$token&tstamp=".$time
+                );
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'An email with password reset instructions has been sent to your email address. It would expire in 1 hour.',
+                    'status' => 200,
+                    ], 200);
+            }
+            return response()->json([
+                'error' => true,
+                'message' => 'We could not find this email in our database.',
+                'status' => 404,
+                ], 404);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong.']);
+        }
+
+    }
 }
