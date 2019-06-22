@@ -80,18 +80,18 @@ class AuthController extends BaseController
             $db = getenv('DB_DATABASE');
             $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
             if ($user) {
-                $token = Helpers::jwt($user, $db);
-                $time = time();
-
+                $token = Helpers::jwt([
+                    '_id' => $user[0][$db]['_id'],
+                    'email' => $user[0][$db]['email']
+                ]);
                 $data = RequestPassword::create([
                     '_id' => Helpers::generateId(),
                     'token' => $token,
-                    'timestamp' => $time
                 ]);
 
                 $result = $this->email->mailWithTemplate('RESET_PASSWORD',
                     $this->request->input('email'),
-                    getenv('FRONTEND_URL')."/confirm-password?token=$token&tstamp=".$time
+                    getenv('FRONTEND_URL')."/confirm-password?token=$token"
                 );
 
                 return response()->json([
@@ -110,4 +110,80 @@ class AuthController extends BaseController
         }
 
     }
+
+    /**
+     * Check if user credencial exists, if it does, send an email
+     *
+     * @param  \App\User   $user
+     * @return array
+     */
+
+    public function confirmPassword(User $user)
+    {
+        try {
+            $this->validate->validateConfirmPassword($this->request);
+
+            $token = ($this->request->input('token'));
+            $type = 'request-password';
+            $decodedToken = Helpers::jwtDecode($token);
+
+            $db = getenv('DB_DATABASE');
+            $requestPasswordDocument = RequestPassword::where('type', $type)
+                ->where('token', $token)->first();
+
+            if ($requestPasswordDocument) {
+                if ($requestPasswordDocument->token === $token) {                    DB::select(
+                        'UPDATE '. $db.' SET `password`=?',
+                        [Hash::make($this->request->input('password'))]
+                    );
+                    $requestPasswordDocument->delete();
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Your Password has been updated, successfully'
+                    ], 200);
+                }
+            }
+            return response()->json([
+                'success' => false,
+                'message' => 'We could not update your password',
+                ], 404);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong.']);
+        }
+
+    }
+        /**
+         * Check if token credencial exists,
+         *
+         * @param  \App\User   $user
+         * @return array
+         */
+
+        public function verifyResetPasswordToken(User $user)
+        {
+            try {
+                $this->validate->validateVerifyPasswordToken($this->request);
+                $token = ($this->request->input('token'));
+                $type = 'request-password';
+
+                $db = getenv('DB_DATABASE');
+                $user = DB::select("select * from ". $db ." where token= ? AND  type = ?", [$token, $type]);
+
+                if ($user) {
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'verified',
+                        'status' => 200,
+                        ], 200);
+                }
+                return response()->json([
+                    'error' => true,
+                    'message' => 'authorized',
+                    'status' => 401,
+                    ], 401);
+            } catch (Exception $e) {
+                return response()->json(['error' => 'Something went wrong.']);
+            }
+
+        }
 }
