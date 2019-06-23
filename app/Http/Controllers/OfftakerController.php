@@ -88,7 +88,11 @@ class OfftakerController extends BaseController
             }
             $this->requestPassword = Helpers::getPassword();
 
+<<<<<<< HEAD
             $sendEmail = $this->helpers->sendPassword($this->requestPassword, $this->email);
+=======
+            $sendEmail = $this->helpers->sendPassword($this->requestPassword);
+>>>>>>> EW-148-story(user account): Fix user account
 
             return response()->json([
                 'message' => 'Please check your mail for your login password',

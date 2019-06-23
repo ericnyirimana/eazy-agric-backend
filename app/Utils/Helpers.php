@@ -12,11 +12,11 @@ class Helpers extends BaseController
 
     private static $password_string;
     private $url;
-    private $mail;
+    private $email;
 
     public function __construct()
     {
-        $this->mail = new Email();
+        $this->email = new Email();
         $this->url = getenv('FRONTEND_URL');
 
     }
@@ -83,12 +83,12 @@ class Helpers extends BaseController
         return self::$password_string;
     }
 
-    public function sendPassword($password, $email)
+    public function sendPassword($password)
     {
-
-        $sendEmail = $this->mail->mailWithTemplate(
+        $this->requestPassword = $password;
+        $sendEmail = $this->email->mailWithTemplate(
             'LOGIN',
-            $email, $this->url, $password);
+            $this->email, $this->url, $this->requestPassword);
         if ($sendEmail) {
             return true;
         }

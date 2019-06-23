@@ -89,11 +89,12 @@ class AuthController extends BaseController
                 $data = RequestPassword::create([
                     '_id' => Helpers::generateId(),
                     'token' => $token,
+                    'timestamp' => $time,
                 ]);
 
                 $result = $this->email->mailWithTemplate('RESET_PASSWORD',
                     $this->request->input('email'),
-                    getenv('FRONTEND_URL') . "/confirm-password?token=$token"
+                    getenv('FRONTEND_URL') . "/confirm-password?token=$token&tstamp=" . $time
                 );
 
                 return response()->json([

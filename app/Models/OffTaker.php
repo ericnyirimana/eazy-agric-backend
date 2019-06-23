@@ -24,6 +24,7 @@ class OffTaker extends Model
         'lastname',
         'organization',
         'phonenumber',
+<<<<<<< HEAD
         'district',
         'email',
         'status',
@@ -31,6 +32,16 @@ class OffTaker extends Model
         'value_chain',
         'account_type',
         'status',
+=======
+        'password',
+        'ot_username',
+        'ot_name',
+        'account_type',
+        'contact_person',
+        'district',
+        'ot_address',
+        'value_chain',
+>>>>>>> EW-148-story(user account): Fix user account
         'type' => 'offtaker',
         '_id',
     ];

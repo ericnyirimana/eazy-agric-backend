@@ -28,22 +28,8 @@ class MasterAgentController extends BaseController
         $this->validate = new Validation();
         $this->email = $request->input('email');
         $this->url = getenv('FRONTEND_URL');
+        $this->password = Helpers::$password_string;
         $this->mail = new Email();
-    }
-
-    /**
-     * Get all masteragents
-     *
-     * @return http response object
-     */
-    public function getMasterAgents()
-    {
-        $result = MasterAgent::all();
-        return response()->json([
-            'success' => true,
-            'count' => count($result),
-            'result' => $result,
-        ], 200);
     }
 
     /**

@@ -118,6 +118,7 @@ class Email extends BaseController
             'html' => $body,
         ]);
         $response = $mail->post(Resources::$Email, ['body' => $body]);
+
         return $response->success() && ['status' => 'success'];
     }
 
