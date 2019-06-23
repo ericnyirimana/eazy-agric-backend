@@ -1,12 +1,26 @@
 <?php
 namespace App\Utils;
 
+use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Helpers extends BaseController
 {
+
+    private static $password_string;
+    private $url;
+    private $email;
+
+    public function __construct()
+    {
+        $this->email = new Email();
+        $this->url = getenv('FRONTEND_URL');
+
+    }
+
     /**
      * Create a new token for user object.
      *
@@ -47,6 +61,37 @@ class Helpers extends BaseController
         $shortid = ShortId::create();
 
         return $shortid->generate();
+    }
+
+    public static function requestInfo()
+    {
+        $secret = getenv('PASSWORD_SECRET');
+        self::$password_string = self::generateId() . $secret;
+        $password = Hash::make(self::$password_string);
+        $additionalInfo = [
+            '_id' => self::generateId(),
+            'district' => 'N/A',
+            'value_chain' => 'N/A',
+            'account_password' => 'Generic',
+            'contact_person' => 'N/A',
+        ];
+        return $additionalInfo;
+    }
+
+    public static function getPassword()
+    {
+        return self::$password_string;
+    }
+
+    public function sendPassword($password)
+    {
+        $this->requestPassword = $password;
+        $sendEmail = $this->email->mailWithTemplate(
+            'LOGIN',
+            $this->email, $this->url, $this->requestPassword);
+        if ($sendEmail) {
+            return true;
+        }
     }
 
 }

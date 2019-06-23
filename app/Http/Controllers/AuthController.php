@@ -1,15 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\RequestPassword;
 use App\Models\User;
+use App\Utils\Email;
 use App\Utils\Helpers;
 use App\Utils\Validation;
-use App\Utils\Email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use App\Models\RequestPassword;
 
 class AuthController extends BaseController
 {/**
@@ -19,6 +19,8 @@ class AuthController extends BaseController
  */
     private $request;
     private $email;
+    private $requestPassword;
+
     /**
      * Create a new controller instance.
      *
@@ -87,29 +89,38 @@ class AuthController extends BaseController
                 $data = RequestPassword::create([
                     '_id' => Helpers::generateId(),
                     'token' => $token,
+<<<<<<< HEAD
+=======
+                    'timestamp' => $time,
+>>>>>>> EW-148-story(user account): Fix user account
                 ]);
 
                 $result = $this->email->mailWithTemplate('RESET_PASSWORD',
                     $this->request->input('email'),
+<<<<<<< HEAD
                     getenv('FRONTEND_URL')."/confirm-password?token=$token"
+=======
+                    getenv('FRONTEND_URL') . "/confirm-password?token=$token&tstamp=" . $time
+>>>>>>> EW-148-story(user account): Fix user account
                 );
 
                 return response()->json([
                     'success' => true,
                     'message' => 'An email with password reset instructions has been sent to your email address. It would expire in 1 hour.',
                     'status' => 200,
-                    ], 200);
+                ], 200);
             }
             return response()->json([
                 'error' => true,
                 'message' => 'We could not find this email in our database.',
                 'status' => 404,
-                ], 404);
+            ], 404);
         } catch (Exception $e) {
             return response()->json(['error' => 'Something went wrong.']);
         }
 
     }
+<<<<<<< HEAD
 
     /**
      * Check if user credencial exists, if it does, send an email
@@ -186,4 +197,18 @@ class AuthController extends BaseController
             }
 
         }
+=======
+    public function resendPassword()
+    {
+        $user = DB::select('select password from ' . $db . ' where email = ?', [$this->request->input('email')]);
+        $sendEmail = $this->mail->mailWithTemplate(
+            'LOGIN',
+            $this->email, $this->url, $this->requestPassword);
+        if ($sendEmail) {
+            return response()->json([
+                'message' => 'Please check your mail for your login password',
+            ]);
+        }
+    }
+>>>>>>> EW-148-story(user account): Fix user account
 }

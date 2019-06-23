@@ -3,11 +3,14 @@ namespace App\Utils;
 
 use App\Rules\AccountType;
 use App\Rules\AdminRole;
+use App\Rules\Email;
 use App\Rules\ValueChain;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Validation extends BaseController
 {
+    private $email;
+
     public function validateAdmin($data)
     {
         $this->validate($data, [
@@ -40,7 +43,6 @@ class Validation extends BaseController
         ]);
     }
 
-
     public function validateLogin($data)
     {
         $this->validate($data, [
@@ -53,7 +55,7 @@ class Validation extends BaseController
     public function validateOfftaker($data)
     {
         $this->validate($data, [
-            'email' => 'required|email|unique:offtaker',
+            'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'ot_username' => 'required',
             'ot_name' => 'required',
@@ -69,7 +71,7 @@ class Validation extends BaseController
     public function validateMasterAgent($data)
     {
         $this->validate($data, [
-            'email' => 'required|email|unique:ma',
+            'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'account_type' => ['required', new AccountType()],
             'ma_name' => 'required',
@@ -85,7 +87,7 @@ class Validation extends BaseController
     public function validateDevtPartner($data)
     {
         $this->validate($data, [
-            'email' => 'required|email|unique:ma',
+            'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'account_type' => ['required', new AccountType()],
             'dp_name' => 'required',
@@ -100,8 +102,9 @@ class Validation extends BaseController
 
     public function validateAccountRequest($data)
     {
+        $db = getenv('DB_DATABASE');
         $this->validate($data, [
-            'email' => 'required|email',
+            'email' => ['required', 'email', new Email($data['email'])],
             'firstname' => 'required',
             'lastname' => 'required',
             'phonenumber' => 'required',

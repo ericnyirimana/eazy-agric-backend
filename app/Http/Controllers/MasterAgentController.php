@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterAgent;
+use App\Utils\Email;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
@@ -10,7 +11,12 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 class MasterAgentController extends BaseController
 {
     private $request;
-
+    private $userData;
+    private $email;
+    private $url;
+    private $password;
+    private $mail;
+    private $message;
     /**
      * Offtaker constructor
      * @param object http request
@@ -20,6 +26,25 @@ class MasterAgentController extends BaseController
     {
         $this->request = $request;
         $this->validate = new Validation();
+        $this->email = $request->input('email');
+        $this->url = getenv('FRONTEND_URL');
+        // $this->password = Helpers::$password_string;
+        $this->mail = new Email();
+    }
+
+    /**
+     * Get all masteragents
+     *
+     * @return http response object
+     */
+    public function getMasterAgent()
+    {
+        $result = MasterAgent::all();
+        return response()->json([
+            'success' => true,
+            'count' => count($result),
+            'result' => $result,
+        ], 200);
     }
 
     /**

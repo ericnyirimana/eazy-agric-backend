@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OffTaker;
+use App\Utils\Email;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
@@ -11,6 +12,11 @@ class OfftakerController extends BaseController
 {
     private $request;
     private $userData;
+    private $email;
+    private $url;
+    private $requestPassword;
+    private $mail;
+    private $message;
 
     /**
      * Offtaker constructor
@@ -21,6 +27,10 @@ class OfftakerController extends BaseController
     {
         $this->request = $request;
         $this->validate = new Validation();
+        $this->email = $request->input('email');
+        $this->url = getenv('FRONTEND_URL');
+        $this->helpers = new Helpers();
+
     }
 
     /**
@@ -53,7 +63,7 @@ class OfftakerController extends BaseController
             if (!$offtaker) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Could not create user.'], 408);
+                    'error' => 'Could not create user.'], 503);
             }
             return response()->json([
                 'success' => true,
@@ -61,7 +71,7 @@ class OfftakerController extends BaseController
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Something went wrong.'], 408);
+                'error' => 'Something went wrong.'], 503);
         }
     }
 
@@ -70,20 +80,23 @@ class OfftakerController extends BaseController
         try {
             $this->validate->validateAccountRequest($this->request);
 
-            $offtaker = OffTaker::create($this->request->all());
-
+            $offtaker = OffTaker::create($this->request->all() + Helpers::requestInfo());
             if (!$offtaker) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Could not create user.'], 408);
+                    'error' => 'Could not create user.'], 503);
             }
+            $this->requestPassword = Helpers::getPassword();
+
+            $sendEmail = $this->helpers->sendPassword($this->requestPassword);
+
             return response()->json([
+                'message' => 'Please check your mail for your login password',
                 'success' => true,
                 'offtaker' => $offtaker], 200);
         } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Something went wrong.'], 408);
+            return response()->json(['success' => false, 'error' => 'Something went wrong.'], 503);
         }
     }
+
 }
