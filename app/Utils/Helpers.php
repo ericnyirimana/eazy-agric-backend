@@ -8,19 +8,19 @@ use Laravel\Lumen\Routing\Controller as BaseController;
 class Helpers extends BaseController
 {
     /**
-     * Create a new token.
+     * Create a new token for user object.
      *
      * @param  \App\User   $user
      * @param $db
      * @return string
      */
-    public static function jwt($user, $db)
+    public static function jwt($user, $db=null, $exp=(60 * 60 * 24 * 7))
     {
         $payload = [
             'iss' => "lumen-jwt", // Issuer of the token
-            'sub' => $user[0][$db]['_id'], // Subject of the token
+            'sub' => $db !==null ? $user[0][$db]['_id'] : $user, // Subject of the token
             'iat' => time(), // Time when JWT was issued.
-            'exp' => time() + 60 * 60 * 24 * 7, // Expiration time
+            'exp' => time() + $exp, // Expiration time
         ];
         return JWT::encode($payload, env('JWT_SECRET'));
     }
@@ -34,7 +34,7 @@ class Helpers extends BaseController
      */
     public static function jwtDecode($token)
     {
-        return JWT::decode($token, env('JWT_SECRET'));
+        return JWT::decode($token, env('JWT_SECRET'),  array('HS256'));
     }
 
     /**

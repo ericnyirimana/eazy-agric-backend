@@ -16,6 +16,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->post('/login', 'AuthController@authenticate');
         $router->post('/forgot-password', 'AuthController@forgotPassword');
+        $router->post('/confirm-password/verify', 'AuthController@verifyResetPasswordToken');
+        $router->put('/confirm-password', 'AuthController@confirmPassword');
     });
 
     $router->group(['middleware' => 'auth'], function () use ($router) {

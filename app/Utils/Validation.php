@@ -29,6 +29,7 @@ class Validation extends BaseController
     {
         $this->validate($data, [
             'password' => 'required|min:8',
+            'token' => 'required|min:25',
         ]);
     }
 
