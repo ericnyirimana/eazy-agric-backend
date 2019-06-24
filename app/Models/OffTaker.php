@@ -20,19 +20,17 @@ class OffTaker extends Model
      * @var array
      */
     protected $fillable = [
-        'email',
         'firstname',
         'lastname',
         'organization',
         'phonenumber',
-        'password',
-        'ot_username',
-        'ot_name',
-        'ot_account_type',
-        'ot_contact_person',
-        'ot_district',
-        'ot_address',
-        'ot_valuechain',
+        'district',
+        'email',
+        'status',
+        'contact_person',
+        'value_chain',
+        'account_type',
+        'status',
         'type' => 'offtaker',
         '_id',
     ];
@@ -51,6 +49,7 @@ class OffTaker extends Model
      */
     protected $attributes = [
         'type' => 'offtaker',
+        'status' => 'demo',
     ];
 
     public function setPasswordAttribute($password)

@@ -17,25 +17,19 @@ class DevtPartner extends Model
      * @var array
      */
     protected $fillable = [
-        'partner_id',
-        'dp_email',
-        'account_type',
-        'dp_phonenumber',
-        'dp_location',
-        'value_chain',
-        'dp_address',
-        'dp_name',
-        'dp_password',
-        'dp_username',
-        'dp_manager_name',
-        '_id',
-        'dp_id',
-        'type',
+        'firstname',
+        'lastname',
+        'organization',
+        'phonenumber',
+        'district',
         'email',
         'status',
+        'contact_person',
+        'value_chain',
+        'account_type',
+        'status',
         'category',
-        'password',
-        'dp_district',
+
     ];
     /**
      * The attributes excluded from the model's JSON form.
@@ -53,7 +47,7 @@ class DevtPartner extends Model
     protected $attributes = [
         'type' => 'partner',
         'category' => 'development-partner',
-        'status' => 'closed',
+        'status' => 'demo',
     ];
     public function setPasswordAttribute($password)
     {

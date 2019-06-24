@@ -1,15 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\RequestPassword;
 use App\Models\User;
+use App\Utils\Email;
 use App\Utils\Helpers;
 use App\Utils\Validation;
-use App\Utils\Email;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use App\Models\RequestPassword;
 
 class AuthController extends BaseController
 {/**
@@ -19,6 +19,8 @@ class AuthController extends BaseController
  */
     private $request;
     private $email;
+    private $requestPassword;
+
     /**
      * Create a new controller instance.
      *
@@ -82,7 +84,7 @@ class AuthController extends BaseController
             if ($user) {
                 $token = Helpers::jwt([
                     '_id' => $user[0][$db]['_id'],
-                    'email' => $user[0][$db]['email']
+                    'email' => $user[0][$db]['email'],
                 ]);
                 $data = RequestPassword::create([
                     '_id' => Helpers::generateId(),
@@ -91,20 +93,20 @@ class AuthController extends BaseController
 
                 $result = $this->email->mailWithTemplate('RESET_PASSWORD',
                     $this->request->input('email'),
-                    getenv('FRONTEND_URL')."/confirm-password?token=$token"
+                    getenv('FRONTEND_URL') . "/confirm-password?token=$token"
                 );
 
                 return response()->json([
                     'success' => true,
                     'message' => 'An email with password reset instructions has been sent to your email address. It would expire in 1 hour.',
                     'status' => 200,
-                    ], 200);
+                ], 200);
             }
             return response()->json([
                 'error' => true,
                 'message' => 'We could not find this email in our database.',
                 'status' => 404,
-                ], 404);
+            ], 404);
         } catch (Exception $e) {
             return response()->json(['error' => 'Something went wrong.']);
         }
@@ -132,58 +134,58 @@ class AuthController extends BaseController
                 ->where('token', $token)->first();
 
             if ($requestPasswordDocument) {
-                if ($requestPasswordDocument->token === $token) {                    DB::select(
-                        'UPDATE '. $db.' SET `password`=?',
-                        [Hash::make($this->request->input('password'))]
-                    );
+                if ($requestPasswordDocument->token === $token) {DB::select(
+                    'UPDATE ' . $db . ' SET `password`=?',
+                    [Hash::make($this->request->input('password'))]
+                );
                     $requestPasswordDocument->delete();
                     return response()->json([
                         'success' => true,
-                        'message' => 'Your Password has been updated, successfully'
+                        'message' => 'Your Password has been updated, successfully',
                     ], 200);
                 }
             }
             return response()->json([
                 'success' => false,
                 'message' => 'We could not update your password',
-                ], 404);
+            ], 404);
         } catch (Exception $e) {
             return response()->json(['error' => 'Something went wrong.']);
         }
 
     }
-        /**
-         * Check if token credencial exists,
-         *
-         * @param  \App\User   $user
-         * @return array
-         */
+    /**
+     * Check if token credencial exists,
+     *
+     * @param  \App\User   $user
+     * @return array
+     */
 
-        public function verifyResetPasswordToken(User $user)
-        {
-            try {
-                $this->validate->validateVerifyPasswordToken($this->request);
-                $token = ($this->request->input('token'));
-                $type = 'request-password';
+    public function verifyResetPasswordToken(User $user)
+    {
+        try {
+            $this->validate->validateVerifyPasswordToken($this->request);
+            $token = ($this->request->input('token'));
+            $type = 'request-password';
 
-                $db = getenv('DB_DATABASE');
-                $user = DB::select("select * from ". $db ." where token= ? AND  type = ?", [$token, $type]);
+            $db = getenv('DB_DATABASE');
+            $user = DB::select("select * from " . $db . " where token= ? AND  type = ?", [$token, $type]);
 
-                if ($user) {
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'verified',
-                        'status' => 200,
-                        ], 200);
-                }
+            if ($user) {
                 return response()->json([
-                    'error' => true,
-                    'message' => 'authorized',
-                    'status' => 401,
-                    ], 401);
-            } catch (Exception $e) {
-                return response()->json(['error' => 'Something went wrong.']);
+                    'success' => true,
+                    'message' => 'verified',
+                    'status' => 200,
+                ], 200);
             }
-
+            return response()->json([
+                'error' => true,
+                'message' => 'authorized',
+                'status' => 401,
+            ], 401);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong.']);
         }
+
+    }
 }

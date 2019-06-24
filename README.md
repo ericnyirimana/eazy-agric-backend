@@ -356,7 +356,6 @@ offtaker
 }
 ```
 
-
 ### Create a Development Partner account
 
 #### Request
@@ -408,7 +407,9 @@ offtaker
   }
 }
 ```
+
 =======
+
 ### Get top districts
 
 #### Request
@@ -427,6 +428,7 @@ offtaker
   }
 }
 ```
+
 ### Get total acreage for farmers
 
 #### Request
@@ -434,6 +436,7 @@ offtaker
 `GET /api/v1/total-acreage`
 
 #### Response
+
 ```
 {
   "success": true,
@@ -456,5 +459,119 @@ offtaker
   "acresPlanted": 12,
   "soilTestAcreage": 25,
   "gardenMapped": 81.684316
+}
+```
+
+========================================
+
+### Get all master agents
+
+#### Request
+
+`GET /api/v1/masteragent`
+
+#### Response
+
+```
+{
+    "success": true,
+    "count": 1,
+       "masteragent": [
+        {
+            "_id": "-8ly79g",
+            "created_at": "2019-06-19 15:07:45",
+            "eloquent_type": "ma",
+            "email": "w7y7gJQ@gmail.com",
+            "ma_address": "somewhere",
+            "ma_district": "somewhere",
+            "ma_manager_name": "Samuel",
+            "ma_name": "masteragent",
+            "ma_phonenumber": "234567897654",
+            "password": "$2y$10$r1C/vtQTlfYKNw/NBWSwZ.dgj2XhZBPn1eRvVeps5cnB9qxLFKM7W",
+            "status": "inactive",
+            "type": "ma",
+            "updated_at": "2019-06-19 15:07:45"
+        },
+        {
+            "_id": "-ASHP3E",
+            "account_type": "something",
+            "category": "development-partner",
+            "created_at": "2019-06-16 00:56:19",
+            "dp_address": "lums",
+            "dp_district": "Masaka",
+            "dp_manager_name": "AK/OT/0001",
+            "dp_name": "Luparelia",
+            "dp_phonenumber": "256788345623",
+            "dp_username": "somename",
+            "eloquent_type": "ma",
+            "email": "masteragent12346@gmail.com",
+            "password": "$2y$10$Urdjjk2.wyZcrasrSq3JW.EUnr1uTnDBvO.psB4GlQva.2yhngQ7u",
+            "status": "closed",
+            "type": "partner",
+            "updated_at": "2019-06-16 00:56:19",
+            "value_chain": "something"
+        },
+        {
+            "_id": "-rtfnqS",
+            "created_at": "2019-06-18 09:30:10",
+            "eloquent_type": "ma",
+            "email": "x1T9YHR@gmail.com",
+            "ma_account_type": "Custom",
+            "ma_address": "somewhere",
+            "ma_district": "somewhere",
+            "ma_manager_name": "Samuel",
+            "ma_name": "masteragent",
+            "ma_phonenumber": "234567897654",
+            "password": "$2y$10$6Ra2KEHGxKn5qlKYKZvOou8UvGnDFW806QZVSlPObMFZisGE6Qf4a",
+            "status": "inactive",
+            "type": "ma",
+            "updated_at": "2019-06-18 09:30:10"
+        },
+        {
+            "_id": "0Gow7lq",
+            "created_at": "2019-06-20 15:15:41",
+            "eloquent_type": "ma",
+            "email": "e2tBULN@gmail.com",
+            "ma_address": "somewhere",
+            "ma_district": "somewhere",
+            "ma_manager_name": "Samuel",
+            "ma_name": "masteragent",
+            "ma_phonenumber": "234567897654",
+            "password": "$2y$10$hQD9a8Edbpd7LfHBbEBLx.LJK7qsJ4Gz/TMMKUu75kPGHcm2xh0t2",
+            "status": "inactive",
+            "type": "ma",
+            "updated_at": "2019-06-20 15:15:41"
+        },
+        {
+            "_id": "0ncgUX0",
+            "created_at": "2019-06-20 15:40:16",
+            "eloquent_type": "ma",
+            "email": "bIq9PbJ@gmail.com",
+            "ma_address": "somewhere",
+            "ma_district": "somewhere",
+            "ma_manager_name": "Samuel",
+            "ma_name": "masteragent",
+            "ma_phonenumber": "234567897654",
+            "password": "$2y$10$W4NOeruc/6a.HHXuuwIOhu9LzzWnm.KTcpF9Sr/FmaP.ofYwwlt06",
+            "status": "inactive",
+            "type": "ma",
+            "updated_at": "2019-06-20 15:40:16"
+        },
+        {
+            "_id": "0smLDKf",
+            "created_at": "2019-06-21 02:28:35",
+            "eloquent_type": "ma",
+            "email": "dF_lEf5@gmail.com",
+            "ma_address": "somewhere",
+            "ma_district": "somewhere",
+            "ma_manager_name": "Samuel",
+            "ma_name": "masteragent",
+            "password": "$2y$10$yyCEMr/i9NIY3xYwcvOrDOSoW6I1vswisJjZQ33NyECip57v/jMLK",
+            "phonenumber": "234567897654",
+            "status": "inactive",
+            "type": "ma",
+            "updated_at": "2019-06-21 02:28:35"
+        },
+            ]
 }
 ```

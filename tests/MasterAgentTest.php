@@ -30,12 +30,20 @@ class CreateMasterAgentTest extends TestCase
         $this->seeJson(['error' => 'Please log in first.']);
     }
 
+    public function testShouldReturnMasteragents()
+    {
+        $this->get(self::URL, ['Authorization' => $this->token]);
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
+    }
+
     public function testShouldReturnErrorIfInvalidToken()
     {
         $this->post(self::URL,
             ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
             eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
-            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']);
+            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs', ]);
         $this->seeStatusCode(401);
 
     }

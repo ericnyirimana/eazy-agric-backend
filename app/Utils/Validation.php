@@ -3,11 +3,15 @@ namespace App\Utils;
 
 use App\Rules\AccountType;
 use App\Rules\AdminRole;
+use App\Rules\District;
+use App\Rules\Email;
 use App\Rules\ValueChain;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Validation extends BaseController
 {
+    private $email;
+
     public function validateAdmin($data)
     {
         $this->validate($data, [
@@ -40,7 +44,6 @@ class Validation extends BaseController
         ]);
     }
 
-
     public function validateLogin($data)
     {
         $this->validate($data, [
@@ -53,15 +56,15 @@ class Validation extends BaseController
     public function validateOfftaker($data)
     {
         $this->validate($data, [
-            'email' => 'required|email|unique:offtaker',
+            'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
-            'ot_username' => 'required',
-            'ot_name' => 'required',
             'account_type' => ['required', new AccountType()],
-            'ot_contact_person' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'contact_person' => 'required',
             'phonenumber' => 'required',
-            'ot_district' => 'required',
-            'ot_address' => 'required',
+            'district' => ['required', new District()],
+            'address' => 'required',
             'value_chain' => ['required', new ValueChain()],
         ]);
     }
@@ -69,15 +72,15 @@ class Validation extends BaseController
     public function validateMasterAgent($data)
     {
         $this->validate($data, [
-            'email' => 'required|email|unique:ma',
+            'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'account_type' => ['required', new AccountType()],
-            'ma_name' => 'required',
-            'ma_manager_name' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'contact_person' => 'required',
             'phonenumber' => 'required',
-            'ma_username' => 'required',
-            'ma_district' => 'required',
-            'ma_address' => 'required',
+            'district' => ['required', new District()],
+            'address' => 'required',
             'value_chain' => ['required', new ValueChain()],
         ]);
     }
@@ -85,23 +88,24 @@ class Validation extends BaseController
     public function validateDevtPartner($data)
     {
         $this->validate($data, [
-            'email' => 'required|email|unique:ma',
+            'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'account_type' => ['required', new AccountType()],
-            'dp_name' => 'required',
-            'dp_contact_person' => 'required',
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'contact_person' => 'required',
             'phonenumber' => 'required',
-            'dp_username' => 'required',
-            'dp_district' => 'required',
-            'dp_address' => 'required',
+            'district' => ['required', new District()],
+            'address' => 'required',
             'value_chain' => ['required', new ValueChain()],
         ]);
     }
 
     public function validateAccountRequest($data)
     {
+        $db = getenv('DB_DATABASE');
         $this->validate($data, [
-            'email' => 'required|email',
+            'email' => ['required', 'email', new Email($data['email'])],
             'firstname' => 'required',
             'lastname' => 'required',
             'phonenumber' => 'required',

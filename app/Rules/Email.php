@@ -2,9 +2,17 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 
-class ValueChain implements Rule
+class Email implements Rule
 {
+    private $email;
+
+    public function __construct($email)
+    {
+        $this->email = $email;
+    }
+
     /**
      * Determine if the validation rule passes.
      *
@@ -14,8 +22,14 @@ class ValueChain implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value === 'Crop' || $value === 'Dairy' || $value === 'N/A';
+        $db = getenv('DB_DATABASE');
+        $user_email = DB::select('select * from ' . $db . ' where email = ?', [$this->email]);
+        if (!$user_email) {
+
+            return $value;
+        }
     }
+
     /**
      * Get the validation error message.
      *
@@ -23,6 +37,6 @@ class ValueChain implements Rule
      */
     public function message()
     {
-        return 'Invalid value chain';
+        return 'Email has been taken';
     }
 }
