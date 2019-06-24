@@ -8,8 +8,8 @@ class MockData
     protected $adminData = ['email' => 'someone@gmail.com', 'password' => '123456'];
     protected $wrongEmail = ['email' => 'someone@gmail.com', 'password' => '1234567'];
     protected $wrongPassword = ['email' => 'admin1234@gmail.com', 'password' => '1234567'];
-    protected $loginDetails = ['email' => 'admin1234@gmail.com', 'password' => 'admin1234'];
-    protected $masterAgentData = ['email' => 'masteragent1234@gmail.com', 'password' => 'masteragent1234'];
+    protected $loginDetails = ['email' => 'admin2020@gmail.com', 'password' => 'admin2020'];
+    protected $masterAgentData = ['email' => 'masteragent2121@gmail.com', 'password' => '123123'];
     protected $passwordMismatchData = [
         'password' => 'admin12346',
         'confirmPassword' => 'admin12345',
@@ -24,7 +24,6 @@ class MockData
     eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
     jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs';
     protected $nonsenseToken = 'eyJ0eXAipPs';
-
     protected $newOffTaker = [
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
@@ -33,17 +32,15 @@ class MockData
         'lastname' => 'masteragent',
         'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'district' => 'somewhere',
+        'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
-
     protected $accountRequest = [
         'phonenumber' => '324897654e78',
         'firstname' => 'fghjklkjhgf',
         'lastname' => 'fgyuhijokjhgf',
         'organization' => 'somewhere',
     ];
-
     protected $newMasterAgent = [
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
@@ -52,11 +49,10 @@ class MockData
         'lastname' => 'masteragent',
         'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'district' => 'somewhere',
+        'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
-
-    protected $wrongMasterAgentAccount = [
+    protected $existingMasterAgent = [
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
         'value_chain' => 'Crop',
@@ -64,19 +60,20 @@ class MockData
         'lastname' => 'masteragent',
         'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'district' => 'somewhere',
+        'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
-
-    protected $wrongMasterAgentValuechain = [
+    protected $invalidData = [
+        'email' => 'admin2020@gmail.com',
         'password' => 'masterAgent12345',
-        'account_type' => 'Custom',
-        'value_chain' => 'Crops',
-        'ma_name' => 'masteragent',
-        'ma_manager_name' => 'Samuel',
+        'account_type' => 'someaccount',
+        'value_chain' => 'somevalue',
+        'firstname' => 'masteragent',
+        'lastname' => 'masteragent',
+        'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'ma_district' => 'somewhere',
-        'ma_address' => 'somewhere',
+        'district' => 'somewhere',
+        'address' => 'somewhere',
     ];
 
     protected $newDevtPartner = [
@@ -87,10 +84,9 @@ class MockData
         'lastname' => 'masteragent',
         'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'district' => 'somewhere',
+        'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
-
     public $shortid;
     /**
      * Class constructor.
@@ -129,32 +125,23 @@ class MockData
         $this->newAdmin['email'] = $this->shortid->generate() . '@gmail.com';
         return $this->newAdmin;
     }
-
     public function getNewOffTaker()
     {
         $this->newOffTaker['email'] = $this->shortid->generate() . '@gmail.com';
-        $this->newOffTaker['ot_username'] = $this->shortid->generate();
         return $this->newOffTaker;
-
     }
-
     public function getNewMasterAgent()
     {
         $this->newMasterAgent['email'] = $this->shortid->generate() . '@gmail.com';
         return $this->newMasterAgent;
     }
 
-    public function getWrongMasterAgentAccount()
+    public function getExistingMasterAgent()
     {
-        $this->wrongMasterAgentAccount['email'] = $this->shortid->generate() . '@gmail.com';
-        return $this->wrongMasterAgentAccount;
+        $this->existingMasterAgent['email'] = 'admin1234';
+        return $this->existingMasterAgent;
     }
 
-    public function getWrongMasterAgentValuchain()
-    {
-        $this->wrongMasterAgentValuchain['email'] = $this->shortid->generate() . '@gmail.com';
-        return $this->wrongMasterAgentValuchain;
-    }
     public function getInvalidToken()
     {
         return $this->invalidToken;
@@ -172,5 +159,10 @@ class MockData
     {
         $this->accountRequest['email'] = $this->shortid->generate() . '@gmail.com';
         return $this->accountRequest;
+    }
+
+    public function getInvalidData()
+    {
+        return $this->invalidData;
     }
 }

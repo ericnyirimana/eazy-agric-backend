@@ -54,6 +54,20 @@ class CreateMasterAgentTest extends TestCase
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }
+    public function testShouldReturnErrorIfInvalidData()
+    {
+        $this->post(self::URL, $this->mock->getInvalidData(),
+            ['Authorization' => $this->token]);
+        $this->seeStatusCode(422);
+    }
+
+    public function testShouldReturnErrorIfEmailExists()
+    {
+        $this->post(self::URL, $this->mock->getExistingMasterAgent(),
+            ['Authorization' => $this->token]);
+        $this->seeStatusCode(422);
+    }
+
     public function testShouldReturnErrorIfNonsenseToken()
     {
         $this->post(self::URL, $this->mock->getNewMasterAgent(),

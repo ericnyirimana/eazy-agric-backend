@@ -46,7 +46,7 @@ class DevtPartnerController extends BaseController
     public function createDevtPartner()
     {
         try {
-            $this->validate->validateDevtPartner($this->request);
+            $this->validate->validateNewAccount($this->request);
 
             $devtPartner = DevtPartner::create($this->request->all() + ['_id' => Helpers::generateId()]);
             if (!$devtPartner) {

@@ -21,12 +21,13 @@ class MasterAgent extends Model
         'lastname',
         'organization',
         'phonenumber',
-        'district',
-        'email',
-        'status',
-        'contact_person',
+        'address',
         'value_chain',
-        'account_type',
+        'email',
+        'district',
+        'contact_person',
+        'address',
+        'ma_password',
         'ma_address',
         'ma_phonenumber',
         'ma_name',
@@ -39,6 +40,7 @@ class MasterAgent extends Model
         'ma_value_chain',
         'manager_location',
         'manager_email',
+        'password',
         'ma_district',
     ];
     /**
@@ -47,7 +49,7 @@ class MasterAgent extends Model
      * @var array
      */
     protected $hidden = [
-        'ma_password', 'id', 'password',
+        'ma_password', 'id',
     ];
     /**
      * The model's default values for attributes.
@@ -56,7 +58,7 @@ class MasterAgent extends Model
      */
     protected $attributes = [
         'type' => 'ma',
-        'status' => 'inactive',
+        'status' => 'demo',
     ];
     public function setPasswordAttribute($password)
     {

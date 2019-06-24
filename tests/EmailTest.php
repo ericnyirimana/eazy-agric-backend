@@ -9,6 +9,7 @@ class EmailTest extends TestCase
         parent::setUp();
         $this->mock = new MockData();
         $this->mailer = new Email();
+        $this->url = getenv('FRONTEND_URL');
 
         $this->subject = 'random email subject';
         $this->body = 'some random email body';
@@ -25,7 +26,7 @@ class EmailTest extends TestCase
     {
         $sentMail = $this->mailer->sendMail($this->mock->getLoginDetails()['email'], $this->subject, $this->body);
         $this->assertIsBool($sentMail);
-        // $this->assertTrue($sentMail);
+        $this->assertTrue($sentMail);
     }
 
     public function testShouldReturnAnErrorForResetPassword()

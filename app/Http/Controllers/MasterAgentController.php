@@ -14,6 +14,7 @@ class MasterAgentController extends BaseController
     private $userData;
     private $email;
     private $url;
+    private $requestPassword;
     private $password;
     private $mail;
     private $message;
@@ -26,10 +27,26 @@ class MasterAgentController extends BaseController
     {
         $this->request = $request;
         $this->validate = new Validation();
-        $this->email = $request->input('email');
+        $this->email = $this->request->input('email');
+        $this->requestPassword = $this->request->input('password');
         $this->url = getenv('FRONTEND_URL');
-        $this->password = Helpers::$password_string;
         $this->mail = new Email();
+        $this->helpers = new Helpers();
+    }
+
+    /**
+     * Get all masteragents
+     *
+     * @return http response object
+     */
+    public function getMasterAgents()
+    {
+        $result = MasterAgent::all();
+        return response()->json([
+            'success' => true,
+            'count' => count($result),
+            'result' => $result,
+        ], 200);
     }
 
     /**
@@ -40,7 +57,7 @@ class MasterAgentController extends BaseController
     public function createMasterAgent()
     {
         try {
-            $this->validate->validateMasterAgent($this->request);
+            $this->validate->validateNewAccount($this->request);
 
             $masterAgent = MasterAgent::create($this->request->all() + ['_id' => Helpers::generateId()]);
 
@@ -49,9 +66,13 @@ class MasterAgentController extends BaseController
                     'success' => false,
                     'error' => 'Could not create user.'], 408);
             }
+
+            $sendEmail = $this->helpers->sendPassword($this->password, $this->email);
             return response()->json([
+                'message' => 'Please check your mail for your login password',
                 'success' => true,
                 'masterAgent' => $masterAgent], 200);
+
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
@@ -63,17 +84,22 @@ class MasterAgentController extends BaseController
     {
         try {
             $this->validate->validateAccountRequest($this->request);
-
-            $masterAgent = MasterAgent::create($this->request->all());
+            $this->password = Helpers::generateId();
+            $masterAgent = MasterAgent::create($this->request->all()
+                 + Helpers::requestInfo($this->password));
 
             if (!$masterAgent) {
                 return response()->json([
                     'success' => false,
                     'error' => 'Could not create user.'], 408);
             }
+
+            $sendEmail = $this->helpers->sendPassword($this->password, $this->email);
+
             return response()->json([
                 'success' => true,
                 'masterAgent' => $masterAgent], 200);
+
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,

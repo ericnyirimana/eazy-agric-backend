@@ -4,20 +4,17 @@ namespace App\Utils;
 use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
-use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Helpers extends BaseController
 {
 
-    private static $password_string;
-    private $url;
-    private $email;
+    private static $password_string, $url, $mail, $password;
 
     public function __construct()
     {
-        $this->email = new Email();
-        $this->url = getenv('FRONTEND_URL');
+        self::$mail = new Email();
+        self::$url = getenv('FRONTEND_URL');
 
     }
 
@@ -28,27 +25,15 @@ class Helpers extends BaseController
      * @param $db
      * @return string
      */
-    public static function jwt($user, $db=null, $exp=(60 * 60 * 24 * 7))
+    public static function jwt($user, $db = null, $exp = (60 * 60 * 24 * 7))
     {
         $payload = [
             'iss' => "lumen-jwt", // Issuer of the token
-            'sub' => $db !==null ? $user[0][$db]['_id'] : $user, // Subject of the token
+            'sub' => $db !== null ? $user[0][$db]['_id'] : $user, // Subject of the token
             'iat' => time(), // Time when JWT was issued.
             'exp' => time() + $exp, // Expiration time
         ];
         return JWT::encode($payload, env('JWT_SECRET'));
-    }
-
-    /**
-     * decode jwt token.
-     *
-     * @param  \App\User   $user
-     * @param $db
-     * @return string
-     */
-    public static function jwtDecode($token)
-    {
-        return JWT::decode($token, env('JWT_SECRET'),  array('HS256'));
     }
 
     /**
@@ -63,35 +48,27 @@ class Helpers extends BaseController
         return $shortid->generate();
     }
 
-    public static function requestInfo()
+    public static function requestInfo($password)
     {
-        $secret = getenv('PASSWORD_SECRET');
-        self::$password_string = self::generateId() . $secret;
-        $password = Hash::make(self::$password_string);
-        $additionalInfo = [
+        return [
             '_id' => self::generateId(),
             'district' => 'N/A',
             'value_chain' => 'N/A',
-            'account_password' => 'Generic',
+            'type' => 'Generic',
             'contact_person' => 'N/A',
+            'password' => $password,
         ];
-        return $additionalInfo;
     }
 
-    public static function getPassword()
+    public function sendPassword($password, $email)
     {
-        return self::$password_string;
-    }
+        $sendEmail = self::$mail->mailWithTemplate(
+            'LOGIN', $email, self::$url, $password);
 
-    public function sendPassword($password)
-    {
-        $this->requestPassword = $password;
-        $sendEmail = $this->email->mailWithTemplate(
-            'LOGIN',
-            $this->email, $this->url, $this->requestPassword);
         if ($sendEmail) {
             return true;
         }
+
     }
 
 }

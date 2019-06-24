@@ -15,9 +15,9 @@ class OfftakerController extends BaseController
     private $email;
     private $url;
     private $requestPassword;
+    private $password;
     private $mail;
     private $message;
-
     /**
      * Offtaker constructor
      * @param object http request
@@ -27,12 +27,12 @@ class OfftakerController extends BaseController
     {
         $this->request = $request;
         $this->validate = new Validation();
-        $this->email = $request->input('email');
+        $this->email = $this->request->input('email');
+        $this->requestPassword = $this->request->input('password');
         $this->url = getenv('FRONTEND_URL');
+        $this->mail = new Email();
         $this->helpers = new Helpers();
-
     }
-
     /**
      * Get all input suppliers
      *
@@ -47,17 +47,14 @@ class OfftakerController extends BaseController
             'offtakers' => $result,
         ], 200);
     }
-
     /**
      * Create offtaker
      * @return object http response
      */
-
     public function createOfftaker()
     {
         try {
-            $this->validate->validateOfftaker($this->request);
-
+            $this->validate->validateNewAccount($this->request);
             $offtaker = OffTaker::create($this->request->all() + ['_id' => Helpers::generateId()]);
 
             if (!$offtaker) {
@@ -65,9 +62,14 @@ class OfftakerController extends BaseController
                     'success' => false,
                     'error' => 'Could not create user.'], 503);
             }
+
+            $sendEmail = $this->helpers->sendPassword($this->password, $this->email);
+
             return response()->json([
+                'message' => 'Please check your mail for your login password',
                 'success' => true,
                 'offtaker' => $offtaker], 200);
+
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
@@ -79,28 +81,26 @@ class OfftakerController extends BaseController
     {
         try {
             $this->validate->validateAccountRequest($this->request);
+            $this->password = Helpers::generateId();
+            $offtaker = OffTaker::create($this->request->all()
+                 + Helpers::requestInfo($this->password));
 
-            $offtaker = OffTaker::create($this->request->all() + Helpers::requestInfo());
             if (!$offtaker) {
                 return response()->json([
                     'success' => false,
-                    'error' => 'Could not create user.'], 503);
+                    'error' => 'Could not create user.'], 408);
             }
-            $this->requestPassword = Helpers::getPassword();
 
-<<<<<<< HEAD
-            $sendEmail = $this->helpers->sendPassword($this->requestPassword, $this->email);
-=======
-            $sendEmail = $this->helpers->sendPassword($this->requestPassword);
->>>>>>> EW-148-story(user account): Fix user account
+            $sendEmail = $this->helpers->sendPassword($this->password, $this->email);
 
             return response()->json([
-                'message' => 'Please check your mail for your login password',
                 'success' => true,
-                'offtaker' => $offtaker], 200);
+                'masterAgent' => $offtaker], 200);
+
         } catch (Exception $e) {
-            return response()->json(['success' => false, 'error' => 'Something went wrong.'], 503);
+            return response()->json([
+                'success' => false,
+                'error' => 'Something went wrong.'], 408);
         }
     }
-
 }
