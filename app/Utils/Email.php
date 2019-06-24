@@ -82,7 +82,6 @@ class Email extends BaseController
 
     private function getTemplate($template, $url = '', $password = '')
     {
-        var_dump($password);
         $body = [
             'RESET_PASSWORD' => [
                 'subject' => 'Reset your Password',
@@ -101,8 +100,7 @@ class Email extends BaseController
                     'You can now login !!!',
                     'Thank you for creating an account with us /n You can now login with this password' . $password
                 ),
-            ],
-        ];
+            ]];
         return $body[$template];
     }
     /**
@@ -120,7 +118,6 @@ class Email extends BaseController
             'html' => $body,
         ]);
         $response = $mail->post(Resources::$Email, ['body' => $body]);
-
         return $response->success() && ['status' => 'success'];
     }
 
@@ -129,7 +126,7 @@ class Email extends BaseController
      * @param $to [string] email to send reset link to
      * @param  $path [string] url to redirect user to
      */
-    public function mailWithTemplate($template = '', $to, $path = '', $password = '')
+    public function mailWithTemplate($template = 'RESET_PASSWORD', $to = '', $path, $password = '')
     {
         $template = $this->getTemplate($template, $path, $password);
         return $this->sendMail(

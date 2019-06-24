@@ -14,7 +14,7 @@ class ValueChain implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $value === 'Crop' || $value === 'Dairy';
+        return $value === 'Crop' || $value === 'Dairy' || $value === 'N/A';
     }
     /**
      * Get the validation error message.

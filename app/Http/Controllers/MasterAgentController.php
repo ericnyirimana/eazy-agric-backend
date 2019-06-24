@@ -28,7 +28,6 @@ class MasterAgentController extends BaseController
         $this->validate = new Validation();
         $this->email = $request->input('email');
         $this->url = getenv('FRONTEND_URL');
-        // $this->password = Helpers::$password_string;
         $this->mail = new Email();
     }
 
@@ -37,7 +36,7 @@ class MasterAgentController extends BaseController
      *
      * @return http response object
      */
-    public function getMasterAgent()
+    public function getMasterAgents()
     {
         $result = MasterAgent::all();
         return response()->json([

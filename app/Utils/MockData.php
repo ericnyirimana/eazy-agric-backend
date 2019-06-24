@@ -26,14 +26,15 @@ class MockData
     protected $nonsenseToken = 'eyJ0eXAipPs';
 
     protected $newOffTaker = [
-        'password' => 'offtaker123456',
-        'ot_name' => 'offtaker',
+        'password' => 'masterAgent12345',
         'account_type' => 'Custom',
-        'ot_contact_person' => 'Samuel',
-        'phonenumber' => '324897654e78',
-        'ot_district' => 'fghjklkjhgf',
-        'ot_address' => 'fgyuhijokjhgf',
-        'value_chain' => 'Dairy',
+        'value_chain' => 'Crop',
+        'firstname' => 'masteragent',
+        'lastname' => 'masteragent',
+        'contact_person' => 'Samuel',
+        'phonenumber' => '234567897654',
+        'district' => 'somewhere',
+        'address' => 'somewhere',
     ];
 
     protected $accountRequest = [
@@ -47,22 +48,24 @@ class MockData
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
         'value_chain' => 'Crop',
-        'ma_name' => 'masteragent',
-        'ma_manager_name' => 'Samuel',
+        'firstname' => 'masteragent',
+        'lastname' => 'masteragent',
+        'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'ma_district' => 'somewhere',
-        'ma_address' => 'somewhere',
+        'district' => 'somewhere',
+        'address' => 'somewhere',
     ];
 
     protected $wrongMasterAgentAccount = [
         'password' => 'masterAgent12345',
-        'account_type' => 'Customs',
+        'account_type' => 'Custom',
         'value_chain' => 'Crop',
-        'ma_name' => 'masteragent',
-        'ma_manager_name' => 'Samuel',
+        'firstname' => 'masteragent',
+        'lastname' => 'masteragent',
+        'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'ma_district' => 'somewhere',
-        'ma_address' => 'somewhere',
+        'district' => 'somewhere',
+        'address' => 'somewhere',
     ];
 
     protected $wrongMasterAgentValuechain = [
@@ -80,11 +83,12 @@ class MockData
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
         'value_chain' => 'Crop',
-        'dp_name' => 'masteragent',
-        'dp_contact_person' => 'Samuel',
+        'firstname' => 'masteragent',
+        'lastname' => 'masteragent',
+        'contact_person' => 'Samuel',
         'phonenumber' => '234567897654',
-        'dp_district' => 'somewhere',
-        'dp_address' => 'somewhere',
+        'district' => 'somewhere',
+        'address' => 'somewhere',
     ];
 
     public $shortid;
@@ -137,21 +141,18 @@ class MockData
     public function getNewMasterAgent()
     {
         $this->newMasterAgent['email'] = $this->shortid->generate() . '@gmail.com';
-        $this->newMasterAgent['ma_username'] = $this->shortid->generate();
         return $this->newMasterAgent;
     }
 
     public function getWrongMasterAgentAccount()
     {
         $this->wrongMasterAgentAccount['email'] = $this->shortid->generate() . '@gmail.com';
-        $this->wrongMasterAgentAccount['ma_username'] = $this->shortid->generate();
         return $this->wrongMasterAgentAccount;
     }
 
     public function getWrongMasterAgentValuchain()
     {
         $this->wrongMasterAgentValuchain['email'] = $this->shortid->generate() . '@gmail.com';
-        $this->wrongMasterAgentValuchain['ma_username'] = $this->shortid->generate();
         return $this->wrongMasterAgentValuchain;
     }
     public function getInvalidToken()
@@ -165,7 +166,6 @@ class MockData
     public function getNewDevtPartner()
     {
         $this->newDevtPartner['email'] = $this->shortid->generate() . '@gmail.com';
-        $this->newDevtPartner['dp_username'] = $this->shortid->generate();
         return $this->newDevtPartner;
     }
     public function getAccountRequest()

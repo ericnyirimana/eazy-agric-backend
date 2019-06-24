@@ -27,7 +27,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->post('/admin', 'AdminController@createAdmin');
             $router->post('/offtaker', 'OfftakerController@createOfftaker');
             $router->post('/masteragent', 'MasterAgentController@createMasterAgent');
-            $router->get('/masteragent', 'MasterAgentController@getMasterAgent');
+            $router->get('/masteragent', 'MasterAgentController@getMasterAgents');
             $router->post('/devt-partners', 'DevtPartnerController@createDevtPartner');
             $router->get('/village-agents', 'VillageAgentController@getVillageAgents');
             $router->get('/input-suppliers', 'InputSupplierController@getInputSuppliers');
