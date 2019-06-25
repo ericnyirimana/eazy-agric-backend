@@ -32,7 +32,7 @@ class AuthController extends BaseController
         $this->request = $request;
         $this->validate = new Validation();
         $this->email = new Email();
-
+        $this->db = getenv('DB_DATABASE');
     }
 
     /**
@@ -47,17 +47,16 @@ class AuthController extends BaseController
         try {
             $this->validate->validateLogin($this->request);
 
-            $db = getenv('DB_DATABASE');
-            $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
+            $user = DB::select('select * from ' . $this->db . ' where email = ?', [$this->request->input('email')]);
             if (!$user) {
                 return response()->json([
                     'success' => false, 'error' => 'The Email or password supplied is incorrect.'], 404);
             }
             // Verify the password and generate the token
-            if (Hash::check($this->request->input('password'), $user[0][$db]['password'])) {
-                $token = Helpers::jwt($user, $db);
-                unset($user[0][$db]['password']);
-                return response()->json(['success' => true, 'token' => $token, 'user' => $user[0][$db],
+            if (Hash::check($this->request->input('password'), $user[0][$this->db]['password'])) {
+                $token = Helpers::jwt($user, $this->db);
+                unset($user[0][$this->db]['password']);
+                return response()->json(['success' => true, 'token' => $token, 'user' => $user[0][$this->db],
                 ], 200);
             }
             return response()->json(['success' => false, 'error' => 'The Email or password supplied is incorrect.'], 404);
@@ -77,19 +76,10 @@ class AuthController extends BaseController
     {
         try {
             $this->validate->validateForgotPassword($this->request);
-
-            $db = getenv('DB_DATABASE');
-            $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
+            $user = DB::select('select * from ' . $this->db . ' where email = ?', [$this->request->input('email')]);
             if ($user) {
-                $token = Helpers::jwt([
-                    '_id' => $user[0][$db]['_id'],
-                    'email' => $user[0][$db]['email'],
-                ]);
-                $data = RequestPassword::create([
-                    '_id' => Helpers::generateId(),
-                    'token' => $token,
-
-                ]);
+                $token = Helpers::jwt([ '_id' => $user[0][$this->db]['_id'], 'email' => $user[0][$this->db]['email'] ]);
+                $data = RequestPassword::create([ '_id' => Helpers::generateId(), 'token' => $token ]);
 
                 $result = $this->email->mailWithTemplate('RESET_PASSWORD',
                     $this->request->input('email'),
@@ -98,19 +88,13 @@ class AuthController extends BaseController
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'An email with password reset instructions has been sent to your email address. It would expire in 1 hour.',
-                    'status' => 200,
-                ], 200);
+                    'message' => 'An email with password reset instructions has been sent to your email address. It would expire in 1 hour.'], 200);
             }
-            return response()->json([
-                'error' => true,
-                'message' => 'We could not find this email in our database.',
-                'status' => 404,
-            ], 404);
+            return response()->json([ 'error' => true,
+                'message' => 'We could not find this email in our database.', ], 404);
         } catch (Exception $e) {
             return response()->json(['error' => 'Something went wrong.']);
         }
-
     }
 
     /**
@@ -126,33 +110,23 @@ class AuthController extends BaseController
             $this->validate->validateConfirmPassword($this->request);
 
             $token = ($this->request->input('token'));
-            $type = 'request-password';
             $decodedToken = Helpers::jwtDecode($token);
 
-            $db = getenv('DB_DATABASE');
-            $requestPasswordDocument = RequestPassword::where('type', $type)
-                ->where('token', $token)->first();
+            $requestPasswordDocument = RequestPassword::where('token', $token)->first();
 
             if ($requestPasswordDocument) {
-                if ($requestPasswordDocument->token === $token) {DB::select(
-                    'UPDATE ' . $db . ' SET `password`=?',
-                    [Hash::make($this->request->input('password'))]
-                );
+                if ($requestPasswordDocument->token === $token) {
+                    DB::select('UPDATE ' . $this->db . ' SET `password`=? WHERE email=?', [ Hash::make($this->request->input('password')), $decodedToken['sub']['email']]);
                     $requestPasswordDocument->delete();
-                    return response()->json([
-                        'success' => true,
-                        'message' => 'Your Password has been updated, successfully',
-                    ], 200);
+                    return response()->json([ 'success' => true,
+                        'message' => 'Your Password has been updated, successfully' ], 200);
                 }
             }
-            return response()->json([
-                'success' => false,
-                'message' => 'We could not update your password',
-            ], 404);
+            return response()->json([ 'success' => false,
+                'message' => 'We could not update your password' ], 404);
         } catch (Exception $e) {
             return response()->json(['error' => 'Something went wrong.']);
         }
-
     }
     /**
      * Check if token credencial exists,
@@ -168,14 +142,12 @@ class AuthController extends BaseController
             $token = ($this->request->input('token'));
             $type = 'request-password';
 
-            $db = getenv('DB_DATABASE');
-            $user = DB::select("select * from " . $db . " where token= ? AND  type = ?", [$token, $type]);
+            $user = DB::select("select * from " . $this->db . " where token= ? AND  type = ?", [$token, $type]);
 
             if ($user) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'verified',
-                    'status' => 200,
+                    'message' => 'verified'
                 ], 200);
             }
             return response()->json([
