@@ -491,8 +491,6 @@ offtaker
 }
 ```
 
-========================================
-
 ### Get all master agents
 
 #### Request
@@ -692,5 +690,22 @@ offtaker
 {
     "message": "thank you for reaching out to us. we would get back to you shortly",
     "success": "true",
+}
+```
+===================
+### Get Twitter report
+
+#### Request
+
+`GET /api/v1/twitter-report`
+
+#### Response
+```
+{
+  "success": true,
+  'data': {
+    "followers_count": 106,
+    "statuses_count": 118
+  }
 }
 ```
