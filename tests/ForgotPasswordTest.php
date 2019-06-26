@@ -17,8 +17,8 @@ class ForgotPasswordTest extends TestCase
         $this->seeStatusCode(404);
         $this->seeJson([
             "message" => "We could not find this email in our database.",
-            "error" => true
-            ]);
+            "error" => true,
+        ]);
     }
 
     public function testShouldReturnSuccessIfEmailExist()
@@ -26,8 +26,8 @@ class ForgotPasswordTest extends TestCase
         $user = $this->post(self::URL, $this->mock->getLoginDetails());
         $this->seeJson([
             "success" => true,
-            "message" => "An email with password reset instructions has been sent to your email address. It would expire in 1 hour."
-            ]);
+            "message" => "An email with password reset instructions has been sent to your email address. It would expire in 1 hour.",
+        ]);
         $this->seeStatusCode(200);
     }
 }

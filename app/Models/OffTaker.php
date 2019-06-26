@@ -40,7 +40,7 @@ class OffTaker extends Model
      * @var array
      */
     protected $hidden = [
-        'password', 'id',
+        'password', 'id','password'
     ];
     /**
      * The model's default values for attributes.

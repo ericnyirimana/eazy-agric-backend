@@ -118,6 +118,7 @@ class Email extends BaseController
             'html' => $body,
         ]);
         $response = $mail->post(Resources::$Email, ['body' => $body]);
+
         return $response->success() && ['status' => 'success'];
     }
 
@@ -126,7 +127,7 @@ class Email extends BaseController
      * @param $to [string] email to send reset link to
      * @param  $path [string] url to redirect user to
      */
-    public function mailWithTemplate($template = 'RESET_PASSWORD', $to = '', $path, $password = '')
+    public function mailWithTemplate($template = 'RESET_PASSWORD', $to, $path, $password = '')
     {
         $template = $this->getTemplate($template, $path, $password);
         return $this->sendMail(

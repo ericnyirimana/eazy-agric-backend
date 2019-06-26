@@ -49,7 +49,6 @@ class AuthController extends BaseController
 
             $db = getenv('DB_DATABASE');
             $user = DB::select('select * from ' . $db . ' where email = ?', [$this->request->input('email')]);
-
             if (!$user) {
                 return response()->json([
                     'success' => false, 'error' => 'The Email or password supplied is incorrect.'], 404);
@@ -89,6 +88,7 @@ class AuthController extends BaseController
                 $data = RequestPassword::create([
                     '_id' => Helpers::generateId(),
                     'token' => $token,
+
                 ]);
 
                 $result = $this->email->mailWithTemplate('RESET_PASSWORD',

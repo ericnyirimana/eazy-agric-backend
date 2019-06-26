@@ -1,8 +1,9 @@
 <?php
 use App\Utils\MockData;
+
 class TotalAcreageTest extends TestCase
 {
-  const URL = '/api/v1/total-acreage';
+    const URL = '/api/v1/total-acreage';
     protected $token;
     public function setUp(): void
     {

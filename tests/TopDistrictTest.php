@@ -1,8 +1,9 @@
 <?php
 use App\Utils\MockData;
+
 class TopDistrictTest extends TestCase
 {
-  const URL = '/api/v1/top-districts';
+    const URL = '/api/v1/top-districts';
     protected $token;
     public function setUp(): void
     {
