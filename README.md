@@ -444,6 +444,21 @@ offtaker
 }
 ```
 
+### Get total payment by farmers
+
+#### Request
+
+`GET /api/v1/total-payment`
+
+#### Response
+
+```
+{
+  "success": true,
+  "totalPayment": 2345.21
+}
+```
+
 ### Get activity summary
 
 #### Request

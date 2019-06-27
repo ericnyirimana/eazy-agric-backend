@@ -36,6 +36,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/top-districts', 'DistrictController@getTopDistricts');
             $router->get('/activity-summary', 'AdminController@getActivitySummary');
             $router->get('/total-acreage', 'MapCordinatesController@getTotalAcreage');
+            $router->get('/total-payment', 'TotalPaymentController@getTotalPayment');         
         });
     });
     $router->post('/offtaker-request', 'OfftakerController@AccountRequest');
