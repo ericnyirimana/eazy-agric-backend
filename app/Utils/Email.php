@@ -53,31 +53,14 @@ class Email extends BaseController
         if ($content === strip_tags($content)) {
             $content = '<h4 style="margin: 0 auto; margin-bottom: 50px;">' . $content . '</h4>';
         }
-
         return $htmlTemplate = '<div style="font-family:arial; margin: 20px;">
-        <div style="display: inline-block;
-          text-align: center;
-          margin: 0 auto;
-          width: 600px;
-          margin: 0 auto;
-          display: block;">
+        <div style="display: inline-block; text-align: center; margin: 0 auto; width: 600px; margin: 0 auto; display: block;">
           <img src="' . env("EMAIL_BANNER", "http://www.mtic.go.ug/nids/slide/fruits.png") . '" style="width: 100%;">
 
-          <div style="width: 560px;
-          margin: 0 auto;
-          padding: 30px;">
+          <div style="width: 560px; margin: 0 auto; padding: 30px;">
             <h1 style="text-transform: uppercase;">' . $header . '</h1>
             ' . $content . '
-            <a href="' . $btn_url . '" style="
-          padding: 18px 25px;
-          background-color: #27A9E0;
-          border-radius: 40px;
-          text-decoration: none;
-          color: white;
-          text-transform: uppercase;">' . $btn_text . '</a>
-          </div>
-          </div>
-        </div>';
+            <a href="' . $btn_url . '" style=" padding: 18px 25px; background-color: #27A9E0; border-radius: 40px; text-decoration: none; color: white; text-transform: uppercase;">' . $btn_text . '</a> </div> </div> </div>';
     }
 
     private function getTemplate($template, $url = '', $password = '')
@@ -103,11 +86,12 @@ class Email extends BaseController
             ]];
         return $body[$template];
     }
+
     /**
      * send actual email to recipients
      * @param $to {string} seperate multiple emails with commar
      * @param $subject {string} subject of the email
-     * @param $body {string/html} contains the actual message to be displayed to the user.
+     * @param body {string/html} contains the actual message to be displayed to the user.
      * @param $type {string} [optional] when omitted, will treat $body as string and not HTML
      */
     public function sendMail($to, $subject, $body, $type = 'TEXT')
@@ -137,5 +121,4 @@ class Email extends BaseController
             'text'
         );
     }
-
 }
