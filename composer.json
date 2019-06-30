@@ -40,6 +40,9 @@
     "scripts": {
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "db:refresh" : [
+            "php artisan db:clear && php artisan db:seed"
         ]
     },
     "config": {
