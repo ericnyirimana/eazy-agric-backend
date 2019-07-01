@@ -1,20 +1,24 @@
 <?php
 namespace App\Utils;
 
+use App\Models\MasterAgent;
 use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Helpers extends BaseController
 {
 
-    private static $password_string, $url, $mail, $password;
-
+    private static $password_string, $url, $mail, $password, $db, $masterAgent;
+    public static $user;
     public function __construct()
     {
         self::$mail = new Email();
         self::$url = getenv('FRONTEND_URL');
+        self::$db = getenv('DB_DATABASE');
+        self::$masterAgent = new MasterAgent();
 
     }
 
@@ -60,6 +64,12 @@ class Helpers extends BaseController
         ];
     }
 
+    /**
+     * Send user password via mail
+     * @param string password
+     * @param string email
+     * @return boolean true or false
+     */
     public function sendPassword($password, $email)
     {
         $sendEmail = self::$mail->mailWithTemplate(
@@ -71,4 +81,38 @@ class Helpers extends BaseController
 
     }
 
+    /**
+     * Get a user by id
+     * @param string id
+     * @return object user
+     */
+
+    public static function queryUser($id)
+    {
+        return $query = DB::select('select * from ' . self::$db . ' where _id = ?', [$id]);
+    }
+
+    /**
+     * Change user account status
+     * @param string user id
+     * @param string status
+     *@return boolean true or false
+     */
+
+    public static function changeStatus($id, $status)
+    {
+        $user = self::queryUser($id);
+        if (count($user) < 1) {
+            return false;
+        }
+        $query = "UPDATE " . self::$db .
+            " SET status='" . $status . "'WHERE _id= '" . $id .
+            "' Returning * ";
+
+        $status = DB::statement($query);
+
+        if ($status->status === 'success') {
+            return true;
+        }
+    }
 }

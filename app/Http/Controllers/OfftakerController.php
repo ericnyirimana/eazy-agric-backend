@@ -44,7 +44,7 @@ class OfftakerController extends BaseController
         return response()->json([
             'success' => true,
             'count' => count($result),
-            'offtakers' => $result,
+            'result' => $result,
         ], 200);
     }
     /**
@@ -95,7 +95,7 @@ class OfftakerController extends BaseController
 
             return response()->json([
                 'success' => true,
-                'masterAgent' => $offtaker], 200);
+                'offtaker' => $offtaker], 200);
 
         } catch (Exception $e) {
             return response()->json([

@@ -49,7 +49,7 @@ class MasterAgent extends Model
      * @var array
      */
     protected $hidden = [
-        'ma_password', 'id',
+        'ma_password', 'id', 'password',
     ];
     /**
      * The model's default values for attributes.

@@ -9,12 +9,14 @@ use App\Models\SoilTest;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class AdminController extends BaseController
 {
     private $request;
     private $validate;
+    private $db;
 
     /**
      * Create a new controller instance.
@@ -26,6 +28,8 @@ class AdminController extends BaseController
     {
         $this->request = $request;
         $this->validate = new Validation();
+        $this->db = getenv('DB_DATABASE');
+        $this->helpers = new Helpers();
 
     }
 
@@ -50,7 +54,7 @@ class AdminController extends BaseController
             }
             return response()->json([
                 'success' => false,
-                'error' => 'Passwords does not match.'], 401);
+                'error' => 'Passwords do not match.'], 401);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
@@ -68,11 +72,74 @@ class AdminController extends BaseController
             'success' => true,
             'activities' => [
                 'Input orders' => array_sum(array_column($inputOrders, 'totalCost')),
-                'Planting' => array_sum($acresPlanted). ' Acres',
-                'Soil testing' => array_sum($soilTestAcreage). ' Acres',
-                'Garden Mapping' => array_sum($gardenMapped). ' Acres',
-                'Produce Sold' => 0 .' Tons'
+                'Planting' => array_sum($acresPlanted) . ' Acres',
+                'Soil testing' => array_sum($soilTestAcreage) . ' Acres',
+                'Garden Mapping' => array_sum($gardenMapped) . ' Acres',
+                'Produce Sold' => 0 . ' Tons',
             ],
         ], 200);
     }
+
+    /**
+     * Activate user account
+     * @param string $id
+     * @return object http response
+     */
+    public function activateAccount($id)
+    {
+        try {
+            if (Helpers::changeStatus($id, 'active')) {
+                $user = Helpers::queryUser($id);
+                unset($user[0][$this->db]['password']);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Account activated successfully.',
+                    'user' => $user[0][$this->db],
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found.',
+                ], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Something went wrong.',
+            ], 408);
+        }
+
+    }
+
+    /**
+     * Suspend account
+     * @param string $id
+     * @return object http response
+     */
+    public function suspendAccount($id)
+    {
+        try {
+            if (Helpers::changeStatus($id, 'suspended')) {
+                $user = Helpers::queryUser($id);
+                unset($user[0][$this->db]['password']);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Account suspended successfully.',
+                    'user' => $user[0][$this->db],
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'User not found.',
+                ], 404);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Something went wrong.',
+            ], 408);
+        }
+
+    }
+
 }
