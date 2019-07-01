@@ -18,6 +18,7 @@ class MasterAgentController extends BaseController
     private $password;
     private $mail;
     private $message;
+    private $id;
     /**
      * Offtaker constructor
      * @param object http request
@@ -106,4 +107,5 @@ class MasterAgentController extends BaseController
                 'error' => 'Something went wrong.'], 408);
         }
     }
+
 }

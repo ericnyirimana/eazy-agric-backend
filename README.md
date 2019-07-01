@@ -590,3 +590,71 @@ offtaker
             ]
 }
 ```
+
+========================================
+
+### Activate Account
+
+#### Request
+
+`PATCH /api/v1/{id}/activate`
+
+#### Response
+
+```
+{
+    "success": true,
+    "message": "Account update successful.",
+    "user": {
+        "_id": "2DUALsI",
+        "contact_person": "N/A",
+        "created_at": "2019-06-25 09:15:08",
+        "district": "N/A",
+        "eloquent_type": "ma",
+        "email": "zqdc-lR@gmail.com",
+        "firstname": "hjkl;",
+        "lastname": "fgyuhijokjhgf",
+        "organization": "somewhere",
+        "phonenumber": "324897654e78",
+        "status": "active",
+        "type": "ma",
+        "updated_at": "2019-06-28 08:36:25",
+        "value_chain": "N/A"
+    }
+}
+
+```
+
+========================================
+
+### Suspend Account
+
+#### Request
+
+`PATCH /api/v1/{id}/suspend`
+
+#### Response
+
+```
+{
+    "success": true,
+    "message": "Account suspended successfully.",
+    "user": {
+        "_id": "2DUALsI",
+        "contact_person": "N/A",
+        "created_at": "2019-06-25 09:15:08",
+        "district": "N/A",
+        "eloquent_type": "ma",
+        "email": "zqdc-lR@gmail.com",
+        "firstname": "hjkl;",
+        "lastname": "fgyuhijokjhgf",
+        "organization": "somewhere",
+        "phonenumber": "324897654e78",
+        "status": "suspended",
+        "type": "ma",
+        "updated_at": "2019-06-28 08:36:25",
+        "value_chain": "N/A"
+    }
+}
+
+```

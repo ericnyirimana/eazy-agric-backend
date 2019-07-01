@@ -35,7 +35,7 @@ class DevtPartnerController extends BaseController
         return response()->json([
             'success' => true,
             'count' => count($result),
-            'devtPartners' => $result,
+            'result' => $result,
         ], 200);
     }
 
