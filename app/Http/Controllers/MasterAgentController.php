@@ -68,7 +68,7 @@ class MasterAgentController extends BaseController
                     'error' => 'Could not create user.'], 408);
             }
 
-            $sendEmail = $this->helpers->sendPassword($this->password, $this->email);
+            $sendEmail = $this->helpers->sendPassword($this->requestPassword, $this->email);
             return response()->json([
                 'message' => 'Please check your mail for your login password',
                 'success' => true,

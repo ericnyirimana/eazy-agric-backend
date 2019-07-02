@@ -20,10 +20,12 @@ class Admin extends Model
         'email',
         'password',
         'adminRole',
+        'firstname',
+        'lastname',
         'type',
         '_id',
     ];
-    
+
     /**
      * The attributes excluded from the model's JSON form.
      *

@@ -81,7 +81,7 @@ class Email extends BaseController
                     'Account Login',
                     $url,
                     'You can now login !!!',
-                    'Thank you for creating an account with us /n You can now login with this password' . $password
+                    'Thank you for creating an account with us <br> You can now login with this password' . $password
                 ),
             ]];
         return $body[$template];
@@ -114,6 +114,7 @@ class Email extends BaseController
     public function mailWithTemplate($template = 'RESET_PASSWORD', $to, $path, $password = '')
     {
         $template = $this->getTemplate($template, $path, $password);
+
         return $this->sendMail(
             $to,
             $template['subject'],

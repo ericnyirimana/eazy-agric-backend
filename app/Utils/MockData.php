@@ -14,11 +14,15 @@ class MockData
         'password' => 'admin12346',
         'confirmPassword' => 'admin12345',
         'adminRole' => 'Analyst',
+        'firstname' => 'maxxy',
+        'lastname' => 'max',
     ];
     protected $newAdmin = [
         'password' => 'admin12345',
         'confirmPassword' => 'admin12345',
         'adminRole' => 'Analyst',
+        'firstname' => 'maxxy',
+        'lastname' => 'max',
     ];
     protected $invalidToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
     eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
@@ -31,12 +35,12 @@ class MockData
         'firstname' => 'masteragent',
         'lastname' => 'masteragent',
         'contact_person' => 'Samuel',
-        'phonenumber' => '234567897654',
+        'phonenumber' => '23456789765',
         'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
     protected $accountRequest = [
-        'phonenumber' => '324897654e78',
+        'phonenumber' => '32489765478',
         'firstname' => 'fghjklkjhgf',
         'lastname' => 'fgyuhijokjhgf',
         'organization' => 'somewhere',
