@@ -603,8 +603,6 @@ offtaker
 }
 ```
 
-========================================
-
 ### Activate Account
 
 #### Request
@@ -636,8 +634,6 @@ offtaker
 }
 
 ```
-
-========================================
 
 ### Suspend Account
 
@@ -718,6 +714,8 @@ offtaker
 
 #### Response
 ```
+{
+  "success": true,
   "data": {
       "viewCount": "0",
       "commentCount": "0",
@@ -725,5 +723,22 @@ offtaker
       "hiddenSubscriberCount": false,
       "videoCount": "0"
   }
+}
+ ```
+======================================
+### Get Facebook report
+
+#### Request
+
+`GET /api/v1/facebook-report`
+
+#### Response
+```
+{
+  "success": true,
+  "data": {
+      "fanCount": 2,
+      "shares": 1
+   }
 }
 ```

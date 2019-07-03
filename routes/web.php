@@ -49,9 +49,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
             $router->patch('/{id}/activate', 'AdminController@activateAccount');
             $router->patch('/{id}/suspend', 'AdminController@suspendAccount');
-
             $router->get('/twitter-report', 'AdminController@getTwitterReport');
             $router->get('/youtube-report', 'AdminController@getYoutubeReport');
+            $router->get('/facebook-report', 'AdminController@getFacebookReport');
         });
     });
     $router->post('/offtaker-request', 'OfftakerController@AccountRequest');
