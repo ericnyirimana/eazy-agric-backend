@@ -24,6 +24,11 @@ class MockData
     eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
     jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs';
     protected $nonsenseToken = 'eyJ0eXAipPs';
+
+    protected $fakeToken = ['token' => 'eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
+    jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs'];
+    protected $emptyToken = ['token' => ''];
+
     protected $newOffTaker = [
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
@@ -87,6 +92,7 @@ class MockData
         'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
+
     public $shortid;
     /**
      * Class constructor.
@@ -149,6 +155,14 @@ class MockData
     public function getNonsenseToken()
     {
         return $this->nonsenseToken;
+    }
+    public function getFakeToken()
+    {
+        return $this->fakeToken;
+    }
+    public function getEmptyToken()
+    {
+        return $this->emptyToken;
     }
     public function getNewDevtPartner()
     {

@@ -73,4 +73,14 @@ class Validation extends BaseController
             'organization' => 'required',
         ]);
     }
+
+    public function validateContactForm($data)
+    {
+        $this->validate($data, [
+            'email' => 'required|email',
+            'name' => 'required||regex:/^([a-zA-z\s\-\+\(\)]*)$/',
+            'message' => 'required',
+        ]);
+    }
+
 }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use Firebase\JWT\JWT;
 
 class AuthController extends BaseController
 {/**
@@ -110,13 +111,13 @@ class AuthController extends BaseController
             $this->validate->validateConfirmPassword($this->request);
 
             $token = ($this->request->input('token'));
-            $decodedToken = Helpers::jwtDecode($token);
+            $decodedToken = JWT::decode($token, env('JWT_SECRET'), array('HS256'));
 
             $requestPasswordDocument = RequestPassword::where('token', $token)->first();
 
             if ($requestPasswordDocument) {
                 if ($requestPasswordDocument->token === $token) {
-                    DB::select('UPDATE ' . $this->db . ' SET `password`=? WHERE email=?', [ Hash::make($this->request->input('password')), $decodedToken['sub']['email']]);
+                    DB::select('UPDATE ' . $this->db . ' SET `password`=? WHERE email=?', [ Hash::make($this->request->input('password')), $decodedToken->sub->email]);
                     $requestPasswordDocument->delete();
                     return response()->json([ 'success' => true,
                         'message' => 'Your Password has been updated, successfully' ], 200);

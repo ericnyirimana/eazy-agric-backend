@@ -658,3 +658,25 @@ offtaker
 }
 
 ```
+
+### Send Message Through the Contact Form
+
+`POST /api/v1/contact`
+
+#### Request
+
+```
+{
+    "name": "Daniel Emmanuel",
+    "email": "ecomje@gmail.com",
+    "message": "Lorem ipsum dolor sit amet, affert accumsan conceptam per ne, ius in rebum cetero. In pri ridens percipit, illum malis persequeris pro in. Sint deterruisset pri ad, quem intellegebat ut sea. Ea vis latine nominati, eum libris tibique cu, mea everti omnium ea. Meliore erroribus assueverit in est. Cum amet ponderum ut."
+}
+```
+#### Response Body
+
+```
+{
+    "message": "thank you for reaching out to us. we would get back to you shortly",
+    "success": "true",
+}
+```
