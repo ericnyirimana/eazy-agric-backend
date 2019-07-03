@@ -5,6 +5,7 @@ class VillageAgentTest extends TestCase
 {
     protected $token;
     const URL = '/api/v1/village-agents';
+    const URL_FILTER = '/api/v1/devt-partners/?start_date=2019-10-12&end_date=2020-12-12';
     public function setUp(): void
     {
         parent::setUp();
@@ -24,6 +25,15 @@ class VillageAgentTest extends TestCase
         $this->seeStatusCode(200);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);
+    }
+     public function testShouldReturnVillageAgentsByDate()
+    {
+        $this->get(self::URL_FILTER, ['Authorization' => $this->token]);
+        $res_array = (array)json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
+        $this->assertArrayHasKey('count', $res_array);
     }
     public function testShouldReturnErrorForNoToken()
     {

@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Http\Request;
+
+use Carbon\Carbon;
+
 use App\Models\Order;
 use App\Models\MapCordinates;
 use App\Models\SoilTest;
 use App\Models\Planting;
 use App\Models\Spraying;
+use App\Utils\DateRequestFilter;
 
 
 class TotalPaymentController extends Controller
@@ -18,14 +23,16 @@ class TotalPaymentController extends Controller
      *
      * @return http response object
      */
-    public function getTotalPayment()
+    public function getTotalPayment(Request $request)
     {
+        $requestArray = DateRequestFilter::getRequestParam($request);
+        list($start_date, $end_date) = $requestArray;
         try{
-            $sumMapCordinate = MapCordinates::all()->sum('acreage');
-            $sumOrder = Order::all()->sum('details.totalCost');
-            $sumSoilTest = SoilTest::all()->sum('total');
-            $sumPlanting = Planting::all()->sum('total');
-            $sumSpraying = Spraying::all()->sum('total');
+            $sumMapCordinate = MapCordinates::whereBetween('created_at',[$start_date, $end_date])->sum('acreage');
+            $sumOrder = Order::whereBetween('created_at',[$start_date, $end_date])->sum('details.totalCost');
+            $sumSoilTest = SoilTest::whereBetween('created_at',[$start_date, $end_date])->sum('total');
+            $sumPlanting = Planting::whereBetween('created_at',[$start_date, $end_date])->sum('total');
+            $sumSpraying = Spraying::whereBetween('created_at',[$start_date, $end_date])->sum('total');
             $sumTotalPayment = ($sumMapCordinate + $sumOrder + $sumSoilTest + $sumPlanting + $sumSpraying);
             return response()->json([
                 'success' => true,

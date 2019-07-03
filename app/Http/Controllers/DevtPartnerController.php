@@ -6,6 +6,8 @@ use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use Carbon\Carbon;
+use App\Utils\DateRequestFilter;
 
 class DevtPartnerController extends BaseController
 {
@@ -32,9 +34,11 @@ class DevtPartnerController extends BaseController
      *
      * @return http response object
      */
-    public function getDevtPartners()
+    public function getDevtPartners(Request $request)
     {
-        $result = DevtPartner::all();
+        $requestArray = DateRequestFilter::getRequestParam($request);
+        list($start_date, $end_date) = $requestArray;
+        $result = DevtPartner::whereBetween('created_at', [$start_date, $end_date])->get();
         return response()->json([
             'success' => true,
             'count' => count($result),
