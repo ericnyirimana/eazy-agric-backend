@@ -14,6 +14,8 @@ class Validation extends BaseController
     public function validateAdmin($data)
     {
         $this->validate($data, [
+            'firstname' => 'required|alpha',
+            'lastname' => 'required|alpha',
             'email' => 'required|email|unique:admin',
             'password' => 'required|min:6',
             'confirmPassword' => 'required',
@@ -52,12 +54,12 @@ class Validation extends BaseController
             'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'account_type' => ['required', new AccountType()],
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'contact_person' => 'required',
-            'phonenumber' => 'required',
+            'firstname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'lastname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'contact_person' => 'required|regex:/^([a-zA-z\s\-\+\(\)]*)$/',
+            'phonenumber' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
             'district' => ['required', new District()],
-            'address' => 'required',
+            'address' => 'required|regex:/^([a-zA-z0-9\s\,\(\)]*)$/',
             'value_chain' => ['required', new ValueChain()],
         ]);
     }
@@ -67,10 +69,10 @@ class Validation extends BaseController
         $db = getenv('DB_DATABASE');
         $this->validate($data, [
             'email' => ['required', 'email', new Email($data['email'])],
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'phonenumber' => 'required',
-            'organization' => 'required',
+            'firstname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'lastname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'phonenumber' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
+            'organization' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
         ]);
     }
 }

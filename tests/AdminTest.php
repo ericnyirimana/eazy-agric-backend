@@ -34,7 +34,7 @@ class AdminTest extends TestCase
         $this->post(self::URL,
             ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
             eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
-            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs', ]);
+            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']);
         $this->seeStatusCode(401);
     }
 
@@ -60,7 +60,7 @@ class AdminTest extends TestCase
 
     public function testShouldActivateAccount()
     {
-        $this->patch('/api/v1/2DUALsI/activate', [], ['Authorization' => $this->token]);
+        $this->patch('/api/v1/0y5iKgA/activate', [], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['message' => 'Account activated successfully.']);
     }
@@ -74,7 +74,7 @@ class AdminTest extends TestCase
 
     public function testShouldSuspendAccount()
     {
-        $this->patch('/api/v1/2DUALsI/suspend', [], ['Authorization' => $this->token]);
+        $this->patch('/api/v1/0y5iKgA/suspend', [], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['message' => 'Account suspended successfully.']);
     }

@@ -206,10 +206,12 @@ offtaker
 
 ```
 {
-         "email": "admin123@gmail.com",
-        "password": "admin123",
-        "confirmPassword":"admin123",
-        "adminRole": "Super Admin"
+         "email": "admin2222@gmail.com",
+        "password": "admin2222",
+        "confirmPassword": "admin2222",
+        "adminRole": "Super Admin",
+        "firstname": "John",
+        "lastname":"Doe"
 }
 ```
 
@@ -220,11 +222,13 @@ offtaker
     "success": true,
     "admin": {
         "type": "admin",
-        "email": "admincomeere@gnail.com",
+        "email": "admin2222@gmail.com",
         "adminRole": "Super Admin",
-        "_id": "ClW9iT9",
-        "updated_at": "2019-06-17 11:01:40",
-        "created_at": "2019-06-17 11:01:40"
+        "firstname": "John",
+        "lastname": "Doe",
+        "_id": "n9XoPny",
+        "updated_at": "2019-07-01 17:21:15",
+        "created_at": "2019-07-01 17:21:15"
     }
 }
 ```

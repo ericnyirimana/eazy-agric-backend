@@ -21,7 +21,10 @@ class DevtPartnerController extends BaseController
     {
         $this->request = $request;
         $this->validate = new Validation();
+        $this->requestPassword = $this->request->input('password');
+        $this->email = $this->request->input('email');
 
+        $this->helpers = new Helpers();
     }
 
     /**
@@ -54,7 +57,10 @@ class DevtPartnerController extends BaseController
                     'success' => false,
                     'error' => 'could not create user'], 408);
             }
+            $sendEmail = $this->helpers->sendPassword($this->requestPassword, $this->email);
+
             return response()->json([
+                'message' => 'Please check your mail for your login password',
                 'success' => true,
                 'devtPartner' => $devtPartner], 200);
         } catch (Exception $e) {
