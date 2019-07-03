@@ -14,20 +14,22 @@ class DistrictController extends Controller
     public function getTopDistricts()
     {
         $districts = Farmer::pluck('farmer_district')->toArray();
-        $districtsFarmerCount = [];
+        $allDistricts = [];
         foreach ($districts as $district) {
-            if (array_key_exists($district, $districtsFarmerCount)) {
-                $districtsFarmerCount[$district] = $districtsFarmerCount[$district] += 1;
+            if (array_key_exists($district, $allDistricts)) {
+                $allDistricts[$district] = $allDistricts[$district] += 1;
             } else {
-                $districtsFarmerCount[$district] = 1;
+                $allDistricts[$district] = 1;
             }
         }
-        arsort($districtsFarmerCount);
-        $districtsFarmerCount = array_slice($districtsFarmerCount, 0, 4, true);
+        arsort($allDistricts);
+        $topDistricts = array_slice($allDistricts, 0, 4, true);
         return response()->json([
             'success' => true,
-            'count' => count($districts),
-            'topDistricts' => $districtsFarmerCount,
+            'districtCount' => count($allDistricts),
+            'farmerCount' => count($districts),
+            'topDistricts' => $topDistricts,
+            'allDistricts' => $allDistricts
         ], 200);
     }
 }

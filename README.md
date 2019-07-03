@@ -425,10 +425,20 @@ offtaker
 ```
 {
   "success": true,
-  "count": 2,
+  "districtCount": 5,
+  "farmerCount": 7,
   "topDistricts": {
     "Lagos": 2,
-    "Rukungiri": 1
+    "Borno": 2,
+    "Rukungiri": 1,
+    "Ogun": 1
+  },
+  "allDistricts": {
+    "Lagos": 2,
+    "Borno": 2,
+    "Rukungiri": 1,
+    "Ogun": 1,
+    "Kwara": 1
   }
 }
 ```
