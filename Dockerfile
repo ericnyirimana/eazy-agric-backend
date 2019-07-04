@@ -101,6 +101,27 @@ ENV MJ_API_EMAIL=$mj_api_email
 ARG mj_api_secret_key=default_value
 ENV MJ_API_SECRET_KEY=$mj_api_secret_key
 
+ARG twitter_api_key=default_value
+ENV TWITTER_API_KEY=$twitter_api_key
+ARG twitter_api_key_secret=default_value
+ENV TWITTER_API_KEY_SECRET=$twitter_api_key_secret
+ARG twitter_access_token=default_value
+ENV TWITTER_ACCESS_TOKEN=$twitter_access_token
+ARG twitter_access_token_secret=default_value
+ENV TWITTER_ACCESS_TOKEN_SECRET=$twitter_access_token_secret
+ARG fb_page_id=default_value
+ENV FB_PAGE_ID=$fb_page_id
+ARG fb_app_id=default_value
+ENV FB_APP_ID=$fb_app_id
+ARG fb_app_secret=default_value
+ENV FB_APP_SECRET=$fb_app_secret
+ARG fb_access_token=default_value
+ENV FB_ACCESS_TOKEN=$fb_access_token
+ARG yb_api_key=default_value
+ENV YB_API_KEY=$yb_api_key
+ARG yb_channel_id=default_value
+ENV YB_CHANNEL_ID=$yb_channel_id
+
 
 RUN composer update --no-scripts
 
