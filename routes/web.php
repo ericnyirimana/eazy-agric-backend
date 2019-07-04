@@ -18,7 +18,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->group(['prefix' => 'auth'], function () use ($router) {
         $router->post('/login', 'AuthController@authenticate');
         $router->post('/forgot-password', 'AuthController@forgotPassword');
-        $router->post('/confirm-password/verify', 'AuthController@verifyResetPasswordToken');
+        $router->post('/password-verification-token', 'AuthController@verifyResetPasswordToken');
         $router->post('/resend-password', 'AuthController@forgotPassword');
         $router->put('/confirm-password', 'AuthController@confirmPassword');
     });
@@ -51,6 +51,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->patch('/{id}/suspend', 'AdminController@suspendAccount');
 
             $router->get('/twitter-report', 'AdminController@getTwitterReport');
+            $router->get('/youtube-report', 'AdminController@getYoutubeReport');
         });
     });
     $router->post('/offtaker-request', 'OfftakerController@AccountRequest');

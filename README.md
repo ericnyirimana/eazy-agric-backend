@@ -670,7 +670,6 @@ offtaker
 }
 
 ```
-
 ### Send Message Through the Contact Form
 
 `POST /api/v1/contact`
@@ -698,7 +697,7 @@ offtaker
 #### Request
 
 `GET /api/v1/twitter-report`
-
+=======
 #### Response
 ```
 {
@@ -706,6 +705,25 @@ offtaker
   'data': {
     "followers_count": 106,
     "statuses_count": 118
+  }
+}
+```
+
+=======================================
+### Get Youtube Channel report
+
+#### Request
+
+`GET /api/v1/youtube-report`
+
+#### Response
+```
+  "data": {
+      "viewCount": "0",
+      "commentCount": "0",
+      "subscriberCount": "1",
+      "hiddenSubscriberCount": false,
+      "videoCount": "0"
   }
 }
 ```

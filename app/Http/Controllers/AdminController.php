@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Services\SocialMedia;
+use Exception;
+
 
 class AdminController extends BaseController
 {
@@ -154,6 +156,25 @@ class AdminController extends BaseController
                 'data' => $twitterReport
             ], 200);
         } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.'
+            ], 503);
+        }
+    }
+
+    /**
+     * Returns Youtube report
+     */
+    public function getYoutubeReport() {
+        try {
+            $youtubeChannelSummary = SocialMedia::getYoutubeSummary();
+            $statistics = $youtubeChannelSummary->items[0]->statistics;
+            return response()->json([
+                'success' => true,
+                'data' => $statistics
+            ], 200);
+        } catch (Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'Something went wrong.'
