@@ -26,7 +26,6 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->group(['middleware' => 'admin'], function () use ($router) {
             $router->post('/admin', 'AdminController@createAdmin');
-
             $router->post('/offtaker', 'OfftakerController@createOfftaker');
 
             $router->post('/masteragent', 'MasterAgentController@createMasterAgent');
@@ -50,6 +49,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
             $router->patch('/{id}/activate', 'AdminController@activateAccount');
             $router->patch('/{id}/suspend', 'AdminController@suspendAccount');
+
+            $router->get('/twitter-report', 'AdminController@getTwitterReport');
         });
     });
     $router->post('/offtaker-request', 'OfftakerController@AccountRequest');

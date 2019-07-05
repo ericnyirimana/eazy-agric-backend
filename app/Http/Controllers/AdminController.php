@@ -11,6 +11,7 @@ use App\Utils\Validation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Services\SocialMedia;
 
 class AdminController extends BaseController
 {
@@ -142,4 +143,21 @@ class AdminController extends BaseController
 
     }
 
+    /**
+     * Returns twitter account number of followers and tweets
+     */
+    public function getTwitterReport() {
+        try {
+            $twitterReport = SocialMedia::getTwitterSummary();
+            return response()->json([
+                'success' => true,
+                'data' => $twitterReport
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.'
+            ], 503);
+        }
+    }
 }
