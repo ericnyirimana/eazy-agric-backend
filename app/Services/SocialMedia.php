@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use GuzzleHttp\Client;
+use Exception;
 
 /*
  * @package SocialMedia
@@ -24,5 +26,19 @@ class SocialMedia {
             'followers_count' => $userObject->followers_count,
             'statuses_count' => $userObject->statuses_count
         ];
+    }
+
+    /**
+     * Returns the number of youtube channel subscription and views
+     */
+    public static function getYoutubeSummary() {
+        $channel_id = env('YB_CHANNEL_ID');
+        $key = env('YB_API_KEY');
+        $guzzle_client = new Client();
+        $result = $guzzle_client->request('GET', "https://www.googleapis.com/youtube/v3/channels?part=statistics&id=$channel_id&key=$key");
+        if ($result->getStatusCode() !== 200) {
+            throw new Exception('Error connecting to Youtube client');
+        }
+        return json_decode($result->getBody());
     }
 }

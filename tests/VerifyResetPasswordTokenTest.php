@@ -4,7 +4,7 @@ use App\Models\RequestPassword;
 
 class VerifyResetPasswordTokenTest extends TestCase
 {
-    const URL = '/api/v1/auth/confirm-password/verify';
+    const URL = '/api/v1/auth/password-verification-token';
 
     public function setUp(): void
     {
