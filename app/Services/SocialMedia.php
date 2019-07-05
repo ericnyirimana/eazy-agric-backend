@@ -2,16 +2,19 @@
 
 namespace App\Services;
 
+
 use Abraham\TwitterOAuth\TwitterOAuth;
 use GuzzleHttp\Client;
 use Exception;
+use Facebook\Exceptions\FacebookResponseException;
+use Facebook\Exceptions\FacebookSDKException;
+use \Facebook\Facebook;
 
 /*
  * @package SocialMedia
  */
 
 class SocialMedia {
-
     /**
      * Returns the number of twitter followers and tweets
      */
@@ -31,7 +34,8 @@ class SocialMedia {
     /**
      * Returns the number of youtube channel subscription and views
      */
-    public static function getYoutubeSummary() {
+    public static function getYoutubeSummary()
+    {
         $channel_id = env('YB_CHANNEL_ID');
         $key = env('YB_API_KEY');
         $guzzle_client = new Client();
@@ -40,5 +44,44 @@ class SocialMedia {
             throw new Exception('Error connecting to Youtube client');
         }
         return json_decode($result->getBody());
+    }
+
+    /**
+     * Returns the number of facebook page likes and shares
+     */
+    public static function getFacebookSummary() {
+        try {
+            $fb = new Facebook([
+                'app_id' => env('FB_APP_ID'),
+                'app_secret' => env('FB_APP_SECRET'),
+                'default_graph_version' => 'v2.10',
+            ]);
+            $response = $fb->get('/' . env('FB_PAGE_ID') . '?fields=posts,fan_count', env('FB_ACCESS_TOKEN'));
+        } catch(FacebookResponseException $e) {
+            throw new Exception('Error connecting to Facebook');
+        } catch(FacebookSDKException $e) {
+            throw new Exception('Error connecting to Facebook');
+        }
+
+        [
+            'posts' => [
+                'data' => $posts
+            ],
+            'fan_count' => $fanCount
+        ] = $response->getDecodedBody();
+
+        $shares = 0;
+        foreach ($posts as $post) {
+            $postResponse = $fb->get('/' . $post['id'] . '?fields=shares', env('FB_ACCESS_TOKEN'));
+            $share_count = $postResponse->getDecodedBody();
+            if (array_key_exists('shares', $share_count)) {
+                $shares += $share_count['shares']['count'];
+            }
+        }
+
+        return [
+            'fanCount' => $fanCount,
+            'shares' => $shares
+        ];
     }
 }

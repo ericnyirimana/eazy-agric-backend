@@ -13,6 +13,7 @@
         "abraham/twitteroauth": "^1.0",
         "crisu83/shortid": "*",
         "developermarshak/laravel-couchbase": "^0.4.0",
+        "facebook/graph-sdk": "^5.7",
         "firebase/php-jwt": "^5.0",
         "fzaninotto/faker": "^1.8",
         "laravel/lumen-framework": "5.8.*",

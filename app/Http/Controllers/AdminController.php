@@ -8,12 +8,11 @@ use App\Models\Planting;
 use App\Models\SoilTest;
 use App\Utils\Helpers;
 use App\Utils\Validation;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Services\SocialMedia;
-use Exception;
-
 
 class AdminController extends BaseController
 {
@@ -166,13 +165,33 @@ class AdminController extends BaseController
     /**
      * Returns Youtube report
      */
-    public function getYoutubeReport() {
+    public function getYoutubeReport()
+    {
         try {
             $youtubeChannelSummary = SocialMedia::getYoutubeSummary();
             $statistics = $youtubeChannelSummary->items[0]->statistics;
             return response()->json([
                 'success' => true,
                 'data' => $statistics
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.'
+            ], 503);
+        }
+    }
+
+    /**
+     * Returns facebook page likes and post shares count
+     */
+    public function getFacebookReport()
+    {
+        try {
+            $facebookReport = SocialMedia::getFacebookSummary();
+            return response()->json([
+                'success' => true,
+                'data' => $facebookReport
             ], 200);
         } catch (Exception $e) {
             return response()->json([
