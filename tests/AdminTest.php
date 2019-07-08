@@ -93,4 +93,11 @@ class AdminTest extends TestCase
         $this->seeJson(['success' => true]);
     }
 
+    public function testShouldReturnAllAdmins()
+    {
+        $this->get('/api/v1/admins', ['Authorization' => $this->token]);
+        $this->seeStatusCode(200);
+        $this->seeJson(['success' => true]);
+    }
+
 }

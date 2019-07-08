@@ -6,13 +6,13 @@ use App\Models\InputOrder;
 use App\Models\MapCoordinate;
 use App\Models\Planting;
 use App\Models\SoilTest;
+use App\Services\SocialMedia;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use App\Services\SocialMedia;
 
 class AdminController extends BaseController
 {
@@ -33,6 +33,29 @@ class AdminController extends BaseController
         $this->db = getenv('DB_DATABASE');
         $this->helpers = new Helpers();
 
+    }
+    /**
+     * Get all admins
+     * @return object http response
+     */
+
+    public function getAdmins()
+    {
+        try {
+            $result = Admin::all();
+            if ($result) {
+                return response()->json([
+                    'success' => true,
+                    'count' => count($result),
+                    'result' => $result,
+                ], 200);
+            }
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Something went wrong.',
+            ], 503);
+        }
     }
 
     /**
@@ -60,7 +83,7 @@ class AdminController extends BaseController
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Something went wrong.'], 408);
+                'error' => 'Something went wrong.'], 503);
         }
     }
 
@@ -108,7 +131,7 @@ class AdminController extends BaseController
             return response()->json([
                 'success' => false,
                 'error' => 'Something went wrong.',
-            ], 408);
+            ], 503);
         }
 
     }
@@ -139,7 +162,7 @@ class AdminController extends BaseController
             return response()->json([
                 'success' => false,
                 'error' => 'Something went wrong.',
-            ], 408);
+            ], 503);
         }
 
     }
@@ -147,17 +170,18 @@ class AdminController extends BaseController
     /**
      * Returns twitter account number of followers and tweets
      */
-    public function getTwitterReport() {
+    public function getTwitterReport()
+    {
         try {
             $twitterReport = SocialMedia::getTwitterSummary();
             return response()->json([
                 'success' => true,
-                'data' => $twitterReport
+                'data' => $twitterReport,
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Something went wrong.'
+                'message' => 'Something went wrong.',
             ], 503);
         }
     }
@@ -172,12 +196,12 @@ class AdminController extends BaseController
             $statistics = $youtubeChannelSummary->items[0]->statistics;
             return response()->json([
                 'success' => true,
-                'data' => $statistics
+                'data' => $statistics,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Something went wrong.'
+                'message' => 'Something went wrong.',
             ], 503);
         }
     }
@@ -191,12 +215,12 @@ class AdminController extends BaseController
             $facebookReport = SocialMedia::getFacebookSummary();
             return response()->json([
                 'success' => true,
-                'data' => $facebookReport
+                'data' => $facebookReport,
             ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Something went wrong.'
+                'message' => 'Something went wrong.',
             ], 503);
         }
     }

@@ -52,6 +52,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/twitter-report', 'AdminController@getTwitterReport');
             $router->get('/youtube-report', 'AdminController@getYoutubeReport');
             $router->get('/facebook-report', 'AdminController@getFacebookReport');
+            $router->get('/admins', 'AdminController@getAdmins');
+
         });
     });
     $router->post('/offtaker-request', 'OfftakerController@AccountRequest');
