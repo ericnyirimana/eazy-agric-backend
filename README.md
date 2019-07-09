@@ -666,6 +666,7 @@ offtaker
 }
 
 ```
+
 ### Send Message Through the Contact Form
 
 `POST /api/v1/contact`
@@ -679,6 +680,7 @@ offtaker
     "message": "Lorem ipsum dolor sit amet, affert accumsan conceptam per ne, ius in rebum cetero. In pri ridens percipit, illum malis persequeris pro in. Sint deterruisset pri ad, quem intellegebat ut sea. Ea vis latine nominati, eum libris tibique cu, mea everti omnium ea. Meliore erroribus assueverit in est. Cum amet ponderum ut."
 }
 ```
+
 #### Response Body
 
 ```
@@ -687,14 +689,17 @@ offtaker
     "success": "true",
 }
 ```
+
 ===================
+
 ### Get Twitter report
 
 #### Request
 
 `GET /api/v1/twitter-report`
-=======
+
 #### Response
+
 ```
 {
   "success": true,
@@ -706,6 +711,7 @@ offtaker
 ```
 
 =======================================
+
 ### Get Youtube Channel report
 
 #### Request
@@ -713,6 +719,7 @@ offtaker
 `GET /api/v1/youtube-report`
 
 #### Response
+
 ```
 {
   "success": true,
@@ -724,8 +731,10 @@ offtaker
       "videoCount": "0"
   }
 }
- ```
+```
+
 ======================================
+
 ### Get Facebook report
 
 #### Request
@@ -733,6 +742,7 @@ offtaker
 `GET /api/v1/facebook-report`
 
 #### Response
+
 ```
 {
   "success": true,
@@ -740,5 +750,43 @@ offtaker
       "fanCount": 2,
       "shares": 1
    }
+}
+```
+
+========================================
+
+### Get all admins
+
+#### Request
+
+`GET /api/v1/admins`
+
+#### Response
+
+```
+{
+    "success": true,
+    "count": 237,
+    "result": [
+
+        {
+            "_id": "-H9PagX",
+            "adminRole": "Analyst",
+            "created_at": "2019-07-04 08:38:50",
+            "eloquent_type": "admin",
+            "email": "UxczuHI@gmail.com",
+            "type": "admin",
+            "updated_at": "2019-07-04 08:38:50"
+        },
+        {
+            "_id": "-aL1a-e",
+            "adminRole": "Analyst",
+            "created_at": "2019-07-03 07:08:45",
+            "eloquent_type": "admin",
+            "email": "tekgxpw@gmail.com",
+            "type": "admin",
+            "updated_at": "2019-07-03 07:08:45"
+        }
+    ]
 }
 ```

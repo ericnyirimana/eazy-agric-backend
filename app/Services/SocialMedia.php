@@ -1,24 +1,24 @@
 <?php
-
 namespace App\Services;
 
-
 use Abraham\TwitterOAuth\TwitterOAuth;
-use GuzzleHttp\Client;
 use Exception;
 use Facebook\Exceptions\FacebookResponseException;
 use Facebook\Exceptions\FacebookSDKException;
+use GuzzleHttp\Client;
 use \Facebook\Facebook;
 
 /*
  * @package SocialMedia
  */
 
-class SocialMedia {
+class SocialMedia
+{
     /**
      * Returns the number of twitter followers and tweets
      */
-    public static function getTwitterSummary() {
+    public static function getTwitterSummary()
+    {
         $twitterConnection = new TwitterOAuth(env('TWITTER_API_KEY'), env('TWITTER_API_KEY_SECRET'), env('TWITTER_ACCESS_TOKEN'), env('TWITTER_ACCESS_TOKEN_SECRET'));
         $user_timeline = $twitterConnection->get('statuses/user_timeline', ['count' => 1]);
         if ($twitterConnection->getLastHttpCode() !== 200) {
@@ -27,7 +27,7 @@ class SocialMedia {
         $userObject = $user_timeline[0]->user;
         return [
             'followers_count' => $userObject->followers_count,
-            'statuses_count' => $userObject->statuses_count
+            'statuses_count' => $userObject->statuses_count,
         ];
     }
 
@@ -49,7 +49,8 @@ class SocialMedia {
     /**
      * Returns the number of facebook page likes and shares
      */
-    public static function getFacebookSummary() {
+    public static function getFacebookSummary()
+    {
         try {
             $fb = new Facebook([
                 'app_id' => env('FB_APP_ID'),
@@ -57,15 +58,15 @@ class SocialMedia {
                 'default_graph_version' => 'v2.10',
             ]);
             $response = $fb->get('/' . env('FB_PAGE_ID') . '?fields=posts,fan_count', env('FB_ACCESS_TOKEN'));
-        } catch(FacebookResponseException $e) {
+        } catch (FacebookResponseException $e) {
             throw new Exception('Error connecting to Facebook');
-        } catch(FacebookSDKException $e) {
+        } catch (FacebookSDKException $e) {
             throw new Exception('Error connecting to Facebook');
         }
 
         [
             'posts' => [
-                'data' => $posts
+                'data' => $posts,
             ],
             'fan_count' => $fanCount
         ] = $response->getDecodedBody();
@@ -81,7 +82,7 @@ class SocialMedia {
 
         return [
             'fanCount' => $fanCount,
-            'shares' => $shares
+            'shares' => $shares,
         ];
     }
 }
