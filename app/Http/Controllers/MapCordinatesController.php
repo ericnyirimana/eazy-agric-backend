@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 
 use App\Models\MapCordinates;
+
+use Carbon\Carbon;
+
+use App\Utils\DateRequestFilter;
 
 class MapCordinatesController extends Controller
 {
@@ -13,10 +19,14 @@ class MapCordinatesController extends Controller
      *
      * @return http response object
      */
-    public function getTotalAcreage()
+
+    public function getTotalAcreage(Request $request)
     {
+        $requestArray = DateRequestFilter::getRequestParam($request);
+        list($start_date, $end_date) = $requestArray;
         try{
-            $result = MapCordinates::all()->sum('acreage');
+            $result = ($request->input('start_date') && $request->input('end_date')) ? MapCordinates::whereBetween('created_at', [$start_date, $end_date])
+            ->sum('acreage') : MapCordinates::all()->sum('acreage');
             return response()->json([
                 'success' => true,
                 'totalAcreage' => $result

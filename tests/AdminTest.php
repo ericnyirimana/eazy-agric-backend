@@ -7,6 +7,7 @@ class AdminTest extends TestCase
     protected $response, $token, $wrongUser, $mock;
     const URL = '/api/v1/admin';
 
+
     public function setUp(): void
     {
         parent::setUp();
@@ -91,6 +92,15 @@ class AdminTest extends TestCase
         $this->seeStatusCode(200);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);
+    }
+    public function testShouldReturnActivitySummaryByDate()
+    {
+        $this->get('/api/v1/activity-summary/?start_date=2018-12-12&end_date=2019-12-12', ['Authorization' => $this->token]);
+        $res_array = (array)json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
+        $this->assertArrayHasKey('activities', $res_array);
     }
 
     public function testShouldReturnAllAdmins()

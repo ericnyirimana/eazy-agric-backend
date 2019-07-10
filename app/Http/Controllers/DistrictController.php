@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Farmer;
 
+use Illuminate\Http\Request;
+
+use Carbon\Carbon;
+
+use App\Utils\DateRequestFilter;
+
 class DistrictController extends Controller
 {
     /**
@@ -11,9 +17,14 @@ class DistrictController extends Controller
      *
      * @return http response object
      */
-    public function getTopDistricts()
+    public function getTopDistricts(Request $request)
     {
-        $districts = Farmer::pluck('farmer_district')->toArray();
+
+        $requestArray = DateRequestFilter::getRequestParam($request);
+        list($start_date, $end_date) = $requestArray;
+
+        $districts = ($start_date && $end_date) ? Farmer::whereBetween('created_at', [$start_date, $end_date])
+        ->pluck('farmer_district')->toArray() : Farmer::pluck('farmer_district')->toArray();
         $allDistricts = [];
         foreach ($districts as $district) {
             if (array_key_exists($district, $allDistricts)) {

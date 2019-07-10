@@ -4,6 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\VillageAgent;
 
+use Illuminate\Http\Request;
+
+use Carbon\Carbon;
+
+use App\Utils\DateRequestFilter;
+
 class VillageAgentController extends Controller
 {
     /**
@@ -11,9 +17,11 @@ class VillageAgentController extends Controller
      *
      * @return http response object
      */
-    public function getVillageAgents()
+    public function getVillageAgents(Request $request)
     {
-        $result = VillageAgent::all();
+        $requestArray = DateRequestFilter::getRequestParam($request);
+        list($start_date, $end_date) = $requestArray;
+        $result = VillageAgent::whereBetween('created_at',[$start_date, $end_date])->get();
         return response()->json([
             'success' => true,
             'count' => count($result),

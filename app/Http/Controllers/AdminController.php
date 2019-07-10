@@ -13,6 +13,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use Carbon\Carbon;
+use App\Utils\DateRequestFilter;
 
 class AdminController extends BaseController
 {
@@ -87,12 +89,14 @@ class AdminController extends BaseController
         }
     }
 
-    public function getActivitySummary()
+    public function getActivitySummary(Request $request)
     {
-        $inputOrders = InputOrder::pluck('details')->toArray();
-        $acresPlanted = Planting::pluck('acreage')->toArray();
-        $soilTestAcreage = SoilTest::pluck('acreage')->toArray();
-        $gardenMapped = MapCoordinate::pluck('acreage')->toArray();
+        $requestArray = DateRequestFilter::getRequestParam($request);
+        list($start_date, $end_date) = $requestArray;
+        $inputOrders = InputOrder::whereBetween('created_at', [$start_date, $end_date])->pluck('details')->toArray();
+        $acresPlanted = Planting::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
+        $soilTestAcreage = SoilTest::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
+        $gardenMapped = MapCoordinate::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
         return response()->json([
             'success' => true,
             'activities' => [
