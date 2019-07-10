@@ -22,7 +22,6 @@ class DistrictController extends Controller
 
         $requestArray = DateRequestFilter::getRequestParam($request);
         list($start_date, $end_date) = $requestArray;
-
         $districts = ($start_date && $end_date) ? Farmer::whereBetween('created_at', [$start_date, $end_date])
         ->pluck('farmer_district')->toArray() : Farmer::pluck('farmer_district')->toArray();
         $allDistricts = [];

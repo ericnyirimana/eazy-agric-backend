@@ -55,6 +55,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/facebook-report', 'AdminController@getFacebookReport');
             $router->get('/admins', 'AdminController@getAdmins');
 
+            $router->get('/top-produce', 'FarmerProduceController@getTopFarmProduce');
         });
     });
     $router->post('/offtaker-request', 'OfftakerController@AccountRequest');

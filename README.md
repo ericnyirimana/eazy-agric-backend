@@ -790,3 +790,35 @@ offtaker
     ]
 }
 ```
+
+========================================
+
+### Get top farm produce
+
+#### Request
+
+`GET /api/v1/top-produce`
+
+#### Response
+
+```
+{
+    "success": true,
+    "farmProduceCount": 20,
+    "topFarmProduce": {
+        "Popcorn": 6,
+        "Tobbaco": 5,
+        "Cassava": 3,
+        "Beans": 2,
+        "Rice": 2
+    },
+    "allFarmProduce": {
+        "Popcorn": 6,
+        "Tobbaco": 5,
+        "Cassava": 3,
+        "Beans": 2,
+        "Rice": 2,
+        "Coffee": 2
+    }
+}
+```
