@@ -65,6 +65,7 @@ RUN docker-php-ext-install zip
 RUN composer self-update
 RUN wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-6-amd64.deb
 RUN dpkg -i couchbase-release-1.0-6-amd64.deb
+RUN rm -rf /var/lib/apt/lists/*
 RUN apt-get update
 RUN apt-get install libcouchbase-dev build-essential zlib1g-dev
 RUN pecl install couchbase
