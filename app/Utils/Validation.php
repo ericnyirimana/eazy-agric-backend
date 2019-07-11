@@ -5,6 +5,7 @@ use App\Rules\AccountType;
 use App\Rules\AdminRole;
 use App\Rules\District;
 use App\Rules\Email;
+use App\Rules\emailUpdate;
 use App\Rules\ValueChain;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
@@ -14,14 +15,15 @@ class Validation extends BaseController
     public function validateAdmin($data)
     {
         $this->validate($data, [
-            'firstname' => 'required|alpha',
-            'lastname' => 'required|alpha',
-            'email' => 'required|email|unique:admin',
+            'firstname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'lastname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'confirmPassword' => 'required',
             'adminRole' => ['required', new AdminRole],
         ]);
     }
+
     public function validateForgotPassword($data)
     {
         $this->validate($data, [
@@ -72,7 +74,7 @@ class Validation extends BaseController
             'firstname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
             'lastname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
             'phonenumber' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
-            'organization' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'address' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
         ]);
     }
 
@@ -91,5 +93,21 @@ class Validation extends BaseController
             'oldPassword' => 'required|min:6',
             'newPassword' => 'required|min:6',
         ]);
+    }
+    public function validateExistingAccount($data, $id)
+    {
+        $this->validate($data, [
+            'email' => ['email', new emailUpdate($data['email'], $id)],
+            'account_type' => [new AccountType()],
+            'firstname' => 'regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'lastname' => 'regex:/^([a-zA-Z\s\-\(\)]*)$/',
+            'contact_person' => 'regex:/^([a-zA-z\s\-\+\(\)]*)$/',
+            'phonenumber' => 'regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
+            'district' => [new District()],
+            'address' => 'regex:/^([a-zA-z0-9\s\,\(\)]*)$/',
+            'value_chain' => [new ValueChain()],
+            'adminRole' => [new AdminRole()],
+        ]);
+
     }
 }

@@ -58,7 +58,7 @@ class Helpers extends BaseController
             '_id' => self::generateId(),
             'district' => 'N/A',
             'value_chain' => 'N/A',
-            'type' => 'Generic',
+            'account_type' => 'Generic',
             'contact_person' => 'N/A',
             'password' => $password,
         ];
@@ -115,4 +115,52 @@ class Helpers extends BaseController
             return true;
         }
     }
+
+    /**
+     * delete user
+     * @param string id
+     * @return object query result
+     */
+    public static function deleteUser($id)
+    {
+
+        $deleteAccount = DB::statement('delete from ' . self::$db . ' where _id = ?', [$id]);
+        if ($deleteAccount) {
+
+            return $deleteAccount;
+        }
+        return false;
+    }
+    /**
+     * Edit account
+     * @param string id
+     * @param array data
+     * @return object query result
+     */
+    public static function editAccount($id, $data)
+    {
+
+        $fields = [];
+        $values = [];
+        foreach ($data as $key => $value) {
+            $fields[] = "${key} = ?";
+            $values[] = $value;
+        }
+        array_push($values, $id);
+        $query = 'UPDATE ' . self::$db . ' SET ' . join($fields, ",") . ' WHERE _id=?';
+        $queryResult = DB::statement($query, $values);
+        if (!$queryResult) {
+            return false;
+        }
+        return $queryResult;
+    }
+
+    public static function checkUser($id)
+    {
+        $user = self::queryUser($id);
+        unset($user[0][self::$db]['password']);
+        return $user ? $user[0][self::$db] : false;
+
+    }
+
 }

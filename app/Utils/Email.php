@@ -81,7 +81,7 @@ class Email extends BaseController
                     'Account Login',
                     $url,
                     'You can now login !!!',
-                    'Thank you for creating an account with us <br> You can now login with this password' . $password
+                    'Thank you for creating an account with us <br> You can now login with this password' . ' ' . $password . ' ' . '<br/>'
                 ),
             ]];
         return $body[$template];

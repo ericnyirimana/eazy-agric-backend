@@ -50,16 +50,19 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/total-acreage', 'MapCordinatesController@getTotalAcreage');
             $router->get('/total-payment', 'TotalPaymentController@getTotalPayment');
 
-            $router->patch('/{id}/activate', 'AdminController@activateAccount');
-            $router->patch('/{id}/suspend', 'AdminController@suspendAccount');
+            $router->patch('/activate/{id}', 'AdminController@activateAccount');
+            $router->patch('/suspend/{id}', 'AdminController@suspendAccount');
             $router->get('/twitter-report', 'AdminController@getTwitterReport');
             $router->get('/youtube-report', 'AdminController@getYoutubeReport');
             $router->get('/facebook-report', 'AdminController@getFacebookReport');
             $router->get('/admins', 'AdminController@getAdmins');
-
+            $router->delete('/account/{id}', 'AdminController@deleteAccount');
+            $router->patch('/account/{id}', 'AdminController@editAccount');
             $router->get('/top-produce', 'FarmerProduceController@getTopFarmProduce');
             $router->get('/top-performing-ma', 'AdminController@getTopMasterAgents');
             $router->get('/top-performing-va', 'AdminController@getTopVillageAgents');
+            $router->get('/account/{id}', 'AdminController@getUser');
+
         });
     });
     $router->post('/offtaker-request', 'OfftakerController@AccountRequest');

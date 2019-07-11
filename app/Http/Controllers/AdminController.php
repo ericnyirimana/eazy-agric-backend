@@ -6,14 +6,15 @@ use App\Models\InputOrder;
 use App\Models\MapCoordinate;
 use App\Models\Planting;
 use App\Models\SoilTest;
+use App\Rules\ValidateInputFields;
 use App\Services\SocialMedia;
+use App\Utils\DateRequestFilter;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use App\Utils\DateRequestFilter;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends BaseController
@@ -21,6 +22,7 @@ class AdminController extends BaseController
     private $request;
     private $validate;
     private $db;
+    private $validateInput;
 
     /**
      * Create a new controller instance.
@@ -34,6 +36,7 @@ class AdminController extends BaseController
         $this->validate = new Validation();
         $this->db = getenv('DB_DATABASE');
         $this->helpers = new Helpers();
+        $this->validateInput = new ValidateInputFields($this->request->all());
 
     }
     /**
@@ -91,6 +94,30 @@ class AdminController extends BaseController
                 'success' => false,
                 'error' => $e->getMessage()], 422);
         }
+    }
+
+    public function getUser($id)
+    {
+        try {
+            $user = Helpers::checkUser($id);
+            if ($user) {
+                return response()->json([
+                    'success' => true,
+                    'user' => $user,
+                ], 200);
+
+            }
+            return response()->json([
+                'success' => false,
+                'message' => 'User does not exist.',
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'error' => "Something went wrong.",
+            ]);
+        }
+
     }
 
     public function getActivitySummary(Request $request)
@@ -367,4 +394,70 @@ class AdminController extends BaseController
             ], 503);
         }
     }
+    /** 
+    * @param string id
+    * @return object http response
+    */
+   public function deleteAccount($id)
+   {
+       try {
+           $user = Helpers::checkUser($id);
+           if (!$user) {
+               return response()->json([
+                   'success' => false,
+                   'error' => 'User does not exist',
+               ]);
+           }if (Helpers::deleteUser($id)) {
+               return response()->json([
+                   'success' => true,
+                   'message' => 'Account deleted successfully.',
+               ]);
+           }else{
+               return response()->json([
+                   'success' => false,
+                   'message' => 'Account could not be deleted.',
+               ]);
+           }
+
+       } catch (Exception $e) {
+           return response()->json([
+               'success' => false,
+               'error' => 'Something went wrong',
+           ]);
+       }
+
+   }
+
+   /**
+    * @param string id
+    * @return object http response
+    */
+
+   public function editAccount($id)
+   {
+       $user = Helpers::checkUser($id);
+       if (!$user) {
+           return response()->json(['success' => false, 'error' => 'User does not exist.'], 404);
+       }
+       $isEmpty = $this->validateInput->isEmpty();
+       if ($isEmpty) {
+           return response()->json(["errors" => $isEmpty]);
+       }
+       $this->validate->validateExistingAccount($this->request, $id);
+       var_dump($this->request->all());
+       try {
+           if (Helpers::editAccount($id, $this->request->all())) {
+               $updatedUser = Helpers::queryUser($id);
+               unset($updatedUser[0][$this->db]['password']);
+               return response()->json([
+                   'success' => true,
+                   'message' => 'Account updated successfully.',
+                   'user' => $updatedUser[0][$this->db]], 200);
+           }
+       } catch (Exception $e) {
+           return response()->json(['success' => false, 'error' => 'Something went wrong'], 503);
+       } catch (\Illuminate\Validate\ValidationException $e) {
+           return response()->json(['success' => false, 'error' => 'Something went wrong'], 422);
+       }
+   }
 }
