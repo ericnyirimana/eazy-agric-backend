@@ -12,7 +12,7 @@ class FarmerDocumentSeeder extends Seeder
      */
     public function run()
     {
-        factory(Farmer::class, 5)->create();
+        factory(Farmer::class, 20)->create();
         // You can add more seeds here
     }
 }

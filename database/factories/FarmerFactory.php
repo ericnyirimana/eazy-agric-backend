@@ -11,6 +11,8 @@ class FarmerFactory {
         $district = $faker->randomElement($districts);
         $regions = ['Western', 'Eastern', 'Central', 'Northern'];
         $region = $faker->randomElement($regions);
+        $valueChains = ['Beans', 'Coffee', 'Popcorn', 'Tobbaco', 'Rice', 'Cassava'];
+        $valueChain = $faker->randomElement($valueChains);
         return [
             '_id' => $faker->uuid,
             'agriculture_experience_in_years' => $faker->randomDigit,
@@ -46,7 +48,7 @@ class FarmerFactory {
             'time' => '2018-07-05T23:02:22:278902',
             'type' => 'farmer',
             'vaId' => 'AK/MA/0421/0001',
-            'value_chain' => 'Maize'
+            'value_chain' => $valueChain
         ];
     }
 }
