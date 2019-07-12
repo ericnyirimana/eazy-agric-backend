@@ -68,24 +68,28 @@ class AdminController extends BaseController
     {
         try {
             $this->validate->validateAdmin($this->request);
-            if ($this->request->password === $this->request->confirmPassword) {
-
-                $data = Admin::create($this->request->all() + ['_id' => Helpers::generateId()]);
-
-                return $data ? response()->json([
-                    'success' => true,
-                    'admin' => $data], 200) :
-                response()->json([
+            try {
+                if ($this->request->password === $this->request->confirmPassword) {
+                    $data = Admin::create($this->request->all() + ['_id' => Helpers::generateId()]);
+                    return $data ? response()->json([
+                        'success' => true,
+                        'admin' => $data], 200) :
+                    response()->json([
+                        'success' => false,
+                        'error' => 'Could not create user.'], 408);
+                }
+                return response()->json([
                     'success' => false,
-                    'error' => 'Could not create user.'], 408);
+                    'error' => 'Passwords do not match.'], 401);
+            } catch (Exception $err) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Something went wrong.'], 503);
             }
+        } catch (\Illuminate\Validate\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'error' => 'Passwords do not match.'], 401);
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Something went wrong.'], 503);
+                'error' => $e->getMessage()], 422);
         }
     }
 
