@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Carbon\Carbon;
 use App\Utils\DateRequestFilter;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends BaseController
 {
@@ -232,4 +233,31 @@ class AdminController extends BaseController
             ], 503);
         }
     }
+
+
+    /**
+     * Check if user credencial exists, if it does, send an email
+     *
+     * @param  \App\User   $user
+     * @return array
+     */
+
+    public function changePassword(Admin $admin)
+    {
+        try {
+            $this->validate->validateAdminChangePassword($this->request);
+            $user = DB::select('select * from ' . $this->db . ' where _id = ?', [$this->request->auth]);
+            if (Hash::check($this->request->input('oldPassword'), $user[0][$this->db]['password'])) {
+                Admin::where('_id', $this->request->auth)->update(['password' => Hash::make($this->request->input('newPassword'))]);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Your Password has been changed successfully.'], 200);
+            }
+            return response()->json([ 'success' => false,
+                'message' => 'Current password is incorrect.',], 404);
+        } catch (Exception $e) {
+            return response()->json(['error' => 'Something went wrong.']);
+        }
+    }
+
 }

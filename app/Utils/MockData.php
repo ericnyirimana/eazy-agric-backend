@@ -8,6 +8,8 @@ class MockData
     protected $adminData = ['email' => 'someone@gmail.com', 'password' => '123456'];
     protected $wrongEmail = ['email' => 'someone@gmail.com', 'password' => '1234567'];
     protected $wrongPassword = ['email' => 'admin1234@gmail.com', 'password' => '1234567'];
+    protected $wrongChangePassword = [ 'oldPassword' => '234retgfd23', 'newPassword' => 'admin2020'];
+    protected $correctPasswordChange = [ 'oldPassword' => 'admin2020', 'newPassword' => 'admin2020'];
     protected $loginDetails = ['email' => 'admin2020@gmail.com', 'password' => 'admin2020'];
     protected $masterAgentData = ['email' => 'masteragent2121@gmail.com', 'password' => '123123'];
     protected $passwordMismatchData = [
@@ -182,5 +184,14 @@ class MockData
     public function getInvalidData()
     {
         return $this->invalidData;
+    }
+
+    public function getWrongChangePassword()
+    {
+        return $this->wrongChangePassword;
+    }
+    public function getChangePassword()
+    {
+        return $this->correctPasswordChange;
     }
 }
