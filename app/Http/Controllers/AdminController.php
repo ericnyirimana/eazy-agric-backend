@@ -13,7 +13,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use Carbon\Carbon;
 use App\Utils\DateRequestFilter;
 use Illuminate\Support\Facades\Hash;
 
@@ -259,7 +258,6 @@ class AdminController extends BaseController
         }
     }
 
-
     /**
      * Check if user credencial exists, if it does, send an email
      *
@@ -285,4 +283,88 @@ class AdminController extends BaseController
         }
     }
 
+    /**
+     * Returns top performing master agents
+     */
+    public function getTopMasterAgents()
+    {
+        try {
+            $topMasterAgents = [];
+            $masterAgentFarmerCount = DB::select("SELECT ma_id, COUNT(*) AS farmer_count 
+                    FROM " . $this->db . "
+                    WHERE type = 'farmer'
+                    GROUP BY ma_id
+                    ORDER BY farmer_count 
+                    DESC LIMIT 5");
+            foreach ($masterAgentFarmerCount as $masterAgent) {
+                $topMasterAgent = [];
+                $topMasterAgent['farmerCount'] = $masterAgent['farmer_count'];
+
+                $masterAgentOrderCount = DB::select("SELECT COUNT(ma_id) AS order_count FROM
+                " . $this->db . " 
+                WHERE type = 'order'
+                AND ma_id='" . $masterAgent['ma_id'] . "'");
+                $topMasterAgent['orderCount'] = $masterAgentOrderCount[0]['order_count'];
+
+                $masterAgentName = DB::select("SELECT CONCAT(firstname, ' ', lastname) AS master_agent_name FROM
+                " . $this->db . " 
+                WHERE type = 'ma'
+                AND _id='" . $masterAgent['ma_id'] . "'");
+                $topMasterAgent['name'] = $masterAgentName[0]['master_agent_name'];
+                array_push($topMasterAgents, $topMasterAgent);
+            }
+            return response()->json([
+                'success' => true,
+                'data' => $topMasterAgents,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.',
+            ], 503);
+        }
+    }
+
+    /**
+     * Returns top performing village agents
+     */
+    public function getTopVillageAgents()
+    {
+        try {
+            $topVillageAgents = [];
+            $villageAgentFarmerCount = DB::select("SELECT vaId, COUNT(*) AS farmer_count 
+                    FROM " . $this->db . "
+                    WHERE type = 'farmer'
+                    GROUP BY vaId
+                    ORDER BY farmer_count 
+                    DESC LIMIT 5");
+            foreach ($villageAgentFarmerCount as $villageAgent) {
+                $topVillageAgent = [];
+                $topVillageAgent['farmerCount'] = $villageAgent['farmer_count'];
+
+                $villageAgentOrderCount = DB::select("SELECT COUNT(vaId) AS order_count FROM
+                " . $this->db . " 
+                WHERE type = 'order'
+                AND vaId='" . $villageAgent['vaId'] . "'");
+                $topVillageAgent['orderCount'] = $villageAgentOrderCount[0]['order_count'];
+
+                $villageAgentName = DB::select("SELECT va_name AS village_agent_name FROM
+                " . $this->db . " 
+                WHERE type = 'va'
+                AND _id='" . $villageAgent['vaId'] . "'");
+
+                $topVillageAgent['name'] = $villageAgentName[0]['village_agent_name'];
+                array_push($topVillageAgents, $topVillageAgent);
+            }
+            return response()->json([
+                'success' => true,
+                'data' => $topVillageAgents,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Something went wrong.',
+            ], 503);
+        }
+    }
 }

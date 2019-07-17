@@ -2,6 +2,8 @@
 
 namespace database\factories;
 
+use App\Models\MasterAgent;
+use App\Models\VillageAgent;
 use Faker\Generator as Faker;
 
 class PlantingFactory {
@@ -14,7 +16,6 @@ class PlantingFactory {
             'acreage' => '2',
             'district' => $district,
             'eloquent_type' => 'planting',
-            'ma_id' => 'AK/MA/0421',
             'name' => $faker->name,
             'payment' => 'cash',
             'status' => 'new',
@@ -23,7 +24,12 @@ class PlantingFactory {
             'type' => 'planting',
             'unit_cost' => 100000,
             'user_id' => 'AFAHAJOH788007645RUKNYA',
-            'vaId' => 'AK/MA/0421/0001',
+            "vaId" => function() {
+                return factory(VillageAgent::class)->create()->_id;
+            },
+            "ma_id" => function() {
+                return factory(MasterAgent::class)->create()->_id;
+            }
         ];
     }
 }
