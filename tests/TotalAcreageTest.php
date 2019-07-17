@@ -4,7 +4,7 @@ use App\Utils\MockData;
 class TotalAcreageTest extends TestCase
 {
     const URL = '/api/v1/total-acreage';
-    const URL_FILTER = '/api/v1/devt-partners/?start_date=2019-10-12&end_date=2020-12-12';
+    const URL_FILTER = '/api/v1/total-acreage/?start_date=2019-10-12&end_date=2020-12-12';
     protected $token;
     public function setUp(): void
     {

@@ -22,6 +22,7 @@ class FarmerProduceController extends Controller
     {
         $requestArray = DateRequestFilter::getRequestParam($request);
         list($start_date, $end_date) = $requestArray;
+        
         try {
             $farmProduces = ($start_date && $end_date) ? Farmer::whereBetween('created_at', [$start_date, $end_date])
         ->pluck('value_chain')->toArray() : Farmer::pluck('value_chain')->toArray();
