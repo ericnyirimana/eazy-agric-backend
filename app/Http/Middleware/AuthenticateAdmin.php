@@ -34,6 +34,7 @@ class AuthenticateAdmin
                 'success' => false,
                 'error' => 'You are not an authorized user.'], 403);
         }
+        $this->request->admin = $admin;
         return $next($request);
     }
 }

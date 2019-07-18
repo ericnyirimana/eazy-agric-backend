@@ -45,6 +45,14 @@ class AdminTest extends TestCase
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }
+    public function testShouldReturnValidationError()
+    {
+        $this->post(self::URL, [$this->mock->getNewAdmin()],
+            ['Authorization' => $this->token]);
+        $res_array = (array) json_decode($this->response->content());
+        $this->seeStatusCode(422);
+        $this->seeJson(["email" => ["The email field is required."]]);
+    }
     public function testShouldReturnErrorIfPasswordMismatch()
     {
         $this->post(self::URL, $this->mock->getPasswordMismatchData(),
@@ -56,6 +64,13 @@ class AdminTest extends TestCase
         $this->patch('/api/v1/activate/1', [], ['Authorization' => $this->token]);
         $this->seeStatusCode(404);
         $this->seeJson(['error' => 'User not found.']);
+    }
+
+    public function testShouldReturnInvalidParams()
+    {
+        $this->patch('/api/v1/fake_action/1', [], ['Authorization' => $this->token]);
+        $this->seeStatusCode(400);
+        $this->seeJson(['error' => 'Invalid parameters supplied.']);
     }
 
     public function testShouldActivateAccount()
@@ -152,6 +167,16 @@ class AdminTest extends TestCase
         $this->seeJson(['success' => true]);
     }
 
+    public function testShouldNotGetUser()
+    {
+        $response = $this->post(self::URL, $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token])->response->getData();
+        $id = 'fake-id';
+        $this->get('/api/v1/account/' . $id, ['Authorization' => $this->token]);
+        $this->seeStatusCode(404);
+        $this->seeJson(['error' => 'User does not exist.']);
+    }
+
     public function testShouldUpdateAndDeleteUsers()
     {
         $response = $this->post(self::URL, $this->mock->getNewAdmin(),
@@ -177,4 +202,18 @@ class AdminTest extends TestCase
         $this->seeStatusCode(200);
     }
 
+    public function testShouldNotReturnUser()
+    {
+        $this->get('/api/v1/users/fakes', ['Authorization' => $this->token]);
+        $this->seeStatusCode(400);
+        $this->seeJson(['error' => 'Invalid parameters supplied.']);
+    }
+
+    public function testShouldNotReturnTopPerformingAgents()
+    {
+        $this->get('/api/v1/top-performing/vaa', ['Authorization' => $this->token]);
+        $res_array = (array)json_decode($this->response->content());
+        $this->seeStatusCode(400);
+        $this->seeJson(['error' => 'Invalid parameter supplied.']);
+    }
 }

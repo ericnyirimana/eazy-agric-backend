@@ -25,5 +25,4 @@ class AccountRequestTest extends TestCase
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }
-
 }

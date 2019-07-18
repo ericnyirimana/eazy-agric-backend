@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 use App\Models\MasterAgent;
+use App\Models\ActivityLog;
 use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
@@ -97,6 +98,18 @@ class Helpers extends BaseController
     return $query = DB::select('select * from ' . self::$db . ' where _id = ?', [$id]);
   }
 
+  public static function logActivity($info, $activity, $type = 'admin')
+  {
+    return $activity = ActivityLog::create([
+      'email' => $info['email'],
+      'target_email' => $info['target_email'],
+      'target_firstname' => $info['target_firstname'],
+      'target_lastname' => $info['target_lastname'],
+      'activity' => $activity,
+      'type' => $type
+    ]);
+  }
+
   /**
    * Change user account status
    * @param string user id
@@ -129,10 +142,10 @@ class Helpers extends BaseController
   public static function deleteUser($id)
   {
 
-    $deleteAccount = DB::statement('delete from ' . self::$db . ' where _id = ?', [$id]);
+    $deleteAccount = DB::statement('delete from ' . self::$db . ' where _id = ? returning *', [$id]);
     if ($deleteAccount) {
 
-      return $deleteAccount;
+      return $deleteAccount->rows;
     }
     return false;
   }
@@ -175,7 +188,7 @@ class Helpers extends BaseController
     ], $statusCode);
   }
 
-  public static function returnSuccess($successMessage=null, $data = [], $statusCode)
+  public static function returnSuccess($successMessage = null, $data = [], $statusCode)
   {
     $result = array_merge(array_filter(["success" => true, "message" => $successMessage]), $data);
     return response()->json($result, $statusCode);
