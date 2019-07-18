@@ -2,7 +2,7 @@ version: 3
 jobs:
   test-locally:
     docker:
-      - image: circleci/php:7.1-node-browsers
+      - image: circleci/php:7.3.6-apache-stretch
     
     working_directory: ~/repo
     
@@ -11,6 +11,14 @@ jobs:
       
     steps:
       - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y zlib1g-dev
+      - run: sudo apt-get -y install libzip-dev
+      - run: sudo wget -O- http://packages.couchbase.com/ubuntu/couchbase.key | sudo apt-key add - 
+      - run: sudo wget -O/etc/apt/sources.list.d/couchbase.list http://packages.couchbase.com/ubuntu/couchbase-ubuntu1204.list
+      - run: sudo apt-get update
+      - run: sudo apt-get -y install lsb-release
+      
       - run: sudo docker-php-ext-install zip
       - run: sudo composer self-update
       - run: wget http://packages.couchbase.com/releases/couchbase-release/couchbase-release-1.0-6-amd64.deb
