@@ -110,4 +110,32 @@ class AdminTest extends TestCase
         $this->seeJson(['success' => true]);
     }
 
+    public function testShouldReturnChangeAdminPasswordSuccessful()
+    {
+        $this->post('/api/v1/change-password',
+            $this->mock->getChangePassword(),
+            ['Authorization' => $this->token]);
+        $this->seeStatusCode(200);
+        $this->seeJson([
+            'success' => true,
+            'message' => 'Your Password has been changed successfully.']);
+    }
+    public function testShouldReturnChangeAdminPasswordDoesNotMatch()
+    {
+        $this->post('/api/v1/change-password',
+            $this->mock->getWrongChangePassword(),
+            ['Authorization' => $this->token]);
+        $this->seeStatusCode(404);
+        $this->seeJson([
+            'success' => false,
+            'message' => 'Current password is incorrect.']);
+    }
+
+    public function testShouldReturnChangeAdminPasswordCatchError()
+    {
+        $this->post('/api/v1/change-password', [$this->mock->getWrongEmail()], ['Authorization' => $this->token]);
+        $this->seeJson([
+            'error' => 'Something went wrong.']);
+    }
+
 }

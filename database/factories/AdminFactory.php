@@ -11,6 +11,8 @@ class AdminFactory {
             '_id' => $faker->uuid,
             'eloquent_type' => 'admin',
             'adminRole' => 'Super Admin',
+            'firstname' => 'Johnson',
+            'lastname' => 'Smith',
             'email' => 'admin2020@gmail.com',
             'type' => 'admin',
             'password' => 'admin2020'

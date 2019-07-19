@@ -26,6 +26,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
         $router->group(['middleware' => 'admin'], function () use ($router) {
+            $router->post('/change-password', 'AdminController@changePassword');
+
             $router->post('/admin', 'AdminController@createAdmin');
             $router->post('/offtaker', 'OfftakerController@createOfftaker');
 

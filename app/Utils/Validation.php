@@ -78,11 +78,18 @@ class Validation extends BaseController
 
     public function validateContactForm($data)
     {
+        $db = getenv('DB_DATABASE');
         $this->validate($data, [
             'email' => 'required|email',
             'name' => 'required||regex:/^([a-zA-z\s\-\+\(\)]*)$/',
             'message' => 'required',
         ]);
     }
-
+    public function validateAdminChangePassword($data)
+    {
+        $this->validate($data, [
+            'oldPassword' => 'required|min:6',
+            'newPassword' => 'required|min:6',
+        ]);
+    }
 }
