@@ -97,6 +97,24 @@ class AdminController extends BaseController
     {
         $requestArray = DateRequestFilter::getRequestParam($request);
         list($start_date, $end_date) = $requestArray;
+
+
+        $oldInputOrdersSum = InputOrder::where('created_at', '<=', $start_date)->sum('details.totalCost');
+        $oldInputAcresPlanted = Planting::where('created_at', '<=', $start_date)->pluck('acreage')->toArray();
+        $oldInputSoilTestAcreage = SoilTest::where('created_at', '<=', $start_date)->pluck('acreage')->toArray();
+        $oldInputGardenMapped = MapCoordinate::where('created_at', '<=', $start_date)->sum('acreage');
+
+        $newInputOrdersSum = InputOrder::where('created_at', '<=', $end_date)->sum('details.totalCost');
+        $newInputAcresPlanted = Planting::where('created_at', '<=', $end_date)->pluck('acreage')->toArray();
+        $newInputSoilTestAcreage = SoilTest::where('created_at', '<=', $end_date)->pluck('acreage')->toArray();
+        $newInputGardenMapped = MapCoordinate::where('created_at', '<=', $end_date)->sum('acreage');
+        
+       
+       $percentageInputOrders = DateRequestFilter::getPercentage($oldInputOrdersSum, $newInputOrdersSum);
+       $percentageAcresPlanted = DateRequestFilter::getPercentage(array_sum($oldInputAcresPlanted), array_sum($newInputAcresPlanted));
+       $percentageSoilTestAcreage = DateRequestFilter::getPercentage(array_sum($oldInputSoilTestAcreage), array_sum($newInputSoilTestAcreage));
+       $percentageGardenMapped = DateRequestFilter::getPercentage($oldInputGardenMapped, $newInputGardenMapped);
+
         $inputOrders = InputOrder::whereBetween('created_at', [$start_date, $end_date])->pluck('details')->toArray();
         $acresPlanted = Planting::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
         $soilTestAcreage = SoilTest::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
@@ -110,6 +128,13 @@ class AdminController extends BaseController
                 'Garden Mapping' => array_sum($gardenMapped) . ' Acres',
                 'Produce Sold' => 0 . ' Tons',
             ],
+            'activitiesPercentage' => [
+                'Input orders' => $percentageInputOrders,
+                'Planting' => $percentageAcresPlanted,
+                'Soil testing' => $percentageSoilTestAcreage,
+                'Garden Mapping' => $percentageGardenMapped,
+                'Produce Sold' => 0,
+            ]
         ], 200);
     }
 

@@ -22,6 +22,11 @@ class DistrictController extends Controller
 
         $requestArray = DateRequestFilter::getRequestParam($request);
         list($start_date, $end_date) = $requestArray;
+
+        $startDateCount = Farmer::where('created_at', '<=', $start_date)->get()->count();
+        $endDateCount = Farmer::where('created_at', '<=', $end_date)->get()->count();
+        $percentage = DateRequestFilter::getPercentage($startDateCount, $endDateCount);
+
         $districts = ($start_date && $end_date) ? Farmer::whereBetween('created_at', [$start_date, $end_date])
         ->pluck('farmer_district')->toArray() : Farmer::pluck('farmer_district')->toArray();
         $allDistricts = [];
@@ -39,7 +44,8 @@ class DistrictController extends Controller
             'districtCount' => count($allDistricts),
             'farmerCount' => count($districts),
             'topDistricts' => $topDistricts,
-            'allDistricts' => $allDistricts
+            'allDistricts' => $allDistricts,
+            'percentage' => $percentage
         ], 200);
     }
 }

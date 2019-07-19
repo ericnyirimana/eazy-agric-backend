@@ -41,6 +41,7 @@ class DevtPartnerTest extends TestCase
         $this->seeJson(['success' => true]);
         $this->assertArrayHasKey('count', $res_array);
         $this->assertArrayHasKey('result', $res_array);
+        $this->assertArrayHasKey('percentage', $res_array);
     }
 
     public function testShouldReturnErrorForNoToken()
