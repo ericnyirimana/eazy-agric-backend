@@ -32,7 +32,7 @@ class MockData
     protected $nonsenseToken = 'eyJ0eXAipPs';
 
     protected $fakeToken = ['token' => 'eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
-    jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs'];
+    jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs', ];
     protected $emptyToken = ['token' => ''];
 
     protected $newOffTaker = [
@@ -50,11 +50,11 @@ class MockData
         'phonenumber' => '32489765478',
         'firstname' => 'fghjklkjhgf',
         'lastname' => 'fgyuhijokjhgf',
-        'organization' => 'somewhere',
+        'address' => 'somewhere',
     ];
     protected $newMasterAgent = [
-        'password' => 'masterAgent12345',
         'account_type' => 'Custom',
+        'password' => 'masterAgent12345',
         'value_chain' => 'Crop',
         'firstname' => 'masteragent',
         'lastname' => 'masteragent',
@@ -135,6 +135,7 @@ class MockData
     public function getNewAdmin()
     {
         $this->newAdmin['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newAdmin['_id'] = $this->shortid->generate();
         return $this->newAdmin;
     }
     public function getNewOffTaker()
