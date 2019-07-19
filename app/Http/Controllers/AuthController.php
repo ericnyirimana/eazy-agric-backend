@@ -48,7 +48,7 @@ class AuthController extends BaseController
         try {
             $this->validate->validateLogin($this->request);
 
-            $user = DB::select('select * from ' . $this->db . ' where email = ?', [$this->request->input('email')]);
+            $user = DB::select('SELECT * FROM ' . $this->db . ' WHERE email = ? AND (type = "ma" OR type  = "offtaker" OR type = "admin" OR type="partner")', [$this->request->input('email')]);
             if (!$user) {
                 return response()->json([
                     'success' => false, 'error' => 'The Email or password supplied is incorrect.'], 404);
