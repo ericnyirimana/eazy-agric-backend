@@ -2,6 +2,8 @@
 
 namespace database\factories;
 
+use App\Models\MasterAgent;
+use App\Models\VillageAgent;
 use Faker\Generator as Faker;
 
 class InputOrderFactory {
@@ -47,7 +49,12 @@ class InputOrderFactory {
               "status" => "Intransit",
               "type" => "order",
               "user_id" => "AFAHAJOH788007645RUKNYA",
-              "vaId" => "AK/MA/0421/0001"
+              "vaId" => function() {
+                  return factory(VillageAgent::class)->create()->_id;
+              },
+              "ma_id" => function() {
+                  return factory(MasterAgent::class)->create()->_id;
+              }
         ];
     }
 }

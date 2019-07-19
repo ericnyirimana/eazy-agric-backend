@@ -3,6 +3,8 @@
 namespace database\factories;
 
 use Faker\Generator as Faker;
+use App\Models\MasterAgent;
+use App\Models\VillageAgent;
 
 class FarmerFactory {
     public static function getFactory(Faker $faker)
@@ -37,7 +39,9 @@ class FarmerFactory {
             'garden_acreage_not_mapped_gps' => '2',
             'garden_mapped' => 'NA',
             'land_gps_url' => 'NA',
-            'ma_id' => 'AK/MA/0421',
+            'ma_id' => function() {
+                return factory(MasterAgent::class)->create()->_id;
+            },
             'other_occupation' => 'NA',
             'partner_id' => 'NA',
             'position held_in_community' => 'Farmer',
@@ -47,7 +51,9 @@ class FarmerFactory {
             'status' => 'New',
             'time' => '2018-07-05T23:02:22:278902',
             'type' => 'farmer',
-            'vaId' => 'AK/MA/0421/0001',
+            'vaId' => function() {
+                return factory(VillageAgent::class)->create()->_id;
+            },
             'value_chain' => $valueChain
         ];
     }

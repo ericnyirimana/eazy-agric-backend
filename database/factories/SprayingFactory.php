@@ -2,6 +2,8 @@
 
 namespace database\factories;
 
+use App\Models\MasterAgent;
+use App\Models\VillageAgent;
 use Faker\Generator as Faker;
 
 class SprayingFactory {
@@ -15,9 +17,13 @@ class SprayingFactory {
             '_id' => $faker->uuid,
             'status' => 'new',
             'district' => $district,
-            'vaId' => 'AK/MA/0421/0001',
-            'acerage' => '2',
-            'ma_id' => 'AK/MA/0421',
+            "vaId" => function() {
+                return factory(VillageAgent::class)->create()->_id;
+            },
+            "ma_id" => function() {
+                return factory(MasterAgent::class)->create()->_id;
+            },
+            'acreage' => '2',
             'total' => 200000,
             'name' => 'Anyipo Moureen',
             'type' => 'spraying',

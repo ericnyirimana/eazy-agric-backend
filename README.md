@@ -822,3 +822,89 @@ offtaker
     }
 }
 ```
+
+========================================
+
+### Get top performing master agents
+
+#### Request
+
+`GET /api/v1/top-performing-ma`
+
+#### Response
+
+```
+{
+    "success": true,
+    "data": [
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Bruce Abernathy"
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Llewellyn Wiza"
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Gilbert Rohan"
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Bryce Douglas"
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Rowan Hackett"
+        }
+    ]
+}
+```
+
+========================================
+
+### Get top performing village agents
+
+#### Request
+
+`GET /api/v1/top-performing-va`
+
+#### Response
+
+```
+{
+    "success": true,
+    "data": [
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Morris Haley"
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Dr. Conrad Stokes II"
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Velda Lind Sr."
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Allene Rowe"
+        },
+        {
+            "farmerCount": 2,
+            "orderCount": 2,
+            "name": "Mr. Gunner Kuhlman"
+        }
+    ]
+}
+```

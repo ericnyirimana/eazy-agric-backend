@@ -13,19 +13,13 @@ class DatabaseSeeder extends Seeder
     {
          $this->call('AdminDocumentSeeder');
          $this->call('PartnerDocumentSeeder');
-         $this->call('FarmerDocumentSeeder');
-         $this->call('InputOrderDocumentSeeder');
          $this->call('InputSupplierDocumentSeeder');
-         $this->call('MapCoordinateDocumentSeeder');
          $this->call('MasterAgentDocumentSeeder');
          $this->call('OffTakerDocumentSeeder');
-         $this->call('PlantingDocumentSeeder');
          $this->call('RequestPasswordDocumentSeeder');
-         $this->call('SoilTestDocumentSeeder');
          $this->call('VillageAgentDocumentSeeder');
          $this->call('CustomIncomeDocumentSeeder');
          $this->call('MilkLedgerDocumentSeeder');
-         $this->call('SprayingDocumentSeeder');
          $this->call('IncomeDocumentSeeder');
          $this->call('CustomExpenseDocumentSeeder');
          $this->call('DiagnosisDocumentSeeder');

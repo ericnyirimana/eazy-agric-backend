@@ -2,13 +2,20 @@
 
 namespace database\factories;
 
+use App\Models\MasterAgent;
+use App\Models\VillageAgent;
 use Faker\Generator as Faker;
 
 class MapCoordinateFactory {
     public static function getFactory(Faker $faker)
     {
         return [
-            'vaId' => 'AK/MA/0421/0001',
+            "vaId" => function() {
+                return factory(VillageAgent::class)->create()->_id;
+            },
+            "ma_id" => function() {
+                return factory(MasterAgent::class)->create()->_id;
+            },
             '_id' => $faker->uuid,
             'status' => 'complete',
             'longitudes' =>
