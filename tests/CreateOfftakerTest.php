@@ -5,7 +5,7 @@ class CreateOfftakerTest extends TestCase
 {
     protected $response, $token, $wrongUser, $mock;
 
-    const URL = '/api/v1/offtaker';
+    const URL = '/api/v1/create/offtaker';
 
     public function setUp(): void
     {

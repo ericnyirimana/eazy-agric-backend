@@ -98,56 +98,17 @@ offtaker
 
 ========================================
 
-### Get all input suppliers
+
+### Get all village agents/offtakers/input suppliers
 
 #### Request
 
-`GET /api/v1/input-suppliers`
+`GET /api/v1/users/{user}`
+Param `{user}` = `offtakers`, `village-agents` or `input-suppliers`
 
 #### Response
 
-```
-{
-    "success": true,
-    "count": 1,
-    "inputSuppliers": [
-        {
-            "DateAdded": "2018-08-31",
-            "DateUpdated": "11/9/2018",
-            "_id": "00366319c2d145ff83b46d588ed88e86",
-            "category": "Herbicides",
-            "crops": [
-                "beans",
-                "soya"
-            ],
-            "description": "Selective weed killer for beans and soya",
-            "eloquent_type": "input",
-            "name": "Beans Clean",
-            "photo_url": "/images/7e185f0a-cfc5-45a3-bb4d-6ef6535a5042.png",
-            "price": [
-                38100,
-                21000
-            ],
-            "quantity": 9992,
-            "supplier": "Hangzhou Agrochemicals (U) Ltd",
-            "type": "input",
-            "unit": [
-                "1Litre",
-                "500ml"
-            ]
-        }
-    ]
-}
-```
-
-### Get all village agents
-
-#### Request
-
-`GET /api/v1/village-agents`
-
-#### Response
-
+Village agents
 ```
 {
     "success": true,
@@ -193,6 +154,68 @@ offtaker
             "va_village": "Kashayo"
         }
     ]
+}
+```
+Offtakers
+```
+{
+  "success": true,
+  "count": 136,
+  "result": [
+    {
+      "_id": "-7mb_am",
+      "contact_person": "N\/A",
+      "created_at": "2019-07-18 21:06:21",
+      "district": "N\/A",
+      "eloquent_type": "offtaker",
+      "email": "Bl3xJRj@gmail.com",
+      "firstname": "fghjklkjhgf",
+      "lastname": "fgyuhijokjhgf",
+      "organization": "somewhere",
+      "phonenumber": "32489765478",
+      "status": "demo",
+      "type": "offtaker",
+      "updated_at": "2019-07-18 21:06:21",
+      "value_chain": "N\/A"
+    }
+  ]
+}
+```
+Input suppliers
+```
+
+  "success": true,
+  "count": 1,
+  "result": [
+    {
+      "DateAdded": "2018-08-31",
+      "DateUpdated": "11\/9\/2018",
+      "_id": "648ac260-48ec-315f-a8e8-241bd94c5cab",
+      "category": "Herbicides",
+      "created_at": "2019-07-18 18:04:02",
+      "crops": [
+        "beans",
+        "soya"
+      ],
+      "description": "Selective weed killer for beans and soya",
+      "eloquent_type": "input",
+      "name": "Beans Clean",
+      "photo_url": "\/images\/7e185f0a-cfc5-45a3-bb4d-6ef6535a5042.png",
+      "price": [
+        38100,
+        21000
+      ],
+      "quantity": 9992,
+      "supplier": "Hangzhou Agrochemicals (U) Ltd",
+      "type": "input",
+      "unit": [
+        "1Litre",
+        "500ml"
+      ],
+      "updated_at": "2019-07-18 18:04:02"
+    }
+  ],
+  "percentage": 100
 }
 ```
 
@@ -243,39 +266,40 @@ offtaker
 
 ```
 {
-        "email": "offtakehgjr@gmail.com",
-        "password": "offtaker123456",
-        "ot_username":"offtaker123456",
-        "ot_name": "offtaker",
-        "ot_account_type": "Custom Account",
-        "ot_contact_person": "samuel",
-        "ot_phonenumber":"32456789765",
-        "ot_district": "somewhere",
-         "ot_address": "somewhere",
-        "ot_valuechain":"Diary"
+  "account_type": "Custom",
+  "address": "Molestiae nostrud la",
+  "contact_person": "Distinctio",
+  "district": "Kyenjojo",
+  "email": "test@gmail.com",
+  "firstname": "Veda htu",
+  "lastname": "Nunez",
+  "password": "123123",
+  "phonenumber": "+1 (669) 138-6075",
+  "value_chain": "N/A"
 }
 ```
 
 #### Response
 
 ```
-{
-    "success": true,
-    "offtaker": {
-        "type": "offtaker",
-        "email": "offtakehgjr@gmail.com",
-        "ot_username": "offtaker123456",
-        "ot_name": "offtaker",
-        "ot_account_type": "Custom Account",
-        "ot_contact_person": "samuel",
-        "ot_phonenumber": "32456789765",
-        "ot_district": "somewhere",
-        "ot_address": "somewhere",
-        "ot_valuechain": "Diary",
-        "_id": "koPgF9Z",
-        "updated_at": "2019-06-17 17:04:43",
-        "created_at": "2019-06-17 17:04:43"
-    }
+
+  "message": "Please check your mail for your login password",
+  "success": true,
+  "offtaker": {
+    "type": "offtaker",
+    "status": "demo",
+    "account_type": "Custom",
+    "contact_person": "Distinctio",
+    "district": "Kyenjojo",
+    "email": "test@gmail.com",
+    "firstname": "Veda htu",
+    "lastname": "Nunez",
+    "phonenumber": "+1 (669) 138-6075",
+    "value_chain": "N\/A",
+    "_id": "ss0mLB-",
+    "updated_at": "2019-07-22 14:38:05",
+    "created_at": "2019-07-22 14:38:05"
+  }
 }
 ```
 
@@ -291,16 +315,16 @@ offtaker
 
 ```
 {
-		"ma_manager_name": "AK/OT/0001",
-        "ma_phonenumber": "256788345623",
-        "password": "masteragent123456",
-        "ma_name": "Luparelia",
-        "email": "masteragent123456@gmail.com",
-        "ma_district": "Masaka",
-        "ma_username": "masteragent",
-        "ma_address": "lums",
-        "ma_valuechain":"Dairy",
-        "ma_account_type":"Custom Account"
+  "account_type": "Custom",
+  "address": "Molestiae nostrud la",
+  "contact_person": "Distinctio",
+  "district": "Kyenjojo",
+  "email": "teste@gmail.com",
+  "firstname": "Veda htu",
+  "lastname": "Nunez",
+  "password": "123123",
+  "phonenumber": "+1 (669) 138-6075",
+  "value_chain": "N/A"
 }
 ```
 
@@ -308,21 +332,24 @@ offtaker
 
 ```
 {
-    "success": true,
-    "masterAgent": {
-        "type": "ma",
-        "status": "inactive",
-        "ma_manager_name": "AK/OT/0001",
-        "ma_phonenumber": "256788345623",
-        "ma_name": "Luparelia",
-        "email": "masteragent123456@gmail.com",
-        "ma_district": "Masaka",
-        "ma_address": "lums",
-        "ma_account_type": "Custom Account",
-        "_id": "xs8VF4Y",
-        "updated_at": "2019-06-17 19:29:36",
-        "created_at": "2019-06-17 19:29:36"
-    }
+  "message": "Please check your mail for your login password",
+  "success": true,
+  "offtaker": {
+    "type": "ma",
+    "status": "demo",
+    "account_type": "Custom",
+    "address": "Molestiae nostrud la",
+    "contact_person": "Distinctio",
+    "district": "Kyenjojo",
+    "email": "teste@gmail.com",
+    "firstname": "Veda htu",
+    "lastname": "Nunez",
+    "phonenumber": "+1 (669) 138-6075",
+    "value_chain": "N\/A",
+    "_id": "JVdnEBB",
+    "updated_at": "2019-07-22 14:40:20",
+    "created_at": "2019-07-22 14:40:20"
+  }
 }
 ```
 
@@ -603,13 +630,14 @@ offtaker
 }
 ```
 
-### Activate Account
+### Activate or Suspend Account
 
 #### Request
 
-`PATCH /api/v1/{id}/activate`
-
-#### Response
+`PATCH /api/v1/{action}/{id}`
+Param `{action}` = `activate` or `suspend`
+Param `{id}` = Account id
+ #### Response
 
 ```
 {
@@ -635,37 +663,6 @@ offtaker
 
 ```
 
-### Suspend Account
-
-#### Request
-
-`PATCH /api/v1/{id}/suspend`
-
-#### Response
-
-```
-{
-    "success": true,
-    "message": "Account suspended successfully.",
-    "user": {
-        "_id": "2DUALsI",
-        "contact_person": "N/A",
-        "created_at": "2019-06-25 09:15:08",
-        "district": "N/A",
-        "eloquent_type": "ma",
-        "email": "zqdc-lR@gmail.com",
-        "firstname": "hjkl;",
-        "lastname": "fgyuhijokjhgf",
-        "organization": "somewhere",
-        "phonenumber": "324897654e78",
-        "status": "suspended",
-        "type": "ma",
-        "updated_at": "2019-06-28 08:36:25",
-        "value_chain": "N/A"
-    }
-}
-
-```
 
 ### Send Message Through the Contact Form
 
@@ -825,12 +822,12 @@ offtaker
 
 ========================================
 
-### Get top performing master agents
+### Get top performing master or viilage agents
 
 #### Request
 
-`GET /api/v1/top-performing-ma`
-
+`GET /api/v1/top-performing/{agent}`
+Param `{agent}` = `ma` or `va`
 #### Response
 
 ```
@@ -868,43 +865,41 @@ offtaker
 
 ========================================
 
-### Get top performing village agents
+
+### Request for an offtaker or masteragent account
 
 #### Request
+`POST api/v1/{user}/request`
+Param `{user}` = `offtaker` or `masteragent`
 
-`GET /api/v1/top-performing-va`
-
-#### Response
-
+##### Request body
 ```
 {
-    "success": true,
-    "data": [
-        {
-            "farmerCount": 2,
-            "orderCount": 2,
-            "name": "Morris Haley"
-        },
-        {
-            "farmerCount": 2,
-            "orderCount": 2,
-            "name": "Dr. Conrad Stokes II"
-        },
-        {
-            "farmerCount": 2,
-            "orderCount": 2,
-            "name": "Velda Lind Sr."
-        },
-        {
-            "farmerCount": 2,
-            "orderCount": 2,
-            "name": "Allene Rowe"
-        },
-        {
-            "farmerCount": 2,
-            "orderCount": 2,
-            "name": "Mr. Gunner Kuhlman"
-        }
-    ]
+    "email":"mikel@gmail.com",
+    "firstname": "Leticia",
+    "lastname": "Esiagu",
+    "phonenumber": "07063512587",
+    "address": "Andela"
+}
+```
+#### Response body
+```
+{
+  "success": true,
+  "offtaker": {
+    "type": "offtaker",
+    "status": "demo",
+    "email": "mikel@gmail.com",
+    "firstname": "Leticia",
+    "lastname": "Esiagu",
+    "phonenumber": "07063512587",
+    "_id": "oeTMKql",
+    "district": "N\/A",
+    "value_chain": "N\/A",
+    "account_type": "Generic",
+    "contact_person": "N\/A",
+    "updated_at": "2019-07-22 14:48:27",
+    "created_at": "2019-07-22 14:48:27"
+  }
 }
 ```

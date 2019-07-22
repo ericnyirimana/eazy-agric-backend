@@ -4,7 +4,7 @@ use App\Utils\MockData;
 class OfftakerTest extends TestCase
 {
     protected $mock;
-    const URL = 'api/v1/offtakers';
+    const URL = 'api/v1/users/offtakers';
     const URL_FILTER = '/api/v1/devt-partners/?start_date=2019-10-12&end_date=2020-12-12';
 
     public function setUp(): void

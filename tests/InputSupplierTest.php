@@ -4,8 +4,8 @@ use App\Utils\MockData;
 class InputSupplierTest extends TestCase
 {
     protected $token, $mock;
-    const URL = '/api/v1/input-suppliers';
-    const URL_FILTER = '/api/v1/input-suppliers/?start_date=2019-10-12&end_date=2020-12-12';
+    const URL = '/api/v1/users/input-suppliers';
+    const URL_FILTER = '/api/v1/users/input-suppliers/?start_date=2019-10-12&end_date=2020-12-12';
 
     public function setUp(): void
     {

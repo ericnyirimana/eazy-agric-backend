@@ -5,7 +5,7 @@ class CreateMasterAgentTest extends TestCase
 {
     protected $response, $token, $wrongUser, $mock;
 
-    const URL = '/api/v1/masteragent';
+    const URL = '/api/v1/create/masteragent';
 
     public function setUp(): void
     {
@@ -32,7 +32,7 @@ class CreateMasterAgentTest extends TestCase
 
     public function testShouldReturnMasteragents()
     {
-        $this->get(self::URL, ['Authorization' => $this->token]);
+        $this->get('api/v1/masteragents', ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);

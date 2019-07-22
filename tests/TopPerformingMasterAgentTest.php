@@ -3,7 +3,7 @@ use App\Utils\MockData;
 
 class TopPerformingMasterAgentTest extends TestCase
 {
-    const URL = '/api/v1/top-performing-ma';
+    const URL = '/api/v1/top-performing/ma';
     protected $token;
     public function setUp(): void
     {
