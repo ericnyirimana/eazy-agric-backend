@@ -4,6 +4,7 @@ use App\Utils\MockData;
 class TopPerformingVillageAgentTest extends TestCase
 {
     const URL = '/api/v1/top-performing/va';
+    const URL_FILTER = '/api/v1/top-performing/va/?start_date=2019-10-12&end_date=2020-12-12&district=Bushenyi';
     protected $token;
     public function setUp(): void
     {
@@ -47,5 +48,12 @@ class TopPerformingVillageAgentTest extends TestCase
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
         $this->seeJson(['error' => 'An error occured while decoding token.']);
+    }
+    public function testShouldReturnTopPerformingVillageAgentsFilteredByDateLocation()
+    {
+        $this->get(self::URL_FILTER, ['Authorization' => $this->token]);
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
     }
 }

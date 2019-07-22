@@ -169,6 +169,8 @@ class AdminController extends BaseController
 
   public function getTopAgents()
   {
+    $requestArray = DateRequestFilter::getRequestParam($this->request);
+    list($start_date, $end_date) = $requestArray;
     if ($this->request->agent !== 'ma' && $this->request->agent !== 'va') {
       return Helpers::returnError("Invalid parameter supplied.", 400);
     }
@@ -176,27 +178,59 @@ class AdminController extends BaseController
     try {
       $topAgents = [];
       $agentFarmerCount = DB::select("SELECT {$field}, COUNT(*) AS farmer_count FROM " . $this->db . "
-                    WHERE type = 'farmer' GROUP BY {$field} ORDER BY farmer_count DESC LIMIT 5");
+                    WHERE type = 'farmer'  AND (created_at > '".$start_date."' AND created_at < '".$end_date."')
+                    GROUP BY {$field} ORDER BY farmer_count DESC LIMIT 5");
       foreach ($agentFarmerCount as $agent) {
         $topAgent = [];
         $topAgent['farmerCount'] = $agent['farmer_count'];
         $agentOrderCount = DB::select("SELECT COUNT({$field}) AS order_count FROM
                 " . $this->db . " WHERE type = 'order' AND {$field}='" . $agent[$field] . "'");
         $topAgent['orderCount'] = $agentOrderCount[0]['order_count'];
-        $agentName = ($this->request->agent === 'ma') ? DB::select("SELECT CONCAT(firstname, ' ', lastname) AS agent_name FROM
-                " . $this->db . " WHERE type = '{$this->request->agent}'
-                AND _id='" . $agent[$field] . "'") : DB::select("SELECT va_name AS agent_name FROM
-                " . $this->db . " WHERE type = 'va' AND _id='" . $agent['vaId'] . "'");
-        $topAgent['name'] = $agentName[0]['agent_name'];
-        array_push($topAgents, $topAgent);
+        $topPerformers = ($this->request->agent === 'ma') ? $this->masterAgent($agent,$field,$topAgent):$this->villageAgent($agent,$field,$topAgent);
+        array_push($topAgents, $topPerformers);
       }
-      return Helpers::returnSuccess("", ['data' => $topAgents], 200);
+     $result = array_filter($topAgents); 
+     return Helpers::returnSuccess("", ['data' => $result], 200);
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong.", 503);
     }
   }
 
   /**
+   * Returns top performing village agents filtered by date and location
+   */
+  
+  public function villageAgent($agent, $field, $topAgent){
+    $district = $this->request->input('district');
+    $agentNameQuery = "SELECT va_name AS agent_name FROM
+    " . $this->db . " WHERE type = 'va' AND _id='" . $agent['vaId'] . "'";
+    if ($district) {
+      $agentNameQuery .= " AND va_district='". $district ."'";
+    }
+    $agentName = DB::select($agentNameQuery);
+    if (count($agentName) > 0) {
+      $topAgent['name'] = $agentName[0]['agent_name'];
+      return $topAgent;
+    }
+  }
+
+  /**
+   * Returns top performing master agents filtered by date and location
+   */
+  public function masterAgent($agent, $field, $topAgent){
+    $district = $this->request->input('district');
+    $agentNameQuery = "SELECT CONCAT(firstname, ' ', lastname) AS agent_name FROM
+    " . $this->db . " WHERE type = 'ma' AND _id='" . $agent[$field] . "'";
+    if ($district) {
+      $agentNameQuery .= " AND district='". $district ."'";
+    }
+    $agentName = DB::select($agentNameQuery);
+    if (count($agentName) > 0) {
+      $topAgent['name'] = $agentName[0]['agent_name'];
+      return $topAgent;
+    }
+  }
+  /** 
    * @param string id
    * @return object http response
    */
