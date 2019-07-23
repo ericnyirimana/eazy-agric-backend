@@ -869,7 +869,7 @@ Param `{agent}` = `ma` or `va`
 ### Request for an offtaker or masteragent account
 
 #### Request
-`POST api/v1/{user}/request`
+`POST api/v1/request{user}`
 Param `{user}` = `offtaker` or `masteragent`
 
 ##### Request body

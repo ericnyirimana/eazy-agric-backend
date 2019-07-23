@@ -9,6 +9,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Dotenv\Regex\Success;
+use Symfony\Component\Mime\Message;
 
 class Helpers extends BaseController
 {
@@ -165,12 +166,18 @@ class Helpers extends BaseController
     unset($user[0][self::$db]['password']);
     return $user ? $user[0][self::$db] : false;
   }
-  
+
   public static function returnError($errorMessage, $statusCode)
   {
     return response()->json([
       "success" => false,
       "error" => $errorMessage
     ], $statusCode);
+  }
+
+  public static function returnSuccess($successMessage=null, $data = [], $statusCode)
+  {
+    $result = array_merge(array_filter(["success" => true, "message" => $successMessage]), $data);
+    return response()->json($result, $statusCode);
   }
 }

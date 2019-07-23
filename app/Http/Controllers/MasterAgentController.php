@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\MasterAgent;
-use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Utils\Helpers;
 
 class MasterAgentController extends BaseController
 {
@@ -17,10 +17,9 @@ class MasterAgentController extends BaseController
   public function getMasterAgents()
   {
     $result = MasterAgent::all();
-    return response()->json([
-      'success' => true,
+    return Helpers::returnSuccess("", [
       'count' => count($result),
-      'result' => $result,
+      'result' => $result
     ], 200);
   }
 }

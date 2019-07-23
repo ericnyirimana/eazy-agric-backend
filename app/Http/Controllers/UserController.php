@@ -18,10 +18,6 @@ class UserController extends BaseController
   {
     $this->request = $request;
     $this->validate = new Validation();
-    // $this->email = $this->request->input('email');
-    // $this->requestPassword = $this->request->input('password');
-    // $this->url = getenv('FRONTEND_URL');
-    // $this->mail = new Email();
     $this->helpers = new Helpers();
     $this->model = 'App\Models\\' . $this->request->user;
   }
@@ -37,10 +33,8 @@ class UserController extends BaseController
       if (!$user) return Helpers::returnError("Could not create user.", 408);
       $this->helpers->sendPassword($password, $this->request->email);
 
-      return response()->json([
-        'success' => true,
-        $this->request->user => $user
-      ], 200);
+      return Helpers::returnSuccess("", [$this->request->user => $user], 200);
+
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong.", 408);
     }
@@ -57,17 +51,9 @@ class UserController extends BaseController
 
       $this->helpers->sendPassword($this->requestPassword, $this->email);
 
-      return response()->json([
-        'message' => 'Please check your mail for your login password',
-        'success' => true,
-        'offtaker' => $user
-      ], 200);
+      return Helpers::returnSuccess("Please check your mail for your login password.", ['offtaker' => $user], 200);
     } catch (Exception $e) {
       return Helpers::sendError("Something went wrong", 503);
-      // return response()->json([
-      //   'success' => false,
-      //   'error' => 'Something went wrong.'
-      // ], 503);
     }
   }
 }

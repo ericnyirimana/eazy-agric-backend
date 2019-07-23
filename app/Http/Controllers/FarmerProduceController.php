@@ -34,13 +34,9 @@ class FarmerProduceController extends Controller
             }
             arsort($allFarmProduce);
             $topFarmProduce = array_slice($allFarmProduce, 0, 5, true);
-        
-            return response()->json([
-            'success' => true,
-            'farmProduceCount' => count($farmProduces),
+            return Helpers::returnSuccess("", ['farmProduceCount' => count($farmProduces),
             'topFarmProduce' => $topFarmProduce,
-            'allFarmProduce' => $allFarmProduce
-        ], 200);
+            'allFarmProduce' => $allFarmProduce], 200);
         } catch (Exception $e) {
             return Helpers::returnError("Something went wrong.", 503);
         }

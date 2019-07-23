@@ -5,7 +5,7 @@ class CreateMasterAgentTest extends TestCase
 {
     protected $response, $token, $wrongUser, $mock;
 
-    const URL = '/api/v1/create/masteragent';
+    const URL = '/api/v1/users/masteragent';
 
     public function setUp(): void
     {

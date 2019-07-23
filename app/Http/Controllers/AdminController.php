@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\OffTaker;
 use App\Models\InputOrder;
 use App\Models\MapCoordinate;
 use App\Models\Planting;
@@ -18,14 +17,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
-use Mpociot\Couchbase\Helper;
 
 class AdminController extends BaseController
 {
-  private $request;
-  private $validate;
-  private $db;
-  private $validateInput;
+  private $request, $validate, $db, $validateInput;
 
   /**
    * Create a new controller instance.
@@ -51,8 +46,7 @@ class AdminController extends BaseController
     try {
       $result = Admin::all();
       if ($result) {
-        return response()->json([
-          'success' => true,
+        return Helpers::returnSuccess("", [
           'count' => count($result),
           'result' => $result,
         ], 200);
@@ -73,10 +67,8 @@ class AdminController extends BaseController
       try {
         if ($this->request->password === $this->request->confirmPassword) {
           $data = Admin::create($this->request->all() + ['_id' => Helpers::generateId()]);
-          return $data ? response()->json([
-            'success' => true,
-            'admin' => $data
-          ], 200) : Helpers::returnError("Could not create user.", 408);
+          return $data ?
+            Helpers::returnSuccess("", ['admin' => $data], 200) : Helpers::returnError("Could not create user.", 408);
         }
         return Helpers::returnError("Passwords do not match.", 401);
       } catch (Exception $err) {
@@ -92,10 +84,7 @@ class AdminController extends BaseController
     try {
       $user = Helpers::checkUser($id);
       if ($user) {
-        return response()->json([
-          'success' => true,
-          'user' => $user,
-        ], 200);
+        return Helpers::returnSuccess("", ['user' => $user], 200);
       }
       return Helpers::returnError("User does not exist.", 404);
     } catch (Exception $e) {
@@ -129,8 +118,7 @@ class AdminController extends BaseController
     $acresPlanted = Planting::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
     $soilTestAcreage = SoilTest::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
     $gardenMapped = MapCoordinate::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
-    return response()->json([
-      'success' => true,
+    return Helpers::returnSuccess("", [
       'activities' => [
         'Input orders' => array_sum(array_column($inputOrders, 'totalCost')),
         'Planting' => array_sum($acresPlanted) . ' Acres',
@@ -165,11 +153,8 @@ class AdminController extends BaseController
       if (Helpers::changeStatus($this->request->id, $action)) {
         $user = Helpers::queryUser($this->request->id);
         unset($user[0][$this->db]['password']);
-        return response()->json([
-          'success' => true,
-          'message' => ($action === 'active') ? 'Account activated successfully.': 'Account suspended successfully.',
-          'user' => $user[0][$this->db],
-        ], 200);
+        $message = ($action === 'active') ? 'Account activated successfully.' : 'Account suspended successfully.';
+        return Helpers::returnSuccess($message, ['user' => $user[0][$this->db]], 200);
       } else {
         return Helpers::returnError("User not found.", 404);
       }
@@ -185,10 +170,7 @@ class AdminController extends BaseController
   {
     try {
       $twitterReport = SocialMedia::getTwitterSummary();
-      return response()->json([
-        'success' => true,
-        'data' => $twitterReport,
-      ], 200);
+      return Helpers::returnSuccess("", ['data' => $twitterReport], 200);
     } catch (\Exception $e) {
       return Helpers::returnError("Something went wrong", 503);
     }
@@ -202,10 +184,7 @@ class AdminController extends BaseController
     try {
       $youtubeChannelSummary = SocialMedia::getYoutubeSummary();
       $statistics = $youtubeChannelSummary->items[0]->statistics;
-      return response()->json([
-        'success' => true,
-        'data' => $statistics,
-      ], 200);
+      return Helpers::returnSuccess("", ['data' => $statistics], 200);
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong", 503);
     }
@@ -218,10 +197,7 @@ class AdminController extends BaseController
   {
     try {
       $facebookReport = SocialMedia::getFacebookSummary();
-      return response()->json([
-        'success' => true,
-        'data' => $facebookReport,
-      ], 200);
+      return Helpers::returnSuccess("", ['data' => $facebookReport], 200);
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong", 503);
     }
@@ -241,10 +217,7 @@ class AdminController extends BaseController
       $user = DB::select('select * from ' . $this->db . ' where _id = ?', [$this->request->auth]);
       if (Hash::check($this->request->input('oldPassword'), $user[0][$this->db]['password'])) {
         Admin::where('_id', $this->request->auth)->update(['password' => Hash::make($this->request->input('newPassword'))]);
-        return response()->json([
-          'success' => true,
-          'message' => 'Your Password has been changed successfully.'
-        ], 200);
+        return Helpers::returnSuccess("Your Password has been changed successfully.", [], 200);
       }
       return Helpers::returnError("Current password is incorrect.", 400);
     } catch (Exception $e) {
@@ -279,7 +252,7 @@ class AdminController extends BaseController
         $topAgent['name'] = $agentName[0]['agent_name'];
         array_push($topAgents, $topAgent);
       }
-      return response()->json(['success' => true, 'data' => $topAgents], 200);
+      return Helpers::returnSuccess("", ['data' => $topAgents], 200);
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong.", 503);
     }
@@ -295,10 +268,7 @@ class AdminController extends BaseController
       $user = Helpers::checkUser($id);
       if (!$user) return Helpers::returnError("User does not exist.", 404);
       if (Helpers::deleteUser($id)) {
-        return response()->json([
-          'success' => true,
-          'message' => 'Account deleted successfully.',
-        ], 200);
+        return Helpers::returnSuccess("Account deleted successfully.", [], 200);
       } else return Helpers::returnError("Account could not be deleted.", 503);
     } catch (Exception $e) {
       return  Helpers::returnError("Something went wrong.", 503);
@@ -317,20 +287,16 @@ class AdminController extends BaseController
 
     $isEmpty = $this->validateInput->isEmpty();
     if ($isEmpty) return Helpers::returnError($isEmpty, 422);
-    
+
     $this->validate->validateExistingAccount($this->request, $id);
 
     try {
       if (Helpers::editAccount($id, $this->request->all())) {
         $updatedUser = Helpers::queryUser($id);
         unset($updatedUser[0][$this->db]['password']);
-        return response()->json([
-          'success' => true,
-          'message' => 'Account updated successfully.',
-          'user' => $updatedUser[0][$this->db]
-        ], 200);
+        return Helpers::returnSuccess("Account updated successfully.", ["user" => $updatedUser[0][$this->db]], 200);
       }
-    }  catch (\Illuminate\Validate\ValidationException $e) {
+    } catch (\Illuminate\Validate\ValidationException $e) {
       return Helpers::returnError("Something went wrong.", 422);
     }
   }
@@ -356,8 +322,7 @@ class AdminController extends BaseController
     $percentage = DateRequestFilter::getPercentage($startDateCount, $endDateCount);
 
     $result = $model::whereBetween('created_at', [$start_date, $end_date])->get();
-    return response()->json([
-      'success' => true,
+    return Helpers::returnSuccess("", [
       'count' => count($result),
       'result' => $result,
       'percentage' => $percentage
