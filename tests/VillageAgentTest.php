@@ -4,8 +4,8 @@ use App\Utils\MockData;
 class VillageAgentTest extends TestCase
 {
     protected $token;
-    const URL = '/api/v1/village-agents';
-    const URL_FILTER = '/api/v1/village-agents/?start_date=2019-10-12&end_date=2020-12-12';
+    const URL = '/api/v1/users/village-agents';
+    const URL_FILTER = '/api/v1/users/village-agents/?start_date=2019-10-12&end_date=2020-12-12';
     public function setUp(): void
     {
         parent::setUp();
@@ -34,7 +34,7 @@ class VillageAgentTest extends TestCase
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);
         $this->assertArrayHasKey('count', $res_array);
-        $this->assertArrayHasKey('villageAgents', $res_array);
+        $this->assertArrayHasKey('result', $res_array);
         $this->assertArrayHasKey('percentage', $res_array);
     }
     public function testShouldReturnErrorForNoToken()

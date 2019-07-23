@@ -28,7 +28,7 @@ class DateRequestFilter {
      */
     public static function getPercentage($startDateCount, $endDateCount)
     {
-        if($startDateCount !== null && $endDateCount !== null){ 
+        if(!empty($startDateCount) && !empty($endDateCount)) {
             if($startDateCount === 0 && $endDateCount === 0){
                 $percentage = 0;
             } else {
@@ -38,5 +38,4 @@ class DateRequestFilter {
         }
             return 0;
     }
-
 }

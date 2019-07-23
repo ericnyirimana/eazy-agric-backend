@@ -145,20 +145,10 @@ class AuthController extends BaseController
 
             $user = DB::select("select * from " . $this->db . " where token= ? AND  type = ?", [$token, $type]);
 
-            if ($user) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'verified'
-                ], 200);
-            }
-            return response()->json([
-                'error' => true,
-                'message' => 'authorized',
-                'status' => 401,
-            ], 401);
+            if ($user) return Helpers::returnSuccess("verified", [], 200);
+            return Helpers::returnError("Unauthorized.", 401);
         } catch (Exception $e) {
-            return response()->json(['error' => 'Something went wrong.']);
+          return Helpers::returnError("Something went wrong.", 503);
         }
-
     }
 }

@@ -55,7 +55,7 @@ class AdminTest extends TestCase
     {
         $this->patch('/api/v1/activate/1', [], ['Authorization' => $this->token]);
         $this->seeStatusCode(404);
-        $this->seeJson(['message' => 'User not found.']);
+        $this->seeJson(['error' => 'User not found.']);
     }
 
     public function testShouldActivateAccount()
@@ -72,7 +72,7 @@ class AdminTest extends TestCase
     {
         $this->patch('/api/v1/suspend/1', [], ['Authorization' => $this->token]);
         $this->seeStatusCode(404);
-        $this->seeJson(['message' => 'User not found.']);
+        $this->seeJson(['error' => 'User not found.']);
     }
 
     public function testShouldSuspendAccount()
@@ -130,10 +130,10 @@ class AdminTest extends TestCase
         $this->post('/api/v1/change-password',
             $this->mock->getWrongChangePassword(),
             ['Authorization' => $this->token]);
-        $this->seeStatusCode(404);
+        $this->seeStatusCode(400);
         $this->seeJson([
             'success' => false,
-            'message' => 'Current password is incorrect.']);
+            'error' => 'Current password is incorrect.']);
     }
 
     public function testShouldReturnChangeAdminPasswordCatchError()
@@ -157,8 +157,9 @@ class AdminTest extends TestCase
         $response = $this->post(self::URL, $this->mock->getNewAdmin(),
             ['Authorization' => $this->token])->response->getData();
         $id = $response->admin->_id;
+        var_dump($id);
         $email = $response->admin->email;
-        $this->patch('/api/v1/account/' . $id, ['email' => $email], ['Authorization' => $this->token]);
+        $this->patch('/api/v1/account/'.$id, ['email' => $email], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['message' => 'Account updated successfully.']);
         $this->delete('/api/v1/account/' . $id, [], ['Authorization' => $this->token]);
@@ -171,11 +172,10 @@ class AdminTest extends TestCase
         $response = $this->post(self::URL, $this->mock->getNewAdmin(),
             ['Authorization' => $this->token])->response->getData();
         $id = $response->admin->_id;
-        $this->patch('/api/v1/account/' . $id, ['email' => 'admin2020@gmail.com'], ['Authorization' => $this->token]);
+        $this->patch('/api/v1/account/'.$id, ['email' => 'admin2020@gmail.com'], ['Authorization' => $this->token]);
         $this->seeStatusCode(422);
         $this->delete('/api/v1/account/' . $id, [], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
-
     }
 
 }

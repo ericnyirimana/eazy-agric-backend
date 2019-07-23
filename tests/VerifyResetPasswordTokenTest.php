@@ -18,7 +18,7 @@ class VerifyResetPasswordTokenTest extends TestCase
     {
         $this->post(self::URL, $this->mock->getFakeToken());        $this->seeStatusCode(401);
         $this->seeJson([
-            "error" => true,
+            "success" => false,
         ]);
     }
 
