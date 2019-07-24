@@ -128,4 +128,4 @@ ENV YB_CHANNEL_ID=$yb_channel_id
 
 RUN composer update --no-scripts
 
-RUN ./vendor/bin/phpunit --debug
+#RUN ./vendor/bin/phpunit --debug
