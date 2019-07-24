@@ -5,12 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Farmer;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
 use App\Utils\DateRequestFilter;
 use App\Utils\Helpers;
+use Exception;
 
 class DistrictController extends Controller
 {
+
+  public $bucket = '';
+
+  /**
+   * DistrictController constructor.
+   */
+  public function __construct()
+  {
+    $this->bucket = getenv('DB_DATABASE');
+    $this->helpers = new Helpers();
+  }
+
   /**
    * Get top performing districts
    *
@@ -18,7 +31,6 @@ class DistrictController extends Controller
    */
   public function getTopDistricts(Request $request)
   {
-
     $requestArray = DateRequestFilter::getRequestParam($request);
     list($start_date, $end_date) = $requestArray;
 
@@ -45,5 +57,32 @@ class DistrictController extends Controller
       'allDistricts' => $allDistricts,
       'percentage' => $percentage
     ], 200);
+  }
+
+  /**
+   * Get top performing districts based on app downloads and web users
+   */
+  public function getTopPerformingDistricts() {
+    try {
+      $topDistrictsByAppDownloads = Helpers::getTopDistrictsByAppDownloads();
+
+      foreach ($topDistrictsByAppDownloads as $index => $topDistrictsByAppDownload) {
+        $topDistrictWebUsers = DB::select("SELECT COUNT(1) AS district_web_users
+        FROM " . $this->bucket . "
+        WHERE type IN ['ma', 'offtaker', 'va'] 
+        AND ((district = '" . $topDistrictsByAppDownload['name'] . "') OR (va_district = '" . $topDistrictsByAppDownload['name'] . "'))");
+
+        $topDistrictAppPurchases = DB::select("SELECT COUNT(1) AS district_app_purchases
+        FROM " . $this->bucket . "
+        WHERE type IN ['planting', 'spraying', 'order', 'soil_test'] 
+        AND ((district = '" . $topDistrictsByAppDownload['name'] . "') OR (details.district = '" . $topDistrictsByAppDownload['name'] . "'))");
+
+        $topDistrictsByAppDownloads[$index]['webUsers'] = $topDistrictWebUsers[0]['district_web_users'];
+        $topDistrictsByAppDownloads[$index]['appPurchases'] = $topDistrictAppPurchases[0]['district_app_purchases'];
+      }
+      return Helpers::returnSuccess("", [ 'data' => $topDistrictsByAppDownloads ], 200);
+    } catch (Exception $e) {
+      return Helpers::returnError('Something went wrong.', 503);
+    }
   }
 }

@@ -927,3 +927,49 @@ Param `{user}` = `offtaker` or `masteragent`
     }
 ]
 ```
+========================================
+
+
+### Get top performing districts by app downloads and web users
+
+#### Request
+`POST api/v1/top-performing-district`
+
+#### Response body
+```
+{
+    "success": true,
+    "data": [
+        {
+            "appDownloads": 12,
+            "name": "Buhweju",
+            "webUsers": 38,
+            "appPurchases": 12
+        },
+        {
+            "appDownloads": 6,
+            "name": "Bushenyi",
+            "webUsers": 40,
+            "appPurchases": 23
+        },
+        {
+            "appDownloads": 5,
+            "name": "Rukungiri",
+            "webUsers": 30,
+            "appPurchases": 10
+        },
+        {
+            "appDownloads": 4,
+            "name": "Rubirizi",
+            "webUsers": 44,
+            "appPurchases": 18
+        },
+        {
+            "appDownloads": 3,
+            "name": "Ntoroko",
+            "webUsers": 44,
+            "appPurchases": 17
+        }
+    ]
+}
+```

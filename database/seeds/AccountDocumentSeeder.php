@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Account;
+use App\Models\Farmer;
 use Illuminate\Database\Seeder;
 
 class AccountDocumentSeeder extends Seeder
@@ -12,6 +13,9 @@ class AccountDocumentSeeder extends Seeder
      */
     public function run()
     {
-        factory(Account::class, 5)->create();
+        factory(Account::class, 30)->create()->each(function ($account) {
+            // create 10 additional farmer documents for each farmer enterprise account
+            factory(Farmer::class, 1)->create(['farmer_id'=>$account->_id]);
+        });
     }
 }
