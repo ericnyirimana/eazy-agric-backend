@@ -63,26 +63,13 @@ class SocialMedia
         } catch (FacebookSDKException $e) {
             throw new Exception('Error connecting to Facebook');
         }
-
-        [
-            'posts' => [
-                'data' => $posts,
-            ],
-            'fan_count' => $fanCount
-        ] = $response->getDecodedBody();
-
+        ['posts' => ['data' => $posts], 'fan_count' => $fanCount] = $response->getDecodedBody();
         $shares = 0;
         foreach ($posts as $post) {
             $postResponse = $fb->get('/' . $post['id'] . '?fields=shares', env('FB_ACCESS_TOKEN'));
             $share_count = $postResponse->getDecodedBody();
-            if (array_key_exists('shares', $share_count)) {
-                $shares += $share_count['shares']['count'];
-            }
+            if (array_key_exists('shares', $share_count)) $shares += $share_count['shares']['count'];
         }
-
-        return [
-            'fanCount' => $fanCount,
-            'shares' => $shares,
-        ];
+        return ['fanCount' => $fanCount, 'shares' => $shares];
     }
 }

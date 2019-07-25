@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\OffTaker;
-use App\Utils\Email;
+use App\Services\SocialMedia;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use Carbon\Carbon;
-use App\Utils\DateRequestFilter;
 
 class UserController extends BaseController
 {
@@ -54,6 +51,45 @@ class UserController extends BaseController
       return Helpers::returnSuccess("Please check your mail for your login password.", ['offtaker' => $user], 200);
     } catch (Exception $e) {
       return Helpers::sendError("Something went wrong", 503);
+    }
+  }
+  /**
+   * Returns twitter account number of followers and tweets
+   */
+  public function getTwitterReport()
+  {
+    try {
+      $twitterReport = SocialMedia::getTwitterSummary();
+      return Helpers::returnSuccess("", ['data' => $twitterReport], 200);
+    } catch (\Exception $e) {
+      return Helpers::returnError("Something went wrong", 503);
+    }
+  }
+
+  /**
+   * Returns Youtube report
+   */
+  public function getYoutubeReport()
+  {
+    try {
+      $youtubeChannelSummary = SocialMedia::getYoutubeSummary();
+      $statistics = $youtubeChannelSummary->items[0]->statistics;
+      return Helpers::returnSuccess("", ['data' => $statistics], 200);
+    } catch (Exception $e) {
+      return Helpers::returnError("Something went wrong", 503);
+    }
+  }
+
+  /**
+   * Returns facebook page likes and post shares count
+   */
+  public function getFacebookReport()
+  {
+    try {
+      $facebookReport = SocialMedia::getFacebookSummary();
+      return Helpers::returnSuccess("", ['data' => $facebookReport], 200);
+    } catch (Exception $e) {
+      return Helpers::returnError("Something went wrong", 503);
     }
   }
 }

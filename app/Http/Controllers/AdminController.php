@@ -8,7 +8,6 @@ use App\Models\MapCoordinate;
 use App\Models\Planting;
 use App\Models\SoilTest;
 use App\Rules\ValidateInputFields;
-use App\Services\SocialMedia;
 use App\Utils\DateRequestFilter;
 use App\Utils\Helpers;
 use App\Utils\Validation;
@@ -92,21 +91,36 @@ class AdminController extends BaseController
     }
   }
 
+  public function getPercentages($startDate, $endDate)
+  {
+    $inputOrders = InputOrder::whereBetween('created_at', [$startDate, $endDate])->pluck('details')->toArray();
+    $acresPlanted = Planting::whereBetween('created_at', [$startDate, $endDate])->pluck('acreage')->toArray();
+    $soilTestAcreage = SoilTest::whereBetween('created_at', [$startDate, $endDate])->pluck('acreage')->toArray();
+    $gardenMapped = MapCoordinate::whereBetween('created_at', [$startDate, $endDate])->pluck('acreage')->toArray();
+    return [
+      'Input orders' => array_sum(array_column($inputOrders, 'totalCost')),
+      'Planting' => array_sum($acresPlanted) . ' Acres',
+      'Soil testing' => array_sum($soilTestAcreage) . ' Acres',
+      'Garden Mapping' => array_sum($gardenMapped) . ' Acres',
+      'Produce Sold' => 0 . ' Tons',
+    ];
+  }
+
   public function getActivitySummary(Request $request)
   {
     $requestArray = DateRequestFilter::getRequestParam($request);
-    list($start_date, $end_date) = $requestArray;
+    list($startDate, $endDate) = $requestArray;
 
 
-    $oldInputOrdersSum = InputOrder::where('created_at', '<=', $start_date)->sum('details.totalCost');
-    $oldInputAcresPlanted = Planting::where('created_at', '<=', $start_date)->pluck('acreage')->toArray();
-    $oldInputSoilTestAcreage = SoilTest::where('created_at', '<=', $start_date)->pluck('acreage')->toArray();
-    $oldInputGardenMapped = MapCoordinate::where('created_at', '<=', $start_date)->sum('acreage');
+    $oldInputOrdersSum = InputOrder::where('created_at', '<=', $startDate)->sum('details.totalCost');
+    $oldInputAcresPlanted = Planting::where('created_at', '<=', $startDate)->pluck('acreage')->toArray();
+    $oldInputSoilTestAcreage = SoilTest::where('created_at', '<=', $startDate)->pluck('acreage')->toArray();
+    $oldInputGardenMapped = MapCoordinate::where('created_at', '<=', $startDate)->sum('acreage');
 
-    $newInputOrdersSum = InputOrder::where('created_at', '<=', $end_date)->sum('details.totalCost');
-    $newInputAcresPlanted = Planting::where('created_at', '<=', $end_date)->pluck('acreage')->toArray();
-    $newInputSoilTestAcreage = SoilTest::where('created_at', '<=', $end_date)->pluck('acreage')->toArray();
-    $newInputGardenMapped = MapCoordinate::where('created_at', '<=', $end_date)->sum('acreage');
+    $newInputOrdersSum = InputOrder::where('created_at', '<=', $endDate)->sum('details.totalCost');
+    $newInputAcresPlanted = Planting::where('created_at', '<=', $endDate)->pluck('acreage')->toArray();
+    $newInputSoilTestAcreage = SoilTest::where('created_at', '<=', $endDate)->pluck('acreage')->toArray();
+    $newInputGardenMapped = MapCoordinate::where('created_at', '<=', $endDate)->sum('acreage');
 
 
     $percentageInputOrders = DateRequestFilter::getPercentage($oldInputOrdersSum, $newInputOrdersSum);
@@ -114,18 +128,8 @@ class AdminController extends BaseController
     $percentageSoilTestAcreage = DateRequestFilter::getPercentage(array_sum($oldInputSoilTestAcreage), array_sum($newInputSoilTestAcreage));
     $percentageGardenMapped = DateRequestFilter::getPercentage($oldInputGardenMapped, $newInputGardenMapped);
 
-    $inputOrders = InputOrder::whereBetween('created_at', [$start_date, $end_date])->pluck('details')->toArray();
-    $acresPlanted = Planting::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
-    $soilTestAcreage = SoilTest::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
-    $gardenMapped = MapCoordinate::whereBetween('created_at', [$start_date, $end_date])->pluck('acreage')->toArray();
     return Helpers::returnSuccess("", [
-      'activities' => [
-        'Input orders' => array_sum(array_column($inputOrders, 'totalCost')),
-        'Planting' => array_sum($acresPlanted) . ' Acres',
-        'Soil testing' => array_sum($soilTestAcreage) . ' Acres',
-        'Garden Mapping' => array_sum($gardenMapped) . ' Acres',
-        'Produce Sold' => 0 . ' Tons',
-      ],
+      'activities' => $this->getPercentages($startDate, $endDate),
       'activitiesPercentage' => [
         'Input orders' => $percentageInputOrders,
         'Planting' => $percentageAcresPlanted,
@@ -160,46 +164,6 @@ class AdminController extends BaseController
       }
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong.", 503);
-    }
-  }
-
-  /**
-   * Returns twitter account number of followers and tweets
-   */
-  public function getTwitterReport()
-  {
-    try {
-      $twitterReport = SocialMedia::getTwitterSummary();
-      return Helpers::returnSuccess("", ['data' => $twitterReport], 200);
-    } catch (\Exception $e) {
-      return Helpers::returnError("Something went wrong", 503);
-    }
-  }
-
-  /**
-   * Returns Youtube report
-   */
-  public function getYoutubeReport()
-  {
-    try {
-      $youtubeChannelSummary = SocialMedia::getYoutubeSummary();
-      $statistics = $youtubeChannelSummary->items[0]->statistics;
-      return Helpers::returnSuccess("", ['data' => $statistics], 200);
-    } catch (Exception $e) {
-      return Helpers::returnError("Something went wrong", 503);
-    }
-  }
-
-  /**
-   * Returns facebook page likes and post shares count
-   */
-  public function getFacebookReport()
-  {
-    try {
-      $facebookReport = SocialMedia::getFacebookSummary();
-      return Helpers::returnSuccess("", ['data' => $facebookReport], 200);
-    } catch (Exception $e) {
-      return Helpers::returnError("Something went wrong", 503);
     }
   }
 

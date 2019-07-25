@@ -157,7 +157,6 @@ class AdminTest extends TestCase
         $response = $this->post(self::URL, $this->mock->getNewAdmin(),
             ['Authorization' => $this->token])->response->getData();
         $id = $response->admin->_id;
-        var_dump($id);
         $email = $response->admin->email;
         $this->patch('/api/v1/account/'.$id, ['email' => $email], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
