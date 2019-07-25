@@ -29,6 +29,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->group(['middleware' => 'validateParams'], function () use ($router) {
         $router->post('/users/{user}/', 'UserController@createUser');
       });
+      $router->get('/active-users', 'UserController@getAllActiveUsers');
       $router->post('/change-password', 'AdminController@changePassword');
       $router->post('/admin', 'AdminController@createAdmin');
       $router->get('/masteragents', 'MasterAgentController@getMasterAgents');

@@ -8,6 +8,7 @@ class ActivityLogTest extends TestCase
 {
     protected $response, $token, $wrongUser, $mock, $activityLog, $data;
     const URL = '/api/v1/activity-log';
+    const ACTIVITYLOG_URL = '/api/v1/active-users';
 
     public function setUp(): void
     {
@@ -51,5 +52,16 @@ class ActivityLogTest extends TestCase
         $this->assertEquals($email, $activityLog->email);
         $this->assertEquals($activity, $activityLog->activity);
         $this->assertArrayHasKey('target_lastname', $res_array);
+    }
+
+    public function testShouldReturnActiveUsers()
+    {
+        $this->get(self::ACTIVITYLOG_URL, ['Authorization' => $this->token]);
+        $res_array = (array) json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
+        $this->assertArrayHasKey('allUsersCount', $res_array);
+        $this->assertArrayHasKey('activeUsersCount', $res_array);
     }
 }

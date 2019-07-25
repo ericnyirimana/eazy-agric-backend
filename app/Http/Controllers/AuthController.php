@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Firebase\JWT\JWT;
+use App\Http\Controllers\ActivityLogController;
 
 class AuthController extends BaseController
 {/**
@@ -57,6 +58,13 @@ class AuthController extends BaseController
             if (Hash::check($this->request->input('password'), $user[0][$this->db]['password'])) {
                 $token = Helpers::jwt($user, $this->db);
                 unset($user[0][$this->db]['password']);
+                $userInfo = [
+                    'email' => $user[0][$this->db]['email'],
+                    'target_firstname' => $user[0][$this->db]['firstname'],
+                    'target_lastname' => $user[0][$this->db]['lastname'],
+                    'target_email' => $user[0][$this->db]['email']
+                ];
+                $activityLog =  $user ? Helpers::logActivity($userInfo, 'logged in') : [];
                 return response()->json(['success' => true, 'token' => $token, 'user' => $user[0][$this->db],
                 ], 200);
             }
@@ -142,7 +150,7 @@ class AuthController extends BaseController
             $this->validate->validateVerifyPasswordToken($this->request);
             $token = ($this->request->input('token'));
             $type = 'request-password';
-
+            
             $user = DB::select("select * from " . $this->db . " where token= ? AND  type = ?", [$token, $type]);
 
             if ($user) return Helpers::returnSuccess("verified", [], 200);

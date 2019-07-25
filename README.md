@@ -927,7 +927,6 @@ Param `{user}` = `offtaker` or `masteragent`
     }
 ]
 ```
-========================================
 
 
 ### Get top performing districts by app downloads and web users
@@ -972,4 +971,24 @@ Param `{user}` = `offtaker` or `masteragent`
         }
     ]
 }
+```
+
+### Get all active users
+
+#### Request
+
+`GET /api/v1/active-users`
+
+#### Request Body
+
+
+#### Response
+```
+
+{
+    "success": true,
+    "allUsersCount": 98,
+    "activeUsersCount": 3
+}
+
 ```

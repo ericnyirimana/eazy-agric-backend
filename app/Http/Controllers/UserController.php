@@ -6,7 +6,13 @@ use App\Services\SocialMedia;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\ActivityLog;
+use App\Utils\DateRequestFilter;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
+
+
 
 class UserController extends BaseController
 {
@@ -17,6 +23,7 @@ class UserController extends BaseController
         $this->validate = new Validation();
         $this->helpers = new Helpers();
         $this->model = 'App\Models\\' . $this->request->user;
+        $this->db = getenv('DB_DATABASE');
     }
 
     public function requestAccount()
@@ -98,4 +105,24 @@ class UserController extends BaseController
       return Helpers::returnError("Something went wrong", 503);
     }
   }
+
+  public function getAllActiveUsers()
+  {
+    $requestArray = DateRequestFilter::getRequestParam($this->request);
+    list($start_date, $end_date) = $requestArray;
+    try {
+      $result = DB::select('SELECT * FROM ' . $this->db . ' WHERE type = "ma" OR type  = "offtaker" OR type="partner"');
+      $filterUsers = ActivityLog::select('DISTINCT(email)')
+      ->where('activity', '=', 'logged in')
+      ->whereBetween('created_at', [$start_date, $end_date])
+      ->get()->count();
+        return Helpers::returnSuccess("", [
+          'allUsersCount' => count($result),
+          'activeUsersCount' => $filterUsers
+        ], 200);
+    } catch (Exception $e) {
+      return Helpers::returnError("Something went wrong.", 503);
+    }
+  }
+  
 }
