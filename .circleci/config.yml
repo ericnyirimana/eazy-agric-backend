@@ -58,7 +58,7 @@ jobs:
       - run: 
           name: Build and Push
           command: |
-            if [ "${CIRCLE_BRANCH}" = "dev" ]; then
+            if [ "${CIRCLE_BRANCH}" = "dev-test" ]; then
               echo ${SERVICE_ACCOUNT} > ${HOME}/gcp-key.json
               docker build --build-arg db_connection="${DB_CONNECTION}" --build-arg db_host="${DB_HOST}" --build-arg db_port="${DB_PORT}" --build-arg db_database="${DB_DATABASE}" --build-arg db_username="${DB_USERNAME}" --build-arg db_password="${DB_PASSWORD}" --build-arg cache_driver="${CACHE_DRIVER}" --build-arg queue_connection="${QUEUE_CONNECTION}" --build-arg jwt_secret="${JWT_SECRET}" --build-arg frontend_url="${FRONTEND_URL}" --build-arg mj_apikey_public="${MJ_APIKEY_PUBLIC}" --build-arg mj_api_email="${MJ_API_EMAIL}" --build-arg mj_api_secret_key="${MJ_API_SECRET_KEY}" --build-arg twitter_api_key="${TWITTER_API_KEY}" --build-arg twitter_api_key_secret="${TWITTER_API_KEY_SECRET}" --build-arg twitter_access_token="${TWITTER_ACCESS_TOKEN}" --build-arg twitter_access_token_secret="${TWITTER_ACCESS_TOKEN_SECRET}" --build-arg fb_page_id="${FB_PAGE_ID}" --build-arg fb_app_id="${FB_APP_ID}" --build-arg fb_app_secret="${FB_APP_SECRET}" --build-arg fb_access_token="${FB_ACCESS_TOKEN}" --build-arg yb_api_key="${YB_API_KEY}" --build-arg yb_channel_id="${YB_CHANNEL_ID}" --rm=false -t gcr.io/${GCP_PROJECT_ID}/ezyagric-backend-image:$CIRCLE_SHA1 .
               gcloud auth activate-service-account --key-file ${HOME}/gcp-key.json
