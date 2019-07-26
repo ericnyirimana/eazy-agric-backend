@@ -37,9 +37,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/activity-summary', 'AdminController@getActivitySummary');
       $router->get('/total-acreage', 'MapCordinatesController@getTotalAcreage');
       $router->get('/total-payment', 'TotalPaymentController@getTotalPayment');
-      $router->get('/twitter-report', 'AdminController@getTwitterReport');
-      $router->get('/youtube-report', 'AdminController@getYoutubeReport');
-      $router->get('/facebook-report', 'AdminController@getFacebookReport');
+      $router->get('/twitter-report', 'UserController@getTwitterReport');
+      $router->get('/youtube-report', 'UserController@getYoutubeReport');
+      $router->get('/facebook-report', 'UserController@getFacebookReport');
       $router->get('/admins', 'AdminController@getAdmins');
       $router->delete('/account/{id}', 'AdminController@deleteAccount');
       $router->patch('/account/{id}', 'AdminController@editAccount');

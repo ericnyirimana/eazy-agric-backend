@@ -397,16 +397,16 @@ Input suppliers
 
 ```
 {
-    "email": "devpartner1234@gmail.com",
-    "password": "devpartner1234",
-    "dp_username": "devpartner",
-    "dp_name": "devpartner",
-    "account_type": "Custom",
-    "dp_contact_person": "Samuel",
-    "dp_phonenumber": "34567898765",
-    "dp_district": "somewheere",
-    "dp_address": "somewhere",
-    "value_chain": "Crop"
+  "account_type": "Custom",
+  "address": "Molestiae nostrud la",
+  "contact_person": "Distinctio",
+  "district": "Kyenjojo",
+  "email": "nf@gmail.com",
+  "firstname": "Veda htu",
+  "lastname": "Nunez",
+  "password": "123123",
+  "phonenumber": "+1 (669) 138-6075",
+  "value_chain": "N/A"
 }
 ```
 

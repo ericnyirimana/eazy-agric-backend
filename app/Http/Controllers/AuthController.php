@@ -77,7 +77,7 @@ class AuthController extends BaseController
     {
         try {
             $this->validate->validateForgotPassword($this->request);
-            $user = DB::select('select * from ' . $this->db . ' where email = ?', [$this->request->input('email')]);
+            $user = DB::select('select * from ' . $this->db . ' WHERE email = ? AND (type = "ma" OR type  = "offtaker" OR type = "admin" OR type="partner")', [$this->request->input('email')]);
             if ($user) {
                 $token = Helpers::jwt([ '_id' => $user[0][$this->db]['_id'], 'email' => $user[0][$this->db]['email'] ]);
                 $data = RequestPassword::create([ '_id' => Helpers::generateId(), 'token' => $token ]);
