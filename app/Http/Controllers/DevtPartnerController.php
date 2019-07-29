@@ -8,7 +8,7 @@ use App\Utils\Validation;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Utils\DateRequestFilter;
-use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\ActivityController;
 
 class DevtPartnerController extends BaseController
 {

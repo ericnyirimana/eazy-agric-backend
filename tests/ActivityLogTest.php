@@ -2,7 +2,7 @@
 
 use App\Utils\MockData;
 use App\Utils\Helpers;
-use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\ActivityController;
 
 class ActivityLogTest extends TestCase
 {
