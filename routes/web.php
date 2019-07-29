@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
@@ -10,6 +11,7 @@ use App\Http\Controllers\UserController;
 | and give it the Closure to call when that URI is requested.
 |
  */
+
 $router->get('/', function () use ($router) {
   return $router->app->version();
 });
@@ -34,7 +36,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/users/{user}', 'AdminController@getUsers');
       $router->get('/devt-partners', 'DevtPartnerController@getDevtPartners');
       $router->get('/top-districts', 'DistrictController@getTopDistricts');
-      $router->get('/activity-summary', 'AdminController@getActivitySummary');
+      $router->get('/activity-summary', 'ActivityController@getActivitySummary');
       $router->get('/total-acreage', 'MapCordinatesController@getTotalAcreage');
       $router->get('/total-payment', 'TotalPaymentController@getTotalPayment');
       $router->get('/twitter-report', 'UserController@getTwitterReport');
@@ -48,7 +50,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/account/{id}', 'AdminController@getUser');
       $router->patch('/{action}/{id}', 'AdminController@accountAction');
     });
-    $router->get('/activity-log', 'ActivityLogController@getActivityLog');
+    $router->get('/activity-log', 'ActivityController@getActivityLog');
   });
   $router->group(['middleware' => 'validateParams'], function () use ($router) {
     $router->post('/request/{user}', 'UserController@requestAccount');

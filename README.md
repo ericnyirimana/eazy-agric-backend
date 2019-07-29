@@ -903,3 +903,27 @@ Param `{user}` = `offtaker` or `masteragent`
   }
 }
 ```
+
+### Get all activity logs
+
+#### Request
+
+`POST /api/v1/activity-log`
+
+#### Request Body
+
+
+#### Response
+```
+[
+    {
+        "email": "admin2020@gmail.com",
+        "target_email": "johndoe@gmail.com",
+        "target_firstname": "john",
+        "target_lastname": "doe",
+        "activity": "account deleted",
+        "updated_at": "2019-07-22 14:48:27",
+        "created_at": "2019-07-22 14:48:27"
+    }
+]
+```
