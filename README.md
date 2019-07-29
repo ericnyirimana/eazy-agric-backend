@@ -98,17 +98,17 @@ offtaker
 
 ========================================
 
-
 ### Get all village agents/offtakers/input suppliers
 
 #### Request
 
 `GET /api/v1/users/{user}`
-Param `{user}` = `offtakers`, `village-agents` or `input-suppliers`
+Param `{user}` = `offtakers`, `village-agents`,`input-suppliers` or `government`
 
 #### Response
 
 Village agents
+
 ```
 {
     "success": true,
@@ -156,7 +156,9 @@ Village agents
     ]
 }
 ```
+
 Offtakers
+
 ```
 {
   "success": true,
@@ -181,7 +183,9 @@ Offtakers
   ]
 }
 ```
+
 Input suppliers
+
 ```
 
   "success": true,
@@ -216,6 +220,34 @@ Input suppliers
     }
   ],
   "percentage": 100
+}
+```
+
+Government
+
+```
+{
+  "success": true,
+  "count": 9,
+  "result": [
+    {
+             "_id": "CuhD8lb",
+            "account_type": "Custom",
+            "address": "Molestiae nostrud la",
+            "contact_person": "Distinctio",
+            "created_at": "2019-07-25 13:23:08",
+            "district": "Kyenjojo",
+            "eloquent_type": "government",
+            "email": "government24@gmail.com",
+            "firstname": "Veda htu",
+            "lastname": "Nunez",
+            "phonenumber": "+1 (669) 138-6075",
+            "status": "demo",
+            "type": "government",
+            "updated_at": "2019-07-25 13:23:08",
+            "value_chain": "N/A"
+    }
+  ]
 }
 ```
 
@@ -350,6 +382,56 @@ Input suppliers
     "updated_at": "2019-07-22 14:40:20",
     "created_at": "2019-07-22 14:40:20"
   }
+}
+```
+
+==========================================================
+
+### Create a Government account
+
+#### Request
+
+`POST /api/v1/users/government`
+
+#### Request Body
+
+```
+{
+  "account_type": "Custom",
+  "address": "Molestiae nostrud la",
+  "contact_person": "Distinctio",
+  "district": "Kyenjojo",
+  "email": "government29@gmail.com",
+  "firstname": "Christiana",
+  "lastname": "Nunez",
+  "password": "123123",
+  "phonenumber": "+1 (669) 138-6075",
+  "value_chain": "N/A"
+}
+```
+
+#### Response
+
+```
+{
+  "message": "Please check your mail for your login password",
+  "success": true,
+    "government": {
+        "type": "government",
+        "status": "demo",
+        "account_type": "Custom",
+        "address": "Molestiae nostrud la",
+        "contact_person": "Distinctio",
+        "district": "Kyenjojo",
+        "email": "government29@gmail.com",
+        "firstname": "Christiana",
+        "lastname": "Nunez",
+        "phonenumber": "+1 (669) 138-6075",
+        "value_chain": "N/A",
+        "_id": "ozhdbTE",
+        "updated_at": "2019-07-29 13:39:10",
+        "created_at": "2019-07-29 13:39:10"
+    }
 }
 ```
 
@@ -637,7 +719,8 @@ Input suppliers
 `PATCH /api/v1/{action}/{id}`
 Param `{action}` = `activate` or `suspend`
 Param `{id}` = Account id
- #### Response
+
+#### Response
 
 ```
 {
@@ -662,7 +745,6 @@ Param `{id}` = Account id
 }
 
 ```
-
 
 ### Send Message Through the Contact Form
 
@@ -828,6 +910,7 @@ Param `{id}` = Account id
 
 `GET /api/v1/top-performing/{agent}`
 Param `{agent}` = `ma` or `va`
+
 #### Response
 
 ```
@@ -865,14 +948,15 @@ Param `{agent}` = `ma` or `va`
 
 ========================================
 
-
 ### Request for an offtaker or masteragent account
 
 #### Request
+
 `POST api/v1/request{user}`
 Param `{user}` = `offtaker` or `masteragent`
 
 ##### Request body
+
 ```
 {
     "email":"mikel@gmail.com",
@@ -882,7 +966,9 @@ Param `{user}` = `offtaker` or `masteragent`
     "address": "Andela"
 }
 ```
+
 #### Response body
+
 ```
 {
   "success": true,
@@ -912,8 +998,8 @@ Param `{user}` = `offtaker` or `masteragent`
 
 #### Request Body
 
-
 #### Response
+
 ```
 [
     {
@@ -928,13 +1014,16 @@ Param `{user}` = `offtaker` or `masteragent`
 ]
 ```
 
+========================================
 
 ### Get top performing districts by app downloads and web users
 
 #### Request
+
 `POST api/v1/top-performing-district`
 
 #### Response body
+
 ```
 {
     "success": true,

@@ -1,19 +1,16 @@
 <?php
 namespace App\Models;
 
-use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Lumen\Auth\Authorizable;
 
-class OffTaker extends Model
+class Government extends Model
 {
-    use Authenticatable, Authorizable;
     /**
      * The document type
      * @var string
      */
-    protected $table = 'offtaker';
+    protected $table = 'government';
     /**
      * The attributes that are mass assignable.
      *
@@ -22,17 +19,16 @@ class OffTaker extends Model
     protected $fillable = [
         'firstname',
         'lastname',
-        'organization',
         'phonenumber',
-        'district',
-        'email',
-        'status',
-        'contact_person',
+        'address',
         'value_chain',
         'account_type',
-        'status',
-        'type' => 'offtaker',
+        'email',
+        'district',
+        'contact_person',
         '_id',
+        'type' => 'government',
+        'password',
     ];
     /**
      * The attributes excluded from the model's JSON form.
@@ -40,7 +36,7 @@ class OffTaker extends Model
      * @var array
      */
     protected $hidden = [
-        'password', 'id',
+        'id', 'password',
     ];
     /**
      * The model's default values for attributes.
@@ -48,10 +44,9 @@ class OffTaker extends Model
      * @var array
      */
     protected $attributes = [
-        'type' => 'offtaker',
+        'type' => 'government',
         'status' => 'demo',
     ];
-
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);

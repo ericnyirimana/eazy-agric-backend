@@ -252,14 +252,16 @@ class AdminController extends BaseController
 
   public function getUsers()
   {
-    if (!preg_match('/\b(offtakers|village-agents|input-suppliers)\b/', $this->request->user)) {
+    if (!preg_match('/\b(government|offtakers|village-agents|input-suppliers)\b/', $this->request->user)) {
       return Helpers::returnError("Invalid parameters supplied.", 400);
     }
 
     $model = [
       "offtakers" => "Offtaker",
       "village-agents" => "VillageAgent",
-      "input-suppliers" => "InputSupplier"
+      "input-suppliers" => "InputSupplier",
+      "government" => "Government"
+
     ];
     $model = 'App\Models\\' . $model[$this->request->user];
 

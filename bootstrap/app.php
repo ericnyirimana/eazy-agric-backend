@@ -64,7 +64,7 @@ $app->routeMiddleware([
 
     'auth' => App\Http\Middleware\Authenticate::class,
     'admin' => App\Http\Middleware\AuthenticateAdmin::class,
-    'validateParams' => App\Http\Middleware\ValidateParams::class
+    'validateParams' => App\Http\Middleware\ValidateParams::class,
 
 ]);
 
