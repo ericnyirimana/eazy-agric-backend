@@ -66,6 +66,14 @@ class AdminController extends BaseController
       try {
         if ($this->request->password === $this->request->confirmPassword) {
           $data = Admin::create($this->request->all() + ['_id' => Helpers::generateId()]);
+          $userInfo = [
+              'email' => $this->request->admin->email,
+              'target_firstname' => $data->firstname,
+              'target_lastname' => $data->lastname,
+              'target_email' => $data->email
+          ];
+          $activityLog =  $data ? Helpers::logActivity($userInfo, 'admin account created') : [];
+
           return $data ?
             Helpers::returnSuccess("", ['admin' => $data], 200) : Helpers::returnError("Could not create user.", 408);
         }
@@ -158,6 +166,16 @@ class AdminController extends BaseController
         $user = Helpers::queryUser($this->request->id);
         unset($user[0][$this->db]['password']);
         $message = ($action === 'active') ? 'Account activated successfully.' : 'Account suspended successfully.';
+
+        Helpers::logActivity(
+            [
+                'email' => $this->request->admin->email,
+                'target_firstname' => $user[0][$this->db]['firstname'],
+                'target_lastname' => $user[0][$this->db]['lastname'],
+                'target_email' => $user[0][$this->db]['email'],
+            ],
+            str_replace(' successfully', '', $message));
+
         return Helpers::returnSuccess($message, ['user' => $user[0][$this->db]], 200);
       } else {
         return Helpers::returnError("User not found.", 404);
@@ -181,6 +199,11 @@ class AdminController extends BaseController
       $user = DB::select('select * from ' . $this->db . ' where _id = ?', [$this->request->auth]);
       if (Hash::check($this->request->input('oldPassword'), $user[0][$this->db]['password'])) {
         Admin::where('_id', $this->request->auth)->update(['password' => Hash::make($this->request->input('newPassword'))]);
+        Helpers::logActivity([
+            'target_firstname' => $user[0][$this->db]['firstname'], 'email' => $this->request->admin->email,
+            'target_email' => $user[0][$this->db]['email'], 'target_lastname' => $user[0][$this->db]['lastname'],
+        ], 'password changed.');
+
         return Helpers::returnSuccess("Your Password has been changed successfully.", [], 200);
       }
       return Helpers::returnError("Current password is incorrect.", 400);
@@ -222,7 +245,7 @@ class AdminController extends BaseController
     }
   }
 
-  /** 
+  /**
    * @param string id
    * @return object http response
    */
@@ -232,6 +255,12 @@ class AdminController extends BaseController
       $user = Helpers::checkUser($id);
       if (!$user) return Helpers::returnError("User does not exist.", 404);
       if (Helpers::deleteUser($id)) {
+        Helpers::logActivity([
+            'email' => $this->request->admin->email,
+            'target_firstname' => $user['firstname'],
+            'target_lastname' => $user['lastname'],
+            'target_email' => $user['email'],
+        ], 'Account deleted');
         return Helpers::returnSuccess("Account deleted successfully.", [], 200);
       } else return Helpers::returnError("Account could not be deleted.", 503);
     } catch (Exception $e) {
@@ -251,13 +280,18 @@ class AdminController extends BaseController
 
     $isEmpty = $this->validateInput->isEmpty();
     if ($isEmpty) return Helpers::returnError($isEmpty, 422);
-
     $this->validate->validateExistingAccount($this->request, $id);
 
     try {
       if (Helpers::editAccount($id, $this->request->all())) {
         $updatedUser = Helpers::queryUser($id);
         unset($updatedUser[0][$this->db]['password']);
+
+        Helpers::logActivity([
+            'email' => $this->request->admin->email, 'target_firstname' => $updatedUser[0][$this->db]['firstname'],
+            'target_email' => $updatedUser[0][$this->db]['email'],
+            'target_lastname' => $updatedUser[0][$this->db]['lastname']
+        ], 'account updated');
         return Helpers::returnSuccess("Account updated successfully.", ["user" => $updatedUser[0][$this->db]], 200);
       }
     } catch (\Illuminate\Validate\ValidationException $e) {

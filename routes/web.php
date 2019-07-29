@@ -48,6 +48,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/account/{id}', 'AdminController@getUser');
       $router->patch('/{action}/{id}', 'AdminController@accountAction');
     });
+    $router->get('/activity-log', 'ActivityLogController@getActivityLog');
   });
   $router->group(['middleware' => 'validateParams'], function () use ($router) {
     $router->post('/request/{user}', 'UserController@requestAccount');
