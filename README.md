@@ -1013,7 +1013,6 @@ Param `{user}` = `offtaker` or `masteragent`
     }
 ]
 ```
-
 ========================================
 
 ### Get top performing districts by app downloads and web users
@@ -1061,6 +1060,45 @@ Param `{user}` = `offtaker` or `masteragent`
     ]
 }
 ```
+========================================
+
+
+### Get all districts
+
+#### Request
+`GET api/v1/districts`
+
+#### Response body
+```
+{
+
+    "success": true,
+    "message": "Districts retrieved successfully",
+    "data": [
+        {
+            "name": "Nakasongola"
+        },
+        {
+            "name": "Bundibugyo"
+        },
+        {
+            "name": "Kyankwanzi"
+        },
+        {
+            "name": "Kole"
+        },
+        {
+            "name": "Maracha"
+        },
+        {
+            "name": "Kiboga"
+        },
+        {
+            "name": "Kyenjojo"
+        }
+    ]
+}
+```
 
 ### Get all active users
 
@@ -1073,11 +1111,124 @@ Param `{user}` = `offtaker` or `masteragent`
 
 #### Response
 ```
-
 {
     "success": true,
     "allUsersCount": 98,
     "activeUsersCount": 3
 }
+```
 
+========================================
+
+### Get all enterprise (crops)
+
+#### Request
+`GET api/v1/enterprises`
+
+#### Response body
+```
+{
+
+    "success": true,
+    "message": "Enterprises retrieved successfully",
+    "data": [
+        {
+            "name": "Rice"
+        },
+        {
+            "name": "Beans"
+        },
+        {
+            "name": "Popcorn"
+        },
+        {
+            "name": "Coffee"
+        },
+        {
+            "name": "Tobacco"
+        },
+        {
+            "name": "Cassava"
+        },
+        {
+            "name": "Maize"
+        }
+    ]
+}
+```
+
+========================================
+
+### Get most ordered products and services
+
+#### Request
+`GET api/v1/most-ordered?type={type}&filter={filter}`
+
+Param `{type}` = `district` or `enterprise`
+
+Param `{filter}` = `districtName` or `cropName`
+
+#### Response body
+```
+{
+
+    "success": true,
+    "data": {
+        "products": [
+            [
+                "Blended fertilizer",
+                "Dudu Cypher"
+            ],
+            [
+                "Weed master",
+                "Dudu Cypher"
+            ],
+            [
+                "Weed master",
+                "Harvester"
+            ],
+            [
+                "Korn Kali",
+                "Dudu Kill"
+            ],
+            [
+                "Maguguma",
+                "Harvester"
+            ],
+            [
+                "Blended fertilizer",
+                "Dudu Kill"
+            ],
+            [
+                "Weed master",
+                "Metrazin"
+            ],
+            [
+                "Korn Kali",
+                "Metrazin"
+            ],
+            [
+                "Korn Kali",
+                "Dudu Cypher"
+            ]
+        ],
+        "services": [
+            {
+                "garden_mapping": 9
+            },
+            {
+                "soil_test": 6
+            },
+            {
+                "planting": 6
+            },
+            {
+                "spraying": 4
+            },
+            {
+                "insurance": 8
+            }
+        ]
+    }
+}
 ```

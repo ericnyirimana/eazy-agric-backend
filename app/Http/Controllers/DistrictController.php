@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use App\Models\Farmer;
 
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Utils\DateRequestFilter;
 use App\Utils\Helpers;
-use Exception;
 
 class DistrictController extends Controller
 {
@@ -62,7 +63,8 @@ class DistrictController extends Controller
   /**
    * Get top performing districts based on app downloads and web users
    */
-  public function getTopPerformingDistricts() {
+  public function getTopPerformingDistricts()
+  {
     try {
       $topDistrictsByAppDownloads = Helpers::getTopDistrictsByAppDownloads();
 
@@ -80,9 +82,22 @@ class DistrictController extends Controller
         $topDistrictsByAppDownloads[$index]['webUsers'] = $topDistrictWebUsers[0]['district_web_users'];
         $topDistrictsByAppDownloads[$index]['appPurchases'] = $topDistrictAppPurchases[0]['district_app_purchases'];
       }
-      return Helpers::returnSuccess("", [ 'data' => $topDistrictsByAppDownloads ], 200);
+      return Helpers::returnSuccess("", ['data' => $topDistrictsByAppDownloads], 200);
     } catch (Exception $e) {
       return Helpers::returnError('Something went wrong.', 503);
+    }
+  }
+
+  /**
+   * Gets all districts in the database
+   * @return object http response
+   */
+  public function getDistricts() {
+    try {
+      $districts = District::all('name');
+      return Helpers::returnSuccess("Districts retrieved successfully", ['data' => $districts], 200);
+    } catch (Exception $e) {
+      return Helpers::returnError("Something went wrong.", 503);
     }
   }
 }

@@ -2,6 +2,7 @@
 
 namespace database\factories;
 
+use App\Models\Farmer;
 use App\Models\MasterAgent;
 use App\Models\VillageAgent;
 use Faker\Generator as Faker;
@@ -51,7 +52,9 @@ class MapCoordinateFactory {
             'eloquent_type' => 'map_cordinates',
             'garden_name' => 'Moses',
             'time' => '2019-05-07T10:29:07',
-            'user_id' => 'AFAHAJOH788007645RUKNYA',
+            'user_id' => function() {
+              return factory(Farmer::class)->create()->_id;
+            },
             'amount' => 7000,
         ];
     }

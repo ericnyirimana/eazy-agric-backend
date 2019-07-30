@@ -13,7 +13,7 @@ class FarmerFactory {
         $district = $faker->randomElement($districts);
         $regions = ['Western', 'Eastern', 'Central', 'Northern'];
         $region = $faker->randomElement($regions);
-        $valueChains = ['Beans', 'Coffee', 'Popcorn', 'Tobbaco', 'Rice', 'Cassava'];
+        $valueChains = ['Beans', 'Coffee', 'Popcorn', 'Tobbaco', 'Rice', 'Cassava', 'Maize'];
         $valueChain = $faker->randomElement($valueChains);
         return [
             '_id' => $faker->uuid,

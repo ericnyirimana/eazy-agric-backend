@@ -12,7 +12,7 @@ class MapCoordinateDocumentSeeder extends Seeder
      */
     public function run()
     {
-        factory(MapCoordinate::class, 5)->create();
+        factory(MapCoordinate::class, 10)->create();
         // You can add more seeds here
     }
 }

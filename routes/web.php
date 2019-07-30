@@ -48,6 +48,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/top-performing/{agent}', 'AdminController@getTopAgents');
       $router->get('/top-performing-district', 'DistrictController@getTopPerformingDistricts');
       $router->get('/account/{id}', 'AdminController@getUser');
+      $router->get('/districts', 'DistrictController@getDistricts');
+      $router->get('/enterprises', 'OurCropController@getEnterprises');
+      $router->get('/most-ordered', 'ReportController@getMostOrdered');
       $router->patch('/{action}/{id}', 'AdminController@accountAction');
     });
     $router->get('/activity-log', 'ActivityController@getActivityLog');

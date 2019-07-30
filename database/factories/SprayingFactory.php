@@ -2,6 +2,7 @@
 
 namespace database\factories;
 
+use App\Models\Farmer;
 use App\Models\MasterAgent;
 use App\Models\VillageAgent;
 use Faker\Generator as Faker;
@@ -29,7 +30,9 @@ class SprayingFactory {
             'type' => 'spraying',
             'eloquent_type' => 'spraying',
             'time' => '2018-11-19T15:40:25',
-            'user_id' => 'AFAHAJOH788007645RUKNYA',
+            'user_id' => function() {
+              return factory(Farmer::class)->create()->_id;
+            },
             'payment' => 'cash',
         ];
     }
