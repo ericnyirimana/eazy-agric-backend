@@ -47,6 +47,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->patch('/account/{id}', 'AdminController@editAccount');
       $router->get('/top-produce', 'FarmerProduceController@getTopFarmProduce');
       $router->get('/top-performing/{agent}', 'AdminController@getTopAgents');
+      $router->get('/top-performing-district', 'DistrictController@getTopPerformingDistricts');
       $router->get('/account/{id}', 'AdminController@getUser');
       $router->patch('/{action}/{id}', 'AdminController@accountAction');
     });
