@@ -16,7 +16,6 @@ class ActivityLog extends Model
      *
      * @var array
      */
-
     protected $fillable = [
         'timestamp',
         'activity',
@@ -35,7 +34,6 @@ class ActivityLog extends Model
     protected $hidden = [
         'id',
     ];
-
     /**
      * The model's default values for attributes.
      *
