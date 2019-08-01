@@ -1,9 +1,8 @@
 <?php
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Utils\Helpers;
-
+use Closure;
 
 class ValidateParams
 {
@@ -17,9 +16,9 @@ class ValidateParams
      */
     public function handle($request, Closure $next, $guard = null)
     {
-      if (!preg_match('/\b(masteragent|offtaker)\b/', $request->user)) {
-        return Helpers::returnError("Invalid parameter supplied.", 400);
-      }
+        if (!preg_match('/\b(government|masteragent|offtaker)\b/', $request->user)) {
+            return Helpers::returnError("Invalid parameter supplied.", 400);
+        }
         return $next($request);
     }
 }
