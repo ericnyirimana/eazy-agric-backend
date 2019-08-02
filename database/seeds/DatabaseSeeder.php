@@ -14,6 +14,8 @@ class DatabaseSeeder extends Seeder
          $this->call('AdminDocumentSeeder');
          $this->call('PartnerDocumentSeeder');
          $this->call('InputSupplierDocumentSeeder');
+         $this->call('InputOrderDocumentSeeder');
+         $this->call('MapCoordinateDocumentSeeder');
          $this->call('MasterAgentDocumentSeeder');
          $this->call('OffTakerDocumentSeeder');
          $this->call('RequestPasswordDocumentSeeder');
@@ -28,5 +30,6 @@ class DatabaseSeeder extends Seeder
          $this->call('CropInfoDocumentSeeder');
          $this->call('InsuranceDocumentSeeder');
          $this->call('ExpenseDocumentSeeder');
+         $this->call('DistrictDocumentSeeder');
     }
 }

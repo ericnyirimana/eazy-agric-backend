@@ -2,6 +2,7 @@
 
 namespace database\factories;
 
+use App\Models\Farmer;
 use App\Models\MasterAgent;
 use App\Models\VillageAgent;
 use Faker\Generator as Faker;
@@ -23,7 +24,9 @@ class PlantingFactory {
             'total' => 200000,
             'type' => 'planting',
             'unit_cost' => 100000,
-            'user_id' => 'AFAHAJOH788007645RUKNYA',
+            'user_id' => function() {
+              return factory(Farmer::class)->create()->_id;
+            },
             "vaId" => function() {
                 return factory(VillageAgent::class)->create()->_id;
             },

@@ -2,11 +2,14 @@
 
 namespace database\factories;
 
+use App\Models\Farmer;
 use Faker\Generator as Faker;
 
 class InsuranceFactory {
     public static function getFactory(Faker $faker)
     {
+        $cropsInsured = ['Maize, Beans', 'Rice', 'Popcorn', 'Coffee', 'Cassava'];
+        $cropInsured = $faker->randomElement($cropsInsured);
         return [
             'phone' => $faker->phoneNumber,
             'name' => $faker->name,
@@ -50,14 +53,16 @@ class InsuranceFactory {
                         'yield_produced' => 1500,
                     ],
                 ],
-            'user_id' => 'AFAHAJOH788007645RUKNYA',
+            'user_id' => function() {
+              return factory(Farmer::class)->create()->_id;
+            },
             '_id' => $faker->uuid,
             'request' =>
                 [
                     'seed_sources' => '10',
                     'av_yield' => '100000',
                     'variety' => 'longe10',
-                    'crop_insured' => 'Maize',
+                    'crop_insured' => $cropInsured,
                     'acreage_insured' => '2',
                 ],
             'time' => '2017-10-20T10:58:33',

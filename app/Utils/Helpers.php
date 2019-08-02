@@ -2,8 +2,15 @@
 
 namespace App\Utils;
 
+use App\Models\Farmer;
+use App\Models\InputOrder;
+use App\Models\Insurance;
+use App\Models\MapCoordinate;
 use App\Models\MasterAgent;
 use App\Models\ActivityLog;
+use App\Models\Planting;
+use App\Models\SoilTest;
+use App\Models\Spraying;
 use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
@@ -197,9 +204,10 @@ class Helpers extends BaseController
   /**
    * Gets the top districts ranked by the number of app downloads
    */
-  public static function getTopDistrictsByAppDownloads() {
+  public static function getTopDistrictsByAppDownloads()
+  {
     $topDistrictsByAppDownloads = DB::select("SELECT farmer.farmer_district AS name, COUNT(farmer.farmer_district) AS appDownloads
-      FROM " . self::$db. " farmer 
+      FROM " . self::$db . " farmer 
       INNER JOIN " . self::$db . " account 
       ON KEYS ('account::' || farmer.farmer_id) 
       WHERE account.type == 'account'
@@ -207,5 +215,59 @@ class Helpers extends BaseController
       GROUP BY farmer.farmer_district
       ORDER BY appDownloads DESC LIMIT 5");
     return $topDistrictsByAppDownloads;
+  }
+
+  /**
+   * Returns the most ordered products,
+   * filtered by enterprise(crop) or district
+   *
+   * @param string type - filter type
+   * @param string filter - filter value
+   * @return array products
+   */
+  public static function getMostOrderedProducts($type = 'enterprise', $filter = '') {
+    $products = "";
+    if ($type == 'enterprises') {
+      $enterpriseFarmers = Farmer::query()->select('_id')->where('value_chain', '=', $filter)->get()->toArray();
+      $farmerIDs = array_map(function ($enterpriseFarmer) { return $enterpriseFarmer['_id']; }, $enterpriseFarmers );
+      $productOrders = InputOrder::query()->select('orders[*].product')->whereIn('user_id', $farmerIDs)->get()->toArray();
+      $products = array_map(function ($product) { return $product['product']; }, $productOrders);
+    } else if ($type == 'districts') {
+      $productOrders = InputOrder::query()->select('orders[*].product')->where('details.district', '=', $filter)->get()->toArray();
+      $products = array_map(function ($product) { return $product['product']; }, $productOrders);
+    }
+    return $products;
+  }
+
+  /**
+   * Returns the most ordered services,
+   * filtered by enterprise(crop) or district
+   *
+   * @param string type - filter type
+   * @param string filter - filter value
+   * @return array services
+   */
+  public static function getMostOrderedServices($type = 'enterprise', $filter = '') {
+    $services = "";
+    if ($type == 'enterprises') {
+      $enterpriseFarmers = Farmer::query()->select('_id')->where('value_chain', '=', $filter)->get()->toArray();
+      $farmerIDs = array_map(function ($enterpriseFarmer) { return $enterpriseFarmer['_id']; }, $enterpriseFarmers );
+      $mapCoordinates = MapCoordinate::query()->select('COUNT(*) AS garden_mapping')->whereIn('user_id', $farmerIDs)->get()->toArray();
+      $soilTest = SoilTest::query()->select('COUNT(*) AS soil_test')->whereIn('user_id', $farmerIDs)->get()->toArray();
+      $planting = Planting::query()->select('COUNT(*) AS planting')->whereIn('user_id', $farmerIDs)->get()->toArray();
+      $spraying = Spraying::query()->select('COUNT(*) AS spraying')->whereIn('user_id', $farmerIDs)->get()->toArray();
+      $insurance = Insurance::query()->select('COUNT(*) AS insurance')->where('request.crop_insured', '=', $filter)->get()->toArray();
+      $services = array_merge($mapCoordinates, $soilTest, $planting, $spraying, $insurance);
+    } else if ($type == 'districts') {
+      $enterpriseFarmers = Farmer::query()->select('_id')->where('farmer_district', '=', $filter)->get()->toArray();
+      $farmerIDs = array_map(function ($enterpriseFarmer) { return $enterpriseFarmer['_id']; }, $enterpriseFarmers );
+      $mapCoordinates = MapCoordinate::query()->select('COUNT(*) AS garden_mapping')->whereIn('user_id', $farmerIDs)->get()->toArray();
+      $soilTest = SoilTest::query()->select('COUNT(*) AS soil_test')->where('district', '=', $filter)->get()->toArray();
+      $planting = Planting::query()->select('COUNT(*) AS planting')->where('district', '=', $filter)->get()->toArray();
+      $spraying = Spraying::query()->select('COUNT(*) AS spraying')->where('district', '=', $filter)->get()->toArray();
+      $insurance = Insurance::query()->select('COUNT(*) AS insurance')->whereIn('user_id', $farmerIDs)->get()->toArray();
+      $services = array_merge($mapCoordinates, $soilTest, $planting, $spraying, $insurance);
+    }
+    return $services;
   }
 }

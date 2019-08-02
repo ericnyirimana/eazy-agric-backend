@@ -12,6 +12,6 @@ class InsuranceDocumentSeeder extends Seeder
      */
     public function run()
     {
-        factory(Insurance::class, 5)->create();
+        factory(Insurance::class, 45)->create();
     }
 }
