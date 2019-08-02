@@ -7,6 +7,7 @@ use App\Rules\District;
 use App\Rules\Email;
 use App\Rules\emailUpdate;
 use App\Rules\ValueChain;
+use App\Rules\PhoneNumber;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Validation extends BaseController
@@ -108,6 +109,14 @@ class Validation extends BaseController
             'value_chain' => [new ValueChain()],
             'adminRole' => [new AdminRole()],
         ]);
-
+    }
+    public function validateVillageAgentData($data) {
+      $this->validate($data, [
+        '*.va_gender' => 'required',
+        '*.va_region' => 'required',
+        '*.va_subcounty' => 'required',
+        '*.va_phonenumber' => ['required', new PhoneNumber()],
+        '*.va_district' => [new District()]
+      ]);
     }
 }

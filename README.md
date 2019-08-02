@@ -1060,6 +1060,7 @@ Param `{user}` = `offtaker` or `masteragent`
     ]
 }
 ```
+<<<<<<< HEAD
 ========================================
 
 
@@ -1232,7 +1233,6 @@ Param `{filter}` = `districtName` or `cropName`
     }
 }
 ```
-========================================
 
 ### Get farmers and village agents order statistics
 
@@ -1269,4 +1269,90 @@ Param `{date}` = `YYYY-MM-DD`
         }
     ]
 }
+```
+
+### Add multiple village agents
+
+#### Request
+`POST api/v1/village-agents`
+
+```
+[
+  [
+      'agriculture_experience_in_years' => 'NA',
+      'assets_held' => 'NA',
+      'certification_doc_url' => 'NA',
+      'education_doc_url' => 'NA',
+      'education_level' => 'NA',
+      'eloquent_type' => 'va',
+      'farmers_enterprises' => 'NA',
+      'ma_id' => '2rcu44',
+      'other_occupation' => 'NA',
+      'partner_id' => 'NA',
+      'password' => '$2y$10$0hRHy0Ktg8QW3cAfDqgdvuP4YfwjYMBzunlY5LcrxrdsORahMAu7u',
+      'position held_in_community' => 'NA',
+      'service_provision_experience_in_years' => 'NA',
+      'services_va_provides' => 'NA',
+      'status' => 'active',
+      'time' => '2018-07-05T21:48:13:141586',
+      'total_farmers_acreage' => 'NA',
+      'total_number_of_farmers' => 'NA',
+      'type' => 'va',
+      'va_country' => 'Uganda',
+      'va_district' => 'Bushenyi',
+      'va_dob' => 'NA',
+      'va_gender' => 'female',
+      'va_home_gps_Accuracy' => 'NA',
+      'va_home_gps_Altitude' => 'NA',
+      'va_home_gps_Latitude' => 'NA',
+      'va_home_gps_Longitude' => 'NA',
+      'va_id_number' => 'NA',
+      'va_id_type' => 'NA',
+      'va_name' => 'Prof. Colton Stoltenberg Jr.',
+      'va_parish' => 'Nyakariro',
+      'va_phonenumber' => '1234567890',
+      'va_photo' => 'https =>\/\/drive.google.com\/open?id=1MwZuPcWTOcJYa6536Buk9FEc5i7HrZ3U',
+      'va_region' => 'Western',
+      'va_subcounty' => 'Bwambara',
+      'va_village' => 'Kashayo'
+    ],
+    [
+      'agriculture_experience_in_years' => 'NA',
+      'assets_held' => 'NA',
+      'certification_doc_url' => 'NA',
+      'education_doc_url' => 'NA',
+      'education_level' => 'NA',
+      'eloquent_type' => 'va',
+      'farmers_enterprises' => 'NA',
+      'ma_id' => '34yguci3',
+      'other_occupation' => 'NA',
+      'partner_id' => 'NA',
+      'password' => '$2y$10$0hRHy0Ktg8QW3cAfDqgdvuP4YfwjYMBzunlY5LcrxrdsORahMAu7u',
+      'position held_in_community' => 'NA',
+      'service_provision_experience_in_years' => 'NA',
+      'services_va_provides' => 'NA',
+      'status' => 'active',
+      'time' => '2018-07-05T21:48:13:141586',
+      'total_farmers_acreage' => 'NA',
+      'total_number_of_farmers' => 'NA',
+      'type' => 'va',
+      'va_country' => 'Uganda',
+      'va_district' => 'Bushenyi',
+      'va_dob' => 'NA',
+      'va_gender' => 'female',
+      'va_home_gps_Accuracy' => 'NA',
+      'va_home_gps_Altitude' => 'NA',
+      'va_home_gps_Latitude' => 'NA',
+      'va_home_gps_Longitude' => 'NA',
+      'va_id_number' => 'NA',
+      'va_id_type' => 'NA',
+      'va_name' => 'Prof. Colton Stoltenberg Jr.',
+      'va_parish' => 'Nyakariro',
+      'va_phonenumber' => '1234567890',
+      'va_photo' => 'https =>\/\/drive.google.com\/open?id=1MwZuPcWTOcJYa6536Buk9FEc5i7HrZ3U',
+      'va_region' => 'Western',
+      'va_subcounty' => 'Bwambara',
+      'va_village' => 'Kashayo'
+    ]
+];
 ```

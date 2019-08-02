@@ -16,13 +16,11 @@ use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
-use Dotenv\Regex\Success;
-use Symfony\Component\Mime\Message;
 
 class Helpers extends BaseController
 {
 
-  private static $password_string, $url, $mail, $password, $db, $masterAgent;
+  private static $url, $mail, $db, $masterAgent;
   public static $user;
   public function __construct()
   {

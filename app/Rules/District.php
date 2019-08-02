@@ -1,30 +1,33 @@
 <?php
+
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
 class District implements Rule
 {
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value)
-    {
-        return $value === 'Bukomansimbi' || $value === 'Kyenjojo' || $value === 'Kyenjojo' || $value === 'Buliisa' || $value === 'Jinja' || $value === 'Kitgum' || $value === 'Mukono' || $value === 'Amuru' || $value === 'Oyam' || $value === 'Buvuma' || $value === 'Pader' || $value === 'Kween' || $value === 'Arua' || $value === 'Kamwenge' || $value === 'Mbarara' || $value === 'Amuria' || $value === 'Apac' || $value === 'Mbale' || $value === 'Luuka' || $value === 'Kampala' || $value === 'Kibingo' || $value === 'Kotido' || $value === 'Kabarole' || $value === 'Mitooma' || $value === 'Sironko' || $value === 'Maracha' || $value === 'Nakapiripiti' || $value === 'Buikwe' || $value === 'Kasese' || $value === 'Mubende' || $value === 'Kanungu' || $value === 'Kaabong' || $value === 'Kayunga' || $value === 'Agago';
-        return $value;
-    }
+  /**
+   * Determine if the validation rule passes.
+   *
+   * @param  string  $attribute
+   * @param  mixed  $value
+   * @return bool
+   */
+  public function passes($attribute, $value)
+  {
+    $districts = [
+      "Kalangala", "Buikwe", "Buvuma", "Namayingo", "Katakwi", "Nakapiripirit", "Kamwenge", "Mbarara", "Kotido", "Agago", "Bulambuli", "Kween", "Amudat", "Kaberamaido", "Amolatar", "Kaliro", "Namutumba", "Kitgum", "Lamwo", "Pader", "Sironko", "Mbale", "Bugiri", "Busia", "Butaleja", "Mayuge", "Manafwa", "Tororo", "Masaka", "Kasese", "Ntungamo", "Bushenyi", "Rukungiri", "Ibanda", "Mbararaa", "Kabale", "Kanungu", "Nebbi", "Zombo", "Ngora", "Bukedea", "Budaka", "Kibuku", "Pallisa", "Serere", "Kalungu", "Gomba", "Amuru", "Amuria", "Otuke", "Oyam", "Kiryandongo", "Kibale", "Ntoroko", "Kyegegwa", "Napak", "Moroto", "Bukwa", "Bukomansimbi", "Lwengo", "Lyantonde", "Butambala", "Rubirizi", "Sheema", "Mitooma", "Buhweju", "Bududa", "Jinja", "Kayunga", "Iganga", "Alebtong", "Soroti", "Buyende", "Kumi", "Mpigi", "Adjumani", "Yumbe", "Kampala", "Mukono", "Wakiso", "Sembabule", "Mityana", "Nakaseke", "Dokolo", "Lira", "Gulu", "Nwoya", "Masindi", "Apac", "Buliisa", "Hoima", "Kabarole", "Kapchorwa", "Kaabong", "Abim", "Rakai", "Isingiro", "Kisoro", "Luuka", "Kamuli", "Arua", "Koboko", "Moyo", "Luweero", "Mubende", "Nakasongola", "Bundibugyo", "Kyankwanzi", "Kole", "Maracha", "Kiboga", "Kyenjojo"
+    ];
+    return in_array($value, $districts);
+  }
 
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'Invalid district';
-    }
+  /**
+   * Get the validation error message.
+   *
+   * @return string
+   */
+  public function message()
+  {
+    return 'Invalid district';
+  }
 }

@@ -53,6 +53,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/most-ordered', 'ReportController@getMostOrdered');
       $router->get('/farmer-agents-order-statistics', 'ReportController@getFarmerAgentsOrderStatistics');
       $router->patch('/{action}/{id}', 'AdminController@accountAction');
+      $router->post('/village-agents', 'UserController@addVillageAgents');
     });
     $router->get('/activity-log', 'ActivityController@getActivityLog');
   });
