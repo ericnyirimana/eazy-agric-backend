@@ -1232,3 +1232,41 @@ Param `{filter}` = `districtName` or `cropName`
     }
 }
 ```
+========================================
+
+### Get farmers and village agents order statistics
+
+#### Request
+`GET api/v1/farmer-agents-order-statistics?start_date={date}&end_date={date}`
+
+Param `{date}` = `YYYY-MM-DD`
+
+
+#### Response body
+```
+{
+    "success": true,
+    "data": [
+        {
+            "soil_test_agent": 19,
+            "soil_test_farmer": 20
+        },
+        {
+            "garden_mapping_agent": 30,
+            "garden_mapping_farmer": 30
+        },
+        {
+            "planting_agent": 20,
+            "planting_farmer": 20
+        },
+        {
+            "insurance_agent": 45,
+            "insurance_farmer": 45
+        },
+        {
+            "spraying_agent": 20,
+            "spraying_farmer": 20
+        }
+    ]
+}
+```

@@ -51,6 +51,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/districts', 'DistrictController@getDistricts');
       $router->get('/enterprises', 'OurCropController@getEnterprises');
       $router->get('/most-ordered', 'ReportController@getMostOrdered');
+      $router->get('/farmer-agents-order-statistics', 'ReportController@getFarmerAgentsOrderStatistics');
       $router->patch('/{action}/{id}', 'AdminController@accountAction');
     });
     $router->get('/activity-log', 'ActivityController@getActivityLog');
