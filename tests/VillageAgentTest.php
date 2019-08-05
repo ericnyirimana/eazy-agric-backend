@@ -5,6 +5,7 @@ class VillageAgentTest extends TestCase
 {
     protected $token;
     const URL = '/api/v1/users/village-agents';
+    const POST_URL = 'api/v1/village-agents';
     const URL_FILTER = '/api/v1/users/village-agents/?start_date=2019-10-12&end_date=2020-12-12';
     public function setUp(): void
     {
@@ -60,5 +61,24 @@ class VillageAgentTest extends TestCase
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
         $this->seeJson(['error' => 'An error occured while decoding token.']);
+    }
+    public function testShouldReturnSuccessForValidVaData() {
+      $this->post(self::POST_URL, $this->mock->getValidVaData(), ['Authorization' => $this->token]);
+      $this->seeStatusCode(201);
+      $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+      $this->seeJson(['success' => true]);
+      $this->seeJson(['message' => 'Village agents added successfully.']);
+    }
+    public function testShouldReturnErrorForDuplicateVaPhoneNo() {
+      $this->post(self::POST_URL, $this->mock->getDuplicateVaPhoneNo(), ['Authorization' => $this->token]);
+      $this->seeStatusCode(400);
+      $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+      $this->seeJson(['success' => false]);
+      $this->seeJson(['error' => 'Duplicate phone numbers found in entry. Phone numbers must be unique.']);
+    }
+    public function testShouldReturnErrorForInvalidVaData() {
+      $this->post(self::POST_URL, $this->mock->getInvalidVaData(), ['Authorization' => $this->token]);
+      $this->seeStatusCode(422);
+      $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
     }
 }
