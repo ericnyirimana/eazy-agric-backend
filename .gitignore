@@ -5,3 +5,6 @@ Homestead.yaml
 .env
 /coverage
 /build
+/.DS_Store
+/app/.DS_Store
+/app/Services/service-account-credentials.json

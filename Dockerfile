@@ -75,7 +75,10 @@ RUN echo "extension=couchbase.so" | tee /usr/local/etc/php/php.ini > /dev/null
 
 RUN composer install -n --prefer-dist
 RUN cp -fr ./.circleci/HybridRelations.php ./vendor/developermarshak/laravel-couchbase/src/Mpociot/Couchbase/Eloquent/HybridRelations.php
-RUN  cp -fr ./.circleci/Model.php ./vendor/developermarshak/laravel-couchbase/src/Mpociot/Couchbase/Eloquent/Model.php
+RUN cp -fr ./.circleci/Model.php ./vendor/developermarshak/laravel-couchbase/src/Mpociot/Couchbase/Eloquent/Model.php
+
+ARG Google_Analytics_Service_Account=default_value
+RUN echo $Google_Analytics_Service_Account > app/Services/service-account-credentials.json
 
 ARG db_connection=default_value
 ENV DB_CONNECTION=$db_connection
@@ -124,6 +127,8 @@ ARG yb_api_key=default_value
 ENV YB_API_KEY=$yb_api_key
 ARG yb_channel_id=default_value
 ENV YB_CHANNEL_ID=$yb_channel_id
+ARG Google_Analytics_Profile_ID=default_value
+ENV GOOGLE_ANALYTICS_PROFILE_ID=$Google_Analytics_Profile_ID
 
 
 RUN composer update --no-scripts
