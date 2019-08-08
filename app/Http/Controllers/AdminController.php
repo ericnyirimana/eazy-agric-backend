@@ -313,4 +313,5 @@ class AdminController extends BaseController
       'percentage' => $percentage
     ], 200);
   }
+  
 }
