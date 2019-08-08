@@ -15,7 +15,7 @@ class OurCropController extends Controller
    */
   public function getEnterprises() {
     try {
-      $enterprises = OurCrop::all('crop AS name');
+      $enterprises = OurCrop::query()->selectRaw('crop AS name')->orderBy('crop', 'asc')->get();
       return Helpers::returnSuccess("Enterprises retrieved successfully", ['data' => $enterprises], 200);
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong.", 503);

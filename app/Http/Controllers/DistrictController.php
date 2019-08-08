@@ -94,10 +94,10 @@ class DistrictController extends Controller
    */
   public function getDistricts() {
     try {
-      $districts = District::all('name');
+      $districts = District::orderBy('name', 'asc')->get(['name']);
       return Helpers::returnSuccess("Districts retrieved successfully", ['data' => $districts], 200);
     } catch (Exception $e) {
-      return Helpers::returnError("Something went wrong.", 503);
+      return Helpers::returnError('Something went wrong.', 503);
     }
   }
 }
