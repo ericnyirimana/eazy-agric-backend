@@ -108,8 +108,7 @@ class Helpers extends BaseController
     return $activity = ActivityLog::create([
       'email' => $info['email'],
       'target_email' => $info['target_email'],
-      'target_firstname' => $info['target_firstname'],
-      'target_lastname' => $info['target_lastname'],
+      'target_account_name' => $info['target_account_name'],
       'activity' => $activity,
       'type' => $type
     ]);

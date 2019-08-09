@@ -17,10 +17,10 @@ class MasterAgentFactory {
             'eloquent_type' => 'ma',
             'type' => 'ma',
             'email' => $faker->email,
-            'firstname' => $faker->firstName,
-            'lastname' => $faker->lastName,
+            'account_name' => $faker->company,
+            'username' => $faker->userName,
             'password' => '123123',
-            'phonenumber' => $faker->phoneNumber,
+            'phone_number' => $faker->phoneNumber,
             'status' => 'demo',
             'value_chain' => 'Crop',
         ];

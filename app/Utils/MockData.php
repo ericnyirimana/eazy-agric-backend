@@ -31,35 +31,31 @@ class MockData
     jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs';
     protected $nonsenseToken = 'eyJ0eXAipPs';
 
-    protected $fakeToken = ['token' => 'eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
-    jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs', ];
+    protected $fakeToken = ['token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiI5NjM3ZDBmYi0yNjBkLTM3YTQtODI2ZS00NmQxNzI2M2Y1OWYiLCJpYXQiOjE1NjUyMTM3ODgsImV4cCI6MTU2NTgxODU4OH0.rRkJSE7-OxciThK95ghbl3kT4KSGsZw7vwDqFne464', ];
     protected $emptyToken = ['token' => ''];
 
     protected $newOffTaker = [
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
         'value_chain' => 'Crop',
-        'firstname' => 'masteragent',
-        'lastname' => 'masteragent',
+        'account_name' => 'masteragent',
         'contact_person' => 'Samuel',
-        'phonenumber' => '23456789765',
+        'phone_number' => '23456789765',
         'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
     protected $accountRequest = [
-        'phonenumber' => '32489765478',
-        'firstname' => 'fghjklkjhgf',
-        'lastname' => 'fgyuhijokjhgf',
+        'phone_number' => '32489765478',
+        'account_name' => 'fghjklkjhgf',
         'address' => 'somewhere',
     ];
     protected $newMasterAgent = [
         'account_type' => 'Custom',
         'password' => 'masterAgent12345',
         'value_chain' => 'Crop',
-        'firstname' => 'masteragent',
-        'lastname' => 'masteragent',
+        'account_name' => 'masteragent',
         'contact_person' => 'Samuel',
-        'phonenumber' => '234567897654',
+        'phone_number' => '234567897654',
         'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
@@ -67,10 +63,10 @@ class MockData
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
         'value_chain' => 'Crop',
-        'firstname' => 'masteragent',
-        'lastname' => 'masteragent',
+        'account_name' => 'masteragent',
+        'username' => 'masteragent',
         'contact_person' => 'Samuel',
-        'phonenumber' => '234567897654',
+        'phone_number' => '234567897654',
         'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
@@ -79,10 +75,10 @@ class MockData
         'password' => 'masterAgent12345',
         'account_type' => 'someaccount',
         'value_chain' => 'somevalue',
-        'firstname' => 'masteragent',
-        'lastname' => 'masteragent',
+        'account_name' => 'masteragent',
+        'username' => 'masteragent',
         'contact_person' => 'Samuel',
-        'phonenumber' => '234567897654',
+        'phone_number' => '234567897654',
         'district' => 'somewhere',
         'address' => 'somewhere',
     ];
@@ -91,10 +87,9 @@ class MockData
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
         'value_chain' => 'Crop',
-        'firstname' => 'masteragent',
-        'lastname' => 'masteragent',
+        'account_name' => 'masteragent',
         'contact_person' => 'Samuel',
-        'phonenumber' => '234567897654',
+        'phone_number' => '234567897654',
         'district' => 'Kitgum',
         'address' => 'somewhere',
     ];
@@ -180,11 +175,13 @@ class MockData
     public function getNewOffTaker()
     {
         $this->newOffTaker['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newOffTaker['username'] = $this->shortid->generate();
         return $this->newOffTaker;
     }
     public function getNewMasterAgent()
     {
         $this->newMasterAgent['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newMasterAgent['username'] = $this->shortid->generate();
         return $this->newMasterAgent;
     }
 
@@ -213,11 +210,13 @@ class MockData
     public function getNewDevtPartner()
     {
         $this->newDevtPartner['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newDevtPartner['username'] = $this->shortid->generate();
         return $this->newDevtPartner;
     }
     public function getAccountRequest()
     {
         $this->accountRequest['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->accountRequest['username'] = $this->shortid->generate();
         return $this->accountRequest;
     }
 

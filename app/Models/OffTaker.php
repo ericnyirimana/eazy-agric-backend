@@ -20,10 +20,10 @@ class OffTaker extends Model
      * @var array
      */
     protected $fillable = [
-        'firstname',
-        'lastname',
+        'account_name',
+        'username',
         'organization',
-        'phonenumber',
+        'phone_number',
         'district',
         'email',
         'status',
@@ -55,5 +55,10 @@ class OffTaker extends Model
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);
+    }
+
+    public function setUsernameAttribute($username)
+    {
+        $this->attributes['username'] = strtolower($username);
     }
 }

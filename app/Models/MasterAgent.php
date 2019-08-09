@@ -17,10 +17,10 @@ class MasterAgent extends Model
      * @var array
      */
     protected $fillable = [
-        'firstname',
-        'lastname',
+        'account_name',
+        'username',
         'organization',
-        'phonenumber',
+        'phone_number',
         'address',
         'value_chain',
         'account_type',
@@ -63,5 +63,10 @@ class MasterAgent extends Model
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);
+    }
+
+    public function setUsernameAttribute($username)
+    {
+        $this->attributes['username'] = strtolower($username);
     }
 }

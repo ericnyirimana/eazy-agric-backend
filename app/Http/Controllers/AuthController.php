@@ -60,8 +60,7 @@ class AuthController extends BaseController
                 unset($user[0][$this->db]['password']);
                 $userInfo = [
                     'email' => $user[0][$this->db]['email'],
-                    'target_firstname' => $user[0][$this->db]['firstname'],
-                    'target_lastname' => $user[0][$this->db]['lastname'],
+                    'target_account_name' => $user[0][$this->db]['firstname'],
                     'target_email' => $user[0][$this->db]['email']
                 ];
                 $activityLog =  $user ? Helpers::logActivity($userInfo, 'logged in') : [];
