@@ -291,7 +291,7 @@ class AdminController extends BaseController
     }
 
     $model = [
-      "offtakers" => "Offtaker",
+      "offtakers" => "OffTaker",
       "village-agents" => "VillageAgent",
       "input-suppliers" => "InputSupplier",
       "government" => "Government"
