@@ -2,7 +2,6 @@
 
 [![CircleCI](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev.svg?style=svg)](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev) <a href="https://codeclimate.com/repos/5ce2b0943e13e4019f00cbd5/test_coverage"><img src="https://api.codeclimate.com/v1/badges/cfa77d4d54b520a72130/test_coverage" /></a>
 
-
 ### User Login
 
 #### Request
@@ -1011,7 +1010,6 @@ Param `{user}` = `offtaker` or `masteragent`
 ]
 ```
 
-
 ### Get top performing districts by app downloads and web users
 
 #### Request
@@ -1061,9 +1059,11 @@ Param `{user}` = `offtaker` or `masteragent`
 ### Get all districts
 
 #### Request
+
 `GET api/v1/districts`
 
 #### Response body
+
 ```
 {
 
@@ -1103,8 +1103,8 @@ Param `{user}` = `offtaker` or `masteragent`
 
 #### Request Body
 
-
 #### Response
+
 ```
 {
     "success": true,
@@ -1135,9 +1135,11 @@ Param `{user}` = `offtaker` or `masteragent`
 ### Get all enterprise (crops)
 
 #### Request
+
 `GET api/v1/enterprises`
 
 #### Response body
+
 ```
 {
 
@@ -1174,6 +1176,7 @@ Param `{user}` = `offtaker` or `masteragent`
 ### Get most ordered products and services
 
 #### Request
+
 `GET api/v1/most-ordered?type={type}&filter={filter}`
 
 Param `{type}` = `district` or `enterprise`
@@ -1181,6 +1184,7 @@ Param `{type}` = `district` or `enterprise`
 Param `{filter}` = `districtName` or `cropName`
 
 #### Response body
+
 ```
 {
 
@@ -1248,12 +1252,13 @@ Param `{filter}` = `districtName` or `cropName`
 ### Get farmers and village agents order statistics
 
 #### Request
+
 `GET api/v1/farmer-agents-order-statistics?start_date={date}&end_date={date}`
 
 Param `{date}` = `YYYY-MM-DD`
 
-
 #### Response body
+
 ```
 {
     "success": true,
@@ -1285,6 +1290,7 @@ Param `{date}` = `YYYY-MM-DD`
 ### Add multiple village agents
 
 #### Request
+
 `POST api/v1/village-agents`
 
 ```
@@ -1379,6 +1385,7 @@ Param `{date}` = `YYYY-MM-DD`
 ### Get all Farmers
 
 #### Request
+
 `GET api/v1/farmers`
 
 ```
@@ -1528,121 +1535,19 @@ Param `{date}` = `YYYY-MM-DD`
     }
 } 
 ```
-========================================
-
-### Get Specific Input
+### Get total orders
 
 #### Request
-`GET /api/v1/inputs/{_id}`
 
-#### Response Body
-```
-{
-    "success": true,
-    "result": {
-        "DateAdded": "2018-08-31",
-        "DateUpdated": "11/9/2018",
-        "_id": "044f7a06-e9bc-39c1-9030-e0991397640b",
-        "category": "Herbicides",
-        "created_at": "2019-08-27 17:49:39",
-        "crops": [
-            "beans",
-            "soya"
-        ],
-        "description": "Selective weed killer for beans and soya",
-        "eloquent_type": "input",
-        "name": "Beans",
-        "photo_url": "/images/7e185f0a-cfc5-45a3-bb4d-6ef6535a5042.png",
-        "price": [
-            38100,
-            21000
-        ],
-        "quantity": 9992,
-        "supplier": "Hangzhou Agrochemicals",
-        "type": "input",
-        "unit": [
-            "1Litre",
-            "500ml"
-        ],
-        "updated_at": "2019-08-28 15:29:52"
-    }
-}
-```
+`GET api/v1/orders?start_date={date}&end_date={date}`
 
-### Update Input
+Param `{date}` = `YYYY-MM-DD`
 
-#### Request
-`PUT /api/v1/inputs/{_id}`
-
-#### Request Body
-
-```
-{
-	"name":"Beans",
-	"category":"Herbicides",
-	"crops": [
-            "beans",
-            "soya"
-     ],
-     "description": "Selective weed killer for beans and soya",
-     "quantity": 9992,
-     "supplier": "Hangzhou Agrochemicals",
-     "price": [
-            38100,
-            21000
-       ],
-   "unit": [
-        "1Litre",
-        "500ml"
-    ]
-}
-```
-
-#### Response Body
+#### Response body
 
 ```
 {
     "success": true,
-    "message": "updated successfully.",
-    "result": {
-        "DateAdded": "2018-08-31",
-        "DateUpdated": "11/9/2018",
-        "_id": "044f7a06-e9bc-39c1-9030-e0991397640b",
-        "category": "Herbicides",
-        "created_at": "2019-08-27 17:49:39",
-        "crops": [
-            "beans",
-            "soya"
-        ],
-        "description": "Selective weed killer for beans and soya",
-        "eloquent_type": "input",
-        "name": "Beans",
-        "photo_url": "/images/7e185f0a-cfc5-45a3-bb4d-6ef6535a5042.png",
-        "price": [
-            38100,
-            21000
-        ],
-        "quantity": 9992,
-        "supplier": "Hangzhou Agrochemicals",
-        "type": "input",
-        "unit": [
-            "1Litre",
-            "500ml"
-        ],
-        "updated_at": "2019-08-28 16:47:40"
-    }
-}
-```
-
-### Delete Input
-
-#### Request
-`DELETE /api/v1/inputs/{_id}`
-
-#### Response Body
-```
-{
-    "success": true,
-    "message": "Input has been removed."
+    "totalOrders": 135
 }
 ```

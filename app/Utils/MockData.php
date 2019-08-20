@@ -43,6 +43,7 @@ class MockData
         'phone_number' => '23456789765',
         'district' => 'Kitgum',
         'address' => 'somewhere',
+        'username'=>'offtaker'
     ];
     protected $accountRequest = [
         'phone_number' => '32489765478',

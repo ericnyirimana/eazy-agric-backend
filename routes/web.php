@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -66,8 +65,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/inputs/{id}', 'InputController@getInputDetails');
       $router->put('/inputs/{id}', 'InputController@updateInput');
       $router->delete('/inputs/{id}', 'InputController@deleteInput');
+      $router->get('/orders', 'OrderController@getOrders');
+      $router->get('/activity-log', 'ActivityController@getActivityLog');
     });
-    $router->get('/activity-log', 'ActivityController@getActivityLog');
   });
   $router->group(['middleware' => 'validateParams'], function () use ($router) {
     $router->post('/request/{user}', 'UserController@requestAccount');
