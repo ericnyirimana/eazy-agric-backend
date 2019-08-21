@@ -2,7 +2,6 @@
 
 [![CircleCI](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev.svg?style=svg)](https://circleci.com/gh/Akorion/ezyagric-backend-2019/tree/dev) <a href="https://codeclimate.com/repos/5ce2b0943e13e4019f00cbd5/test_coverage"><img src="https://api.codeclimate.com/v1/badges/cfa77d4d54b520a72130/test_coverage" /></a>
 
-========================================
 
 ### User Login
 
@@ -96,14 +95,12 @@ offtaker
 }
 ```
 
-========================================
-
 ### Get all village agents/offtakers/input suppliers
 
 #### Request
 
 `GET /api/v1/users/{user}`
-Param `{user}` = `offtakers`, `village-agents`,`input-suppliers` or `government`
+Param `{user}` = `offtakers`, `village-agents`,`input-suppliers`, `government` or `farmers`
 
 #### Response
 
@@ -1013,7 +1010,7 @@ Param `{user}` = `offtaker` or `masteragent`
     }
 ]
 ```
-========================================
+
 
 ### Get top performing districts by app downloads and web users
 
@@ -1060,9 +1057,6 @@ Param `{user}` = `offtaker` or `masteragent`
     ]
 }
 ```
-<<<<<<< HEAD
-========================================
-
 
 ### Get all districts
 
@@ -1355,4 +1349,57 @@ Param `{date}` = `YYYY-MM-DD`
       'va_village' => 'Kashayo'
     ]
 ];
+```
+
+### Get all Farmers
+
+#### Request
+`GET api/v1/farmers`
+
+```
+{
+  "success": true,
+  "count": 265,
+  "result": [
+    {
+      "_id": "018e6b4b-acf5-3f19-8c2f-ce5ed05b1127",
+      "agriculture_experience_in_years": 4,
+      "assets_held": "NA",
+      "created_at": "2019-08-21 07:47:45",
+      "eloquent_type": "farmer",
+      "farmer_district": "Rukungiri",
+      "farmer_dob": "05\/05\/1979",
+      "farmer_gender": "male",
+      "farmer_id": "fd657380-0fb2-3a86-8171-62e80e9ce8ac",
+      "farmer_location_farmer_home_gps_Accuracy": "NA",
+      "farmer_location_farmer_home_gps_Altitude": "NA",
+      "farmer_location_farmer_home_gps_Latitude": -0.5909426,
+      "farmer_location_farmer_home_gps_Longitude": 29.7671408,
+      "farmer_name": "Furman Kunde",
+      "farmer_parish": "Kikarara",
+      "farmer_phone_number": "+1.578.469.0184",
+      "farmer_photo": "https:\/\/drive.google.com\/open?id=1tb0ovB3lzvsnhW6DgzTW3_ZnW8MaWW9b",
+      "farmer_region": "Central",
+      "farmer_subcounty": "Bwambara",
+      "farmer_village": "Nyajatembe",
+      "garden_acreage_mapped_gps": "NA",
+      "garden_acreage_not_mapped_gps": "2",
+      "garden_mapped": "NA",
+      "land_gps_url": "NA",
+      "ma_id": "137a93d1-4cac-335e-a37b-fc8728389710",
+      "other_occupation": "NA",
+      "partner_id": "NA",
+      "position held_in_community": "Farmer",
+      "public_id_number": "NA",
+      "public_id_type": "NA",
+      "state": "active",
+      "status": "New",
+      "time": "2018-07-05T23:02:22:278902",
+      "type": "farmer",
+      "updated_at": "2019-08-21 07:47:45",
+      "vaId": "776d08d6-8a47-3124-9a84-a935a0cfa1f9",
+      "value_chain": "Coffee"
+    }
+  ]
+}
 ```

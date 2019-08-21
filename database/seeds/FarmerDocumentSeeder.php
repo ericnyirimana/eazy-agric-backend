@@ -12,7 +12,6 @@ class FarmerDocumentSeeder extends Seeder
      */
     public function run()
     {
-        factory(Farmer::class, 40)->create();
-        // You can add more seeds here
+        factory(Farmer::class, 50)->create();
     }
 }
