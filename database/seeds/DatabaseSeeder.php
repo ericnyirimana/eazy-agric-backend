@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
          $this->call('OffTakerDocumentSeeder');
          $this->call('RequestPasswordDocumentSeeder');
          $this->call('VillageAgentDocumentSeeder');
+         $this->call('FarmerDocumentSeeder');
          $this->call('CustomIncomeDocumentSeeder');
          $this->call('MilkLedgerDocumentSeeder');
          $this->call('IncomeDocumentSeeder');
