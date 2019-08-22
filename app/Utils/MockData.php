@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 use Crisu83\ShortId\ShortId;
@@ -41,7 +42,6 @@ class MockData
 
     protected $fakeToken = ['token' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiI5NjM3ZDBmYi0yNjBkLTM3YTQtODI2ZS00NmQxNzI2M2Y1OWYiLCJpYXQiOjE1NjUyMTM3ODgsImV4cCI6MTU2NTgxODU4OH0.rRkJSE7-OxciThK95ghbl3kT4KSGsZw7vwDqFne464'];
     protected $emptyToken = ['token' => ''];
-
     protected $newOffTaker = [
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
@@ -51,7 +51,7 @@ class MockData
         'phone_number' => '23456789765',
         'district' => 'Kitgum',
         'address' => 'somewhere',
-        'username'=>'offtaker'
+        'username' => 'offtaker'
     ];
     protected $accountRequest = [
         'phone_number' => '32489765478',
@@ -91,7 +91,6 @@ class MockData
         'district' => 'somewhere',
         'address' => 'somewhere',
     ];
-
     protected $newDevtPartner = [
         'password' => 'masterAgent12345',
         'account_type' => 'Custom',
@@ -105,10 +104,10 @@ class MockData
 
     protected $validVaData = [
         "villageAgents" => [
-          [
-                'agriculture_experience_in_years' => 'NA','assets_held' => 'NA',
+            [
+                'agriculture_experience_in_years' => 'NA', 'assets_held' => 'NA',
                 'certification_doc_url' => 'NA', 'education_doc_url' => 'NA',
-                'education_level' => 'NA','eloquent_type' => 'va','farmers_enterprises' => 'NA',
+                'education_level' => 'NA', 'eloquent_type' => 'va', 'farmers_enterprises' => 'NA',
                 'ma_id' => 'NA',
                 'other_occupation' => 'NA',
                 'partner_id' => 'NA',
@@ -210,13 +209,11 @@ class MockData
         $this->newMasterAgent['username'] = $this->shortid->generate();
         return $this->newMasterAgent;
     }
-
     public function getExistingMasterAgent()
     {
         $this->existingMasterAgent['email'] = 'admin1234';
         return $this->existingMasterAgent;
     }
-
     public function getInvalidToken()
     {
         return $this->invalidToken;
@@ -245,12 +242,10 @@ class MockData
         $this->accountRequest['username'] = $this->shortid->generate();
         return $this->accountRequest;
     }
-
     public function getInvalidData()
     {
         return $this->invalidData;
     }
-
     public function getWrongChangePassword()
     {
         return $this->wrongChangePassword;

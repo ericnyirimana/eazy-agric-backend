@@ -63,6 +63,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             // input routes
             $router->get('/inputs/{id}', 'InputController@getInputDetails');
             $router->put('/inputs/{id}', 'InputController@updateInput');
+            $router->post('/inputs', 'InputController@createInput');
+            $router->get('/input-list', 'InputController@getInputs');
             $router->delete('/inputs/{id}', 'InputController@deleteInput');
             $router->get('/orders', 'OrderController@getOrders');
             $router->get('/activity-log', 'ActivityController@getActivityLog');

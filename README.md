@@ -1935,4 +1935,120 @@ photo: (jpeg|png|jpg file)
     "total": 11992
 }
 
+`GET /api/v1/inputs`
+
+
+#### Response
+```
+{
+    "success": true,
+      "available_stock": {
+        "Seeds": 2000,
+        "Herbicides": 9992
+    },
+    "total": 11992
+}
+
+```
+
+==========================================================
+
+### Create an Input
+
+#### Request
+
+`POST /api/v1/inputs`
+
+#### Request Body (form-data)
+
+```
+name:npkkk
+crops[]: ["maize","beans"]
+category:Pesticides
+description:An Input of quality
+photo: (jpeg|png|jpg file)
+price: [2000,4000]
+unit: ["Kg","Ton"]
+supplier: east cooperative
+quantity: 29
+
+```
+
+#### Response
+
+```
+{
+    "success": true,
+    "input": {
+        "type": "input",
+        "name": "npkkk",
+        "category": "Pesticides",
+        "supplier": "east cooperative",
+        "crops": [
+            "maize",
+            "beans"
+        ],
+        "description": "An Input of quality",
+        "photo_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDZLI0n9jEtSC-Lt8hU56X2VMXCI_sdbVF43oHZblfU7dlijak",
+        "price": [
+            2000,
+            4000
+        ],
+        "unit": [
+            "Kg",
+            "Ton"
+        ],
+        "quantity": 20,
+        "_id": "K28eYHn",
+        "updated_at": "2019-08-23 12:36:07",
+        "created_at": "2019-08-23 12:36:07",
+        "id": 0
+    }
+}
+```
+
+==========================================================
+
+### Get list of Inputs
+
+#### Request
+
+`GET /api/v1/inputs/list`
+
+#### Response
+
+```
+{
+    "success": true,
+    "count": 1,
+    "result": [
+        {
+            "DateAdded": "2018-08-31",
+            "DateUpdated": "11/9/2018",
+            "_id": "166cbb09-379f-3175-9910-60ada0ae0f14",
+            "category": "Herbicides",
+            "created_at": "2019-08-21 14:35:16",
+            "crops": [
+                "beans",
+                "soya"
+            ],
+            "description": "Selective weed killer for beans and soya",
+            "eloquent_type": "input",
+            "name": "Beans Clean",
+            "photo_url": "/images/7e185f0a-cfc5-45a3-bb4d-6ef6535a5042.png",
+            "price": [
+                38100,
+                21000
+            ],
+            "quantity": 9992,
+            "supplier": "Hangzhou Agrochemicals (U) Ltd",
+            "type": "input",
+            "unit": [
+                "1Litre",
+                "500ml"
+            ],
+            "updated_at": "2019-08-21 14:35:16"
+        }
+    ]
+}
 ```

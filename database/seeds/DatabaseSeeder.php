@@ -32,5 +32,6 @@ class DatabaseSeeder extends Seeder
         $this->call('InsuranceDocumentSeeder');
         $this->call('ExpenseDocumentSeeder');
         $this->call('DistrictDocumentSeeder');
+        $this->call('InputCategoryDocumentSeeder');
     }
 }

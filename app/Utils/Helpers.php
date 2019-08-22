@@ -140,7 +140,6 @@ class Helpers extends BaseController
         $resultArray = json_decode(json_encode($result), true);
         return ($resultArray['status'] === 'success') ? true : false;
     }
-
     /**
      * delete user
      * @param string $id
@@ -453,5 +452,14 @@ class Helpers extends BaseController
         }
         $multipleWords = implode(" ", $temp);
         return $multipleWords;
+    }
+    /**
+     * @param string $splitType
+     * @param string $value
+     */
+    public static function stringToArray(String $splitType, String $value)
+    {
+        $result = explode($splitType, $value);
+        return $result;
     }
 }
