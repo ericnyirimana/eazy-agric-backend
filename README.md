@@ -1785,3 +1785,23 @@ photo: (jpeg|png|jpg file)
 }
 
 ```
+=======
+### Get input stock
+
+#### Request
+
+`GET /api/v1/inputs`
+
+
+#### Response
+```
+{
+    "success": true,
+      "available_stock": {
+        "Seeds": 2000,
+        "Herbicides": 9992
+    },
+    "total": 11992
+}
+
+```

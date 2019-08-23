@@ -31,6 +31,7 @@ class InputCategoryTest extends TestCase
         $this->seeJson(['success' => true]);
     }
 
+
     public function testShouldReturnErrorIfNoToken()
     {
         $this->get(self::URL);
