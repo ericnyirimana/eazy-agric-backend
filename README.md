@@ -119,7 +119,7 @@ Village agents
             "education_level": "NA",
             "eloquent_type": "va",
             "farmers_enterprises": "NA",
-            "ma_id": "AK/MA/0421",
+            "ma_id": "00276417-eadf-371c-a6b1-2aee76f3b5b0",
             "other_occupation": "NA",
             "partner_id": "NA",
             "position held_in_community": "NA",
@@ -147,7 +147,24 @@ Village agents
             "va_photo": "https =>//drive.google.com/open?id=1MwZuPcWTOcJYa6536Buk9FEc5i7HrZ3U",
             "va_region": "Western",
             "va_subcounty": "Bwambara",
-            "va_village": "Kashayo"
+            "va_village": "Kashayo",
+            "master_agent": {
+            "_id": "00276417-eadf-371c-a6b1-2aee76f3b5b0",
+            "account_name": "Senger-Stark",
+            "address": "36977 Trisha Locks\nOtistown, FL 08845-9403",
+            "contact_person": "Miss Rosalia Gleason DDS",
+            "created_at": "2019-09-02 21:14:33",
+            "district": "Bushenyi",
+            "eloquent_type": "ma",
+            "email": "nannie23@mitchell.info",
+            "phone_number": "1-864-665-0420 x8935",
+            "status": "demo",
+            "type": "ma",
+            "updated_at": "2019-09-02 21:14:33",
+            "username": "stephen81",
+            "value_chain": "Crop"
+        },
+            "devt_partner": "N/A"
         }
     ]
 }
