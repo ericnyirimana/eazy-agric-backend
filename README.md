@@ -1528,3 +1528,121 @@ Param `{date}` = `YYYY-MM-DD`
     }
 } 
 ```
+========================================
+
+### Get Specific Input
+
+#### Request
+`GET /api/v1/inputs/{_id}`
+
+#### Response Body
+```
+{
+    "success": true,
+    "result": {
+        "DateAdded": "2018-08-31",
+        "DateUpdated": "11/9/2018",
+        "_id": "044f7a06-e9bc-39c1-9030-e0991397640b",
+        "category": "Herbicides",
+        "created_at": "2019-08-27 17:49:39",
+        "crops": [
+            "beans",
+            "soya"
+        ],
+        "description": "Selective weed killer for beans and soya",
+        "eloquent_type": "input",
+        "name": "Beans",
+        "photo_url": "/images/7e185f0a-cfc5-45a3-bb4d-6ef6535a5042.png",
+        "price": [
+            38100,
+            21000
+        ],
+        "quantity": 9992,
+        "supplier": "Hangzhou Agrochemicals",
+        "type": "input",
+        "unit": [
+            "1Litre",
+            "500ml"
+        ],
+        "updated_at": "2019-08-28 15:29:52"
+    }
+}
+```
+
+### Update Input
+
+#### Request
+`PUT /api/v1/inputs/{_id}`
+
+#### Request Body
+
+```
+{
+	"name":"Beans",
+	"category":"Herbicides",
+	"crops": [
+            "beans",
+            "soya"
+     ],
+     "description": "Selective weed killer for beans and soya",
+     "quantity": 9992,
+     "supplier": "Hangzhou Agrochemicals",
+     "price": [
+            38100,
+            21000
+       ],
+   "unit": [
+        "1Litre",
+        "500ml"
+    ]
+}
+```
+
+#### Response Body
+
+```
+{
+    "success": true,
+    "message": "updated successfully.",
+    "result": {
+        "DateAdded": "2018-08-31",
+        "DateUpdated": "11/9/2018",
+        "_id": "044f7a06-e9bc-39c1-9030-e0991397640b",
+        "category": "Herbicides",
+        "created_at": "2019-08-27 17:49:39",
+        "crops": [
+            "beans",
+            "soya"
+        ],
+        "description": "Selective weed killer for beans and soya",
+        "eloquent_type": "input",
+        "name": "Beans",
+        "photo_url": "/images/7e185f0a-cfc5-45a3-bb4d-6ef6535a5042.png",
+        "price": [
+            38100,
+            21000
+        ],
+        "quantity": 9992,
+        "supplier": "Hangzhou Agrochemicals",
+        "type": "input",
+        "unit": [
+            "1Litre",
+            "500ml"
+        ],
+        "updated_at": "2019-08-28 16:47:40"
+    }
+}
+```
+
+### Delete Input
+
+#### Request
+`DELETE /api/v1/inputs/{_id}`
+
+#### Response Body
+```
+{
+    "success": true,
+    "message": "Input has been removed."
+}
+```
