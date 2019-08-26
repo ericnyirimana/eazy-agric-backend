@@ -119,4 +119,12 @@ class Validation extends BaseController
         '*.va_district' => [new District()]
       ]);
     }
+
+    public function validateLimitAndOffset($data)
+    {
+        $this->validate($data, [
+            'offset' => 'numeric',
+            'limit' => 'numeric',
+        ]);
+    }
 }
