@@ -9,7 +9,7 @@ class InputSupplierFactory {
     {
         return [
             "_id" => $faker->uuid,
-            "category" => "Herbicides",
+            "category" => "Herbicide",
             "quantity" => 9992,
             "supplier" => "Hangzhou Agrochemicals (U) Ltd",
             "DateUpdated" => "11/9/2018",
