@@ -131,6 +131,7 @@ class Validation extends BaseController
             'limit' => 'numeric',
         ]);
     }
+
     public function validateInput($data)
     {
         $this->validate($data, [
@@ -143,5 +144,16 @@ class Validation extends BaseController
             'supplier' => 'required|string',
             'quantity' => 'required|numeric'
         ]);
+    }
+
+    public function validateDiagnosisInformation($data) {
+      $this->validate($data, [
+        'name' => 'required',
+        'photo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+        'control' => 'required',
+        'explanation' => 'required',
+        'crop' => 'required',
+        'cause' => 'required'
+      ]);
     }
 }

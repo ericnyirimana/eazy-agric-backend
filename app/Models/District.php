@@ -21,6 +21,15 @@ class District extends Model
     ];
 
     /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'type' => 'district',
+    ];
+
+    /**
      * The attributes excluded from the model's JSON form.
      *
      * @var array

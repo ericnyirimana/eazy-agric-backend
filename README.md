@@ -1382,6 +1382,7 @@ Param `{date}` = `YYYY-MM-DD`
 }
 ```
 
+
 ### Get all Farmers
 
 #### Request
@@ -1535,6 +1536,7 @@ Param `{date}` = `YYYY-MM-DD`
     }
 } 
 ```
+
 ### Get total orders
 
 #### Request
@@ -1549,5 +1551,154 @@ Param `{date}` = `YYYY-MM-DD`
 {
     "success": true,
     "totalOrders": 135
+}
+```
+
+### Get all diagnosis
+
+#### Request
+`GET api/v1/diagnosis/{category}`
+
+#### Response
+
+Param `{category}` = `pest` / `disease`
+
+```
+{
+    "success": true,
+    "data": [
+        {
+            "_id": "0215956d-81ab-379c-b79e-e869b41e78dd",
+            "category": "Disease",
+            "cause": "Virus",
+            "control": "1. Okay control it well\n2. Go away",
+            "created_at": "2019-08-24 19:11:07",
+            "crop": "Maize",
+            "eloquent_type": "diagnosis",
+            "explanation": "This is a test explanation",
+            "name": "edited name",
+            "photo_url": "https://storage.googleapis.com/ezyagric_dev_image_bucket/diagnosis/crop_pest.jpg",
+            "type": "diagnosis",
+            "updated_at": "2019-08-26 08:46:10"
+        },
+        {
+            "_id": "0318f66d-694b-3b18-a2d1-06ed63c2fd10",
+            "category": "Disease",
+            "cause": "Virus",
+            "control": "1. Okay control it well\n2. Go away",
+            "created_at": "2019-08-24 19:11:07",
+            "crop": "Maize",
+            "eloquent_type": "diagnosis",
+            "explanation": "This is a test explanation",
+            "name": "edited name",
+            "photo_url": "https://storage.googleapis.com/ezyagric_dev_image_bucket/diagnosis/crop_pest.jpg",
+            "type": "diagnosis",
+            "updated_at": "2019-08-26 08:46:10"
+        },
+        {
+            "_id": "0470b0c3-2de2-37d4-9fbc-4bd613bcf49f",
+            "category": "Disease",
+            "cause": "Virus",
+            "control": "1. Okay control it well\n2. Go away",
+            "created_at": "2019-08-24 19:13:18",
+            "crop": "Maize",
+            "eloquent_type": "diagnosis",
+            "explanation": "This is a test explanation",
+            "name": "edited name",
+            "photo_url": "https://storage.googleapis.com/ezyagric_dev_image_bucket/diagnosis/crop_pest.jpg",
+            "updated_at": "2019-08-26 08:46:10"
+        }
+    ]
+}
+```
+
+### Get single diagnosis
+
+#### Request
+`GET api/v1/diagnosis/{category}/{id}`
+
+Param `{category}` = `pest` / `disease`
+
+#### Response
+```
+{
+    "success": true,
+    "data": [
+        {
+            "_id": "0fd437f4-565d-3151-bf0a-ea6863deb506",
+            "category": "Disease",
+            "cause": "Virus",
+            "control": "1. Use certified and disease-free seeds. 2. Control attacks of aphids and remove infected plants from the field.",
+            "created_at": "2019-08-26 08:46:08",
+            "crop": "Beans",
+            "eloquent_type": "diagnosis",
+            "explanation": [
+                "Folding and twisting of leaves with a light and dark green patches",
+                "The dark green patches are always near the veins. ",
+                "Affected plants produce smaller, curved pods that appear slippery"
+            ],
+            "name": "edited name",
+            "photo_url": "/images/uAge0125440.png",
+            "updated_at": "2019-08-26 08:46:10"
+        }
+    ]
+}
+```
+### Delete diagnosis
+
+#### Request
+`DELETE api/v1/diagnosis/{id}`
+
+#### Response
+
+```
+{
+    "success": true,
+    "data": null
+}
+```
+### Edit diagnosis information
+
+#### Request
+`POST api/v1/diagnosis/{category}/{id}`
+
+Param `{category}` = `pest` / `disease`
+
+#### Request Body (form-data)
+
+```
+name:Kolakolosis
+control:1. Okay control it well↵2. Go away
+explanation:This is a test explanation
+crop:Maize
+cause:Virus
+photo: (jpeg|png|jpg file)
+```
+
+
+
+#### Response
+```
+{
+    "success": true,
+    "data": [
+        {
+            "_id": "0fd437f4-565d-3151-bf0a-ea6863deb506",
+            "category": "Disease",
+            "cause": "Virus",
+            "control": "1. Use certified and disease-free seeds. 2. Control attacks of aphids and remove infected plants from the field.",
+            "created_at": "2019-08-26 08:46:08",
+            "crop": "Beans",
+            "eloquent_type": "diagnosis",
+            "explanation": [
+                "Folding and twisting of leaves with a light and dark green patches",
+                "The dark green patches are always near the veins. ",
+                "Affected plants produce smaller, curved pods that appear slippery"
+            ],
+            "name": "edited name",
+            "photo_url": "/images/uAge0125440.png",
+            "updated_at": "2019-08-26 08:46:10"
+        }
+    ]
 }
 ```
