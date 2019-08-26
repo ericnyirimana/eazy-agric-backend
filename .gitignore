@@ -8,3 +8,5 @@ Homestead.yaml
 /.DS_Store
 /app/.DS_Store
 /app/Services/service-account-credentials.json
+app/Services/.DS_Store
+app/Services/image-upload-service-credentials.json

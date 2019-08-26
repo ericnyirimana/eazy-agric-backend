@@ -46,6 +46,9 @@
         ],
         "db:refresh" : [
             "php artisan db:clear && php artisan db:seed"
+        ],
+        "test" : [
+            "composer run-script db:refresh && ./vendor/bin/phpunit --debug"
         ]
     },
     "config": {
