@@ -991,7 +991,7 @@ Param `{user}` = `offtaker` or `masteragent`
 
 #### Request
 
-`POST /api/v1/activity-log`
+`GET /api/v1/activity-log/?limit=17&offset=5`
 
 #### Request Body
 

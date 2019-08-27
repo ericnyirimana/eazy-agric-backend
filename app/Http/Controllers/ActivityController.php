@@ -10,6 +10,7 @@ use App\Models\InputOrder;
 use App\Models\Planting;
 use App\Models\SoilTest;
 use App\Models\MapCoordinate;
+use App\Utils\Validation;
 
 class ActivityController extends Controller
 {
@@ -25,6 +26,7 @@ class ActivityController extends Controller
     {
         $this->request = $request;
         $this->db = getenv('DB_DATABASE');
+        $this->validate = new Validation();
     }
 
     /**
@@ -33,7 +35,10 @@ class ActivityController extends Controller
      */
     public function getActivityLog()
     {
-        $activity = ActivityLog::all();
+        $this->validate->validateLimitAndOffset($this->request);
+        $limit = $this->request->input('limit');
+        $offset = $this->request->input('offset');
+        $activity = ActivityLog::offset($offset)->limit($limit)->get();
         return Helpers::returnSuccess("", ['activityLog' => $activity], 200);
     }
 

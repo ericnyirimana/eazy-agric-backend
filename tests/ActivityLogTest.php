@@ -7,7 +7,7 @@ use App\Http\Controllers\ActivityController;
 class ActivityLogTest extends TestCase
 {
     protected $response, $token, $wrongUser, $mock, $activityLog, $data;
-    const URL = '/api/v1/activity-log';
+    const URL = '/api/v1/activity-log/?limit=17&offset=5';
     const ACTIVITYLOG_URL = '/api/v1/active-users';
 
     public function setUp(): void
