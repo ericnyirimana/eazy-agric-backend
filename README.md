@@ -168,10 +168,10 @@ Offtakers
       "district": "N\/A",
       "eloquent_type": "offtaker",
       "email": "Bl3xJRj@gmail.com",
-      "firstname": "fghjklkjhgf",
-      "lastname": "fgyuhijokjhgf",
+      "account_name": "fghjklkjhgf",
+      "username": "fgyuhijokjhgf",
       "organization": "somewhere",
-      "phonenumber": "32489765478",
+      "phone_number": "32489765478",
       "status": "demo",
       "type": "offtaker",
       "updated_at": "2019-07-18 21:06:21",
@@ -236,9 +236,9 @@ Government
             "district": "Kyenjojo",
             "eloquent_type": "government",
             "email": "government24@gmail.com",
-            "firstname": "Veda htu",
-            "lastname": "Nunez",
-            "phonenumber": "+1 (669) 138-6075",
+            "account_name": "Veda htu",
+            "username": "Nunez",
+            "phone_number": "+1 (669) 138-6075",
             "status": "demo",
             "type": "government",
             "updated_at": "2019-07-25 13:23:08",
@@ -289,7 +289,7 @@ Government
 
 #### Request
 
-`POST /api/v1/offtaker`
+`POST /api/v1/users/offtaker`
 
 #### Request Body
 
@@ -300,10 +300,10 @@ Government
   "contact_person": "Distinctio",
   "district": "Kyenjojo",
   "email": "test@gmail.com",
-  "firstname": "Veda htu",
-  "lastname": "Nunez",
+  "account_name": "Veda htu",
+  "username": "Nunez",
   "password": "123123",
-  "phonenumber": "+1 (669) 138-6075",
+  "phone_number": "+1 (669) 138-6075",
   "value_chain": "N/A"
 }
 ```
@@ -321,9 +321,9 @@ Government
     "contact_person": "Distinctio",
     "district": "Kyenjojo",
     "email": "test@gmail.com",
-    "firstname": "Veda htu",
-    "lastname": "Nunez",
-    "phonenumber": "+1 (669) 138-6075",
+    "account_name": "Veda htu",
+    "username": "Nunez",
+    "phone_number": "+1 (669) 138-6075",
     "value_chain": "N\/A",
     "_id": "ss0mLB-",
     "updated_at": "2019-07-22 14:38:05",
@@ -338,7 +338,7 @@ Government
 
 #### Request
 
-`POST /api/v1/create-masteragent`
+`POST /api/v1/users/masteragent`
 
 #### Request Body
 
@@ -349,10 +349,10 @@ Government
   "contact_person": "Distinctio",
   "district": "Kyenjojo",
   "email": "teste@gmail.com",
-  "firstname": "Veda htu",
-  "lastname": "Nunez",
+  "account_name": "Veda htu",
+  "username": "Nunez",
   "password": "123123",
-  "phonenumber": "+1 (669) 138-6075",
+  "phone_number": "+1 (669) 138-6075",
   "value_chain": "N/A"
 }
 ```
@@ -371,9 +371,9 @@ Government
     "contact_person": "Distinctio",
     "district": "Kyenjojo",
     "email": "teste@gmail.com",
-    "firstname": "Veda htu",
-    "lastname": "Nunez",
-    "phonenumber": "+1 (669) 138-6075",
+    "account_name": "Veda htu",
+    "username": "Nunez",
+    "phone_number": "+1 (669) 138-6075",
     "value_chain": "N\/A",
     "_id": "JVdnEBB",
     "updated_at": "2019-07-22 14:40:20",
@@ -399,10 +399,10 @@ Government
   "contact_person": "Distinctio",
   "district": "Kyenjojo",
   "email": "government29@gmail.com",
-  "firstname": "Christiana",
-  "lastname": "Nunez",
+  "account_name": "Christiana",
+  "username": "Nunez",
   "password": "123123",
-  "phonenumber": "+1 (669) 138-6075",
+  "phone_number": "+1 (669) 138-6075",
   "value_chain": "N/A"
 }
 ```
@@ -421,9 +421,9 @@ Government
         "contact_person": "Distinctio",
         "district": "Kyenjojo",
         "email": "government29@gmail.com",
-        "firstname": "Christiana",
-        "lastname": "Nunez",
-        "phonenumber": "+1 (669) 138-6075",
+        "account_name": "Christiana",
+        "username": "Nunez",
+        "phone_number": "+1 (669) 138-6075",
         "value_chain": "N/A",
         "_id": "ozhdbTE",
         "updated_at": "2019-07-29 13:39:10",
@@ -481,10 +481,10 @@ Government
   "contact_person": "Distinctio",
   "district": "Kyenjojo",
   "email": "nf@gmail.com",
-  "firstname": "Veda htu",
-  "lastname": "Nunez",
+  "account_name": "Veda htu",
+  "username": "Nunez",
   "password": "123123",
-  "phonenumber": "+1 (669) 138-6075",
+  "phone_number": "+1 (669) 138-6075",
   "value_chain": "N/A"
 }
 ```
@@ -1002,7 +1002,7 @@ Param `{user}` = `offtaker` or `masteragent`
     {
         "email": "admin2020@gmail.com",
         "target_email": "johndoe@gmail.com",
-        "target_firstname": "john",
+        "target_account_name": "john",
         "target_lastname": "doe",
         "activity": "account deleted",
         "updated_at": "2019-07-22 14:48:27",

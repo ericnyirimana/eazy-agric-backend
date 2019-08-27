@@ -17,9 +17,9 @@ class Government extends Model
      * @var array
      */
     protected $fillable = [
-        'firstname',
-        'lastname',
-        'phonenumber',
+        'account_name',
+        'username',
+        'phone_number',
         'address',
         'value_chain',
         'account_type',
@@ -50,5 +50,10 @@ class Government extends Model
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = Hash::make($password);
+    }
+
+    public function setUsernameAttribute($username)
+    {
+        $this->attributes['username'] = strtolower($username);
     }
 }

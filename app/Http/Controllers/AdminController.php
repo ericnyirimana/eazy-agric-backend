@@ -68,8 +68,7 @@ class AdminController extends BaseController
           $data = Admin::create($this->request->all() + ['_id' => Helpers::generateId()]);
           $userInfo = [
               'email' => $this->request->admin->email,
-              'target_firstname' => $data->firstname,
-              'target_lastname' => $data->lastname,
+              'target_account_name' => $data->firstname. ' '.$data->lastname,
               'target_email' => $data->email
           ];
           $activityLog =  $data ? Helpers::logActivity($userInfo, 'admin account created') : [];
@@ -117,12 +116,11 @@ class AdminController extends BaseController
         $user = Helpers::queryUser($this->request->id);
         unset($user[0][$this->db]['password']);
         $message = ($action === 'active') ? 'Account activated successfully.' : 'Account suspended successfully.';
-
+        $name = ($user[0][$this->db]['type'] === 'admin') ? $user[0][$this->db]['firstname']. ' '. $user[0][$this->db]['lastname'] : $user[0][$this->db]['account_name'];
         Helpers::logActivity(
             [
                 'email' => $this->request->admin->email,
-                'target_firstname' => $user[0][$this->db]['firstname'],
-                'target_lastname' => $user[0][$this->db]['lastname'],
+                'target_account_name' => $name,
                 'target_email' => $user[0][$this->db]['email'],
             ],
             str_replace(' successfully', '', $message));
@@ -151,8 +149,9 @@ class AdminController extends BaseController
       if (Hash::check($this->request->input('oldPassword'), $user[0][$this->db]['password'])) {
         Admin::where('_id', $this->request->auth)->update(['password' => Hash::make($this->request->input('newPassword'))]);
         Helpers::logActivity([
-            'target_firstname' => $user[0][$this->db]['firstname'], 'email' => $this->request->admin->email,
-            'target_email' => $user[0][$this->db]['email'], 'target_lastname' => $user[0][$this->db]['lastname'],
+            'target_account_name' => $user[0][$this->db]['firstname']. ' '. $user[0][$this->db]['lastname'], 
+            'email' => $this->request->admin->email,
+            'target_email' => $user[0][$this->db]['email'],
         ], 'password changed.');
 
         return Helpers::returnSuccess("Your Password has been changed successfully.", [], 200);
@@ -192,6 +191,7 @@ class AdminController extends BaseController
      $result = array_filter($topAgents); 
      return Helpers::returnSuccess("", ['data' => $result], 200);
     } catch (Exception $e) {
+      var_dump($e->getMessage());
       return Helpers::returnError("Something went wrong.", 503);
     }
   }
@@ -219,7 +219,7 @@ class AdminController extends BaseController
    */
   public function masterAgent($agent, $field, $topAgent){
     $district = $this->request->input('district');
-    $agentNameQuery = "SELECT CONCAT(firstname, ' ', lastname) AS agent_name FROM
+    $agentNameQuery = "SELECT account_name AS agent_name FROM
     " . $this->db . " WHERE type = 'ma' AND _id='" . $agent[$field] . "'";
     if ($district) {
       $agentNameQuery .= " AND district='". $district ."'";
@@ -242,8 +242,7 @@ class AdminController extends BaseController
       if (Helpers::deleteUser($id)) {
         Helpers::logActivity([
             'email' => $this->request->admin->email,
-            'target_firstname' => $user['firstname'],
-            'target_lastname' => $user['lastname'],
+            'target_account_name' => $user['firstname'] . ' '. $user['lastname'],
             'target_email' => $user['email'],
         ], 'Account deleted');
         return Helpers::returnSuccess("Account deleted successfully.", [], 200);
@@ -271,11 +270,10 @@ class AdminController extends BaseController
       if (Helpers::editAccount($id, $this->request->all())) {
         $updatedUser = Helpers::queryUser($id);
         unset($updatedUser[0][$this->db]['password']);
-
         Helpers::logActivity([
-            'email' => $this->request->admin->email, 'target_firstname' => $updatedUser[0][$this->db]['firstname'],
-            'target_email' => $updatedUser[0][$this->db]['email'],
-            'target_lastname' => $updatedUser[0][$this->db]['lastname']
+            'email' => $this->request->admin->email, 
+            'target_account_name' => $updatedUser[0][$this->db]['firstname'].' '.$updatedUser[0][$this->db]['lastname'],
+            'target_email' => $updatedUser[0][$this->db]['email']
         ], 'account updated');
         return Helpers::returnSuccess("Account updated successfully.", ["user" => $updatedUser[0][$this->db]], 200);
       }

@@ -49,8 +49,8 @@ class CreateMasterAgentTest extends TestCase
     }
     public function testShouldReturnUserIfTokenIsValid()
     {
-        $this->post(self::URL, $this->mock->getNewMasterAgent(),
-            ['Authorization' => $this->token]);
+        $response = $this->post(self::URL, $this->mock->getNewMasterAgent(),
+            ['Authorization' => $this->token]);    
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }

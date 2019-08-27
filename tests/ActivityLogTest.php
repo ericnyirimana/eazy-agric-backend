@@ -37,21 +37,19 @@ class ActivityLogTest extends TestCase
     {
         $email = 'fake-admin-email@fakeemail.com';
         $target_email = 'fake-user@fakemail.com';
-        $target_firstname = 'samuel';
-        $target_lastname = 'El Ali';
+        $target_account_name = 'samuel';
         $activity = 'request a dev. partner account.';
 
         $activityLog = Helpers::logActivity([
             'email' => $email,
-            'target_firstname' => $target_firstname,
-            'target_lastname' => $target_lastname,
+            'target_account_name' => $target_account_name,
             'target_email' => $target_email,
         ], $activity);
 
         $res_array = (array) json_decode($activityLog);
         $this->assertEquals($email, $activityLog->email);
         $this->assertEquals($activity, $activityLog->activity);
-        $this->assertArrayHasKey('target_lastname', $res_array);
+        $this->assertArrayHasKey('target_account_name', $res_array);
     }
 
     public function testShouldReturnActiveUsers()

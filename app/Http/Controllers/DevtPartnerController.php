@@ -68,8 +68,7 @@ class DevtPartnerController extends BaseController
 
             Helpers::logActivity([
                 'email' => $this->request->admin->email,
-                'target_firstname' => $devtPartner->firstname,
-                'target_lastname' => $devtPartner->lastname,
+                'target_account_name' => $devtPartner->account_name,
                 'target_email' => $devtPartner->email,
             ], 'dev. partner account created.');
 

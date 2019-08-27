@@ -216,4 +216,20 @@ class AdminTest extends TestCase
         $this->seeStatusCode(400);
         $this->seeJson(['error' => 'Invalid parameter supplied.']);
     }
+
+    public function testShouldNotReturnTopPerformingMasterAgents()
+    {
+        $this->get('/api/v1/top-performing/ma', ['Authorization' => $this->token]);
+        $res_array = (array)json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->seeJson(['success' => true]);
+    }
+
+    public function testShouldNotReturnTopPerformingVillageAgents()
+    {
+        $this->get('/api/v1/top-performing/va', ['Authorization' => $this->token]);
+        $res_array = (array)json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->seeJson(['success' => true]);
+    }
 }

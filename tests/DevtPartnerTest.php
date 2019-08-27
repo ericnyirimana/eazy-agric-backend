@@ -17,7 +17,6 @@ class DevtPartnerTest extends TestCase
 
         $data = json_decode($this->response->getContent(), true);
         $this->token = $data['token'];
-
         $data2 = $this->call('POST', '/api/v1/auth/login', $this->mock->getMasterAgentData());
 
         $decoded_data = json_decode($data2->getContent(), true);
@@ -84,7 +83,7 @@ class DevtPartnerTest extends TestCase
     }
     public function testShouldReturnUserIfTokenIsValid()
     {
-        $this->post(self::URL, $this->mock->getNewDevtPartner(),
+        $response = $this->post(self::URL, $this->mock->getNewDevtPartner(),
             ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);

@@ -3,7 +3,7 @@ use App\Utils\MockData;
 
 class AccountRequestTest extends TestCase
 {
-    protected $mock;
+    protected $mock, $response;
 
     public function setUp(): void
     {
@@ -14,14 +14,14 @@ class AccountRequestTest extends TestCase
 
     public function testShouldReturnOfftakersRequestDetails()
     {
-        $this->post('api/v1/request/offtaker', $this->mock->getAccountRequest());
-        $this->seeStatusCode(200);
+       $response = $this->post('api/v1/request/offtaker', $this->mock->getAccountRequest());
+       $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }
 
     public function testShouldReturnMasteragentRequestDetails()
     {
-        $this->post('api/v1/request/masteragent', $this->mock->getAccountRequest());
+        $response = $this->post('api/v1/request/masteragent', $this->mock->getAccountRequest());
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }

@@ -21,8 +21,7 @@ class ActivityLog extends Model
         'activity',
         'email',
         'target_email',
-        'target_firstname',
-        'target_lastname',
+        'target_account_name',
         '_id',
     ];
 

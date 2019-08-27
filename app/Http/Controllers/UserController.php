@@ -40,8 +40,7 @@ class UserController extends BaseController
 
       Helpers::logActivity([
         'email' => $user->email,
-        'target_firstname' => $user->firstname,
-        'target_lastname' => $user->lastname,
+        'target_account_name' => $user->account_name,
         'target_email' => $user->email,
       ], 'request a dev. partner account.');
 
@@ -77,7 +76,7 @@ class UserController extends BaseController
       $twitterReport = SocialMedia::getTwitterSummary();
       return Helpers::returnSuccess("", ['data' => $twitterReport], 200);
     } catch (\Exception $e) {
-      return Helpers::returnError("Something went wrong", 503);
+      return Helpers::returnError(["Something went wrong", $e->getMessage()], 503);
     }
   }
 

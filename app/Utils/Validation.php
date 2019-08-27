@@ -8,6 +8,7 @@ use App\Rules\Email;
 use App\Rules\emailUpdate;
 use App\Rules\ValueChain;
 use App\Rules\PhoneNumber;
+use App\Rules\UserName;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Validation extends BaseController
@@ -57,10 +58,10 @@ class Validation extends BaseController
             'email' => ['required', 'email', new Email($data['email'])],
             'password' => 'required|min:6',
             'account_type' => ['required', new AccountType()],
-            'firstname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
-            'lastname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'account_name' => 'required|regex:/^([a-zA-z0-9\s\-\(\)]*)$/',
+            'username' => ['required', new UserName($data['username']), 'regex:/^([a-zA-z0-9\s\-\(\)]*)$/'],
             'contact_person' => 'required|regex:/^([a-zA-z\s\-\+\(\)]*)$/',
-            'phonenumber' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
             'district' => ['required', new District()],
             'address' => 'required|regex:/^([a-zA-z0-9\s\,\(\)]*)$/',
             'value_chain' => ['required', new ValueChain()],
@@ -72,9 +73,9 @@ class Validation extends BaseController
         $db = getenv('DB_DATABASE');
         $this->validate($data, [
             'email' => ['required', 'email', new Email($data['email'])],
-            'firstname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
-            'lastname' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
-            'phonenumber' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
+            'account_name' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'username' => ['required', new UserName($data['username']), 'regex:/^([a-zA-z0-9\s\-\(\)]*)$/'],
+            'phone_number' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:11|max:17',
             'address' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
         ]);
     }
