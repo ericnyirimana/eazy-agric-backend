@@ -28,7 +28,7 @@ class ForgotPasswordTest extends TestCase
 
     public function testShouldReturnSuccessIfEmailExist()
     {
-        $user = $this->post(self::URL[0], $this->mock->getLoginDetails());
+        $this->post(self::URL[0], $this->mock->getLoginDetails());
         $this->seeJson([
             "success" => true,
             "message" => "An email with password reset instructions has been sent to your email address. It would expire in 1 hour.",
@@ -38,7 +38,7 @@ class ForgotPasswordTest extends TestCase
 
     public function testShouldReturnValidationErrorForInvalidEmail()
     {
-        $user = $this->post(self::URL[0], ['email' => $this->mock->getLoginDetails()]);
+        $this->post(self::URL[0], ['email' => $this->mock->getLoginDetails()]);
         $this->seeJson([ "email" =>["The email must be a valid email address."] ]);
         $this->seeStatusCode(422);
     }
@@ -55,7 +55,7 @@ class ForgotPasswordTest extends TestCase
 
     public function testShouldReturnSuccessIfPasswordConfirmSuccess()
     {
-        $user = $this->put(self::URL[1], ['token' => $this->token, 'password' => 'admin2020']);
+        $this->put(self::URL[1], ['token' => $this->token, 'password' => 'admin2020']);
         $this->seeJson([
             "success" => true,
             "message" => "Your Password has been updated, successfully",
@@ -65,7 +65,7 @@ class ForgotPasswordTest extends TestCase
 
     public function testShouldReturnValidationErrorForEmptyToken()
     {
-        $user = $this->put(self::URL[1], $this->mock->getEmptyToken());
+        $this->put(self::URL[1], $this->mock->getEmptyToken());
         $this->seeJson([ "password" => ["The password field is required."],"token" => ["The token field is required."]]);
         $this->seeStatusCode(422);
     }

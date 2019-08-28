@@ -83,7 +83,7 @@ class OfftakerTest extends TestCase
     {
         $this->post(self::POST_URL, $this->mock->getNewOfftaker(),
             ['Authorization' => $this->token]);
-        $this->seeStatusCode(200);
+        $this->seeStatusCode(201);
         $this->seeJson(['success' => true]);
     }
 

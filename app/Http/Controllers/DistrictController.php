@@ -14,13 +14,16 @@ use App\Utils\Helpers;
 class DistrictController extends Controller
 {
 
-  public $bucket = '';
+  /** @var string */
+  protected $bucket;
+  protected $helpers;
 
   /**
    * DistrictController constructor.
    */
   public function __construct()
   {
+    // @phan-suppress-next-line PhanPossiblyFalseTypeMismatchProperty
     $this->bucket = getenv('DB_DATABASE');
     $this->helpers = new Helpers();
   }
@@ -28,7 +31,7 @@ class DistrictController extends Controller
   /**
    * Get top performing districts
    *
-   * @return http response object
+   * @return \Illuminate\Http\JsonResponse
    */
   public function getTopDistricts(Request $request)
   {
@@ -51,13 +54,13 @@ class DistrictController extends Controller
     }
     arsort($allDistricts);
     $topDistricts = array_slice($allDistricts, 0, 4, true);
-    return Helpers::returnSuccess("", [
+    return Helpers::returnSuccess(200, [
       'districtCount' => count($allDistricts),
       'farmerCount' => count($districts),
       'topDistricts' => $topDistricts,
       'allDistricts' => $allDistricts,
       'percentage' => $percentage
-    ], 200);
+    ], "");
   }
 
   /**
@@ -82,7 +85,7 @@ class DistrictController extends Controller
         $topDistrictsByAppDownloads[$index]['webUsers'] = $topDistrictWebUsers[0]['district_web_users'];
         $topDistrictsByAppDownloads[$index]['appPurchases'] = $topDistrictAppPurchases[0]['district_app_purchases'];
       }
-      return Helpers::returnSuccess("", ['data' => $topDistrictsByAppDownloads], 200);
+      return Helpers::returnSuccess(200, ['data' => $topDistrictsByAppDownloads], "");
     } catch (Exception $e) {
       return Helpers::returnError('Something went wrong.', 503);
     }
@@ -95,7 +98,7 @@ class DistrictController extends Controller
   public function getDistricts() {
     try {
       $districts = District::orderBy('name', 'asc')->get(['name']);
-      return Helpers::returnSuccess("Districts retrieved successfully", ['data' => $districts], 200);
+      return Helpers::returnSuccess(200, ['data' => $districts], "Districts retrieved successfully");
     } catch (Exception $e) {
       return Helpers::returnError('Something went wrong.', 503);
     }

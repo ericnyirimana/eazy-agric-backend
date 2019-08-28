@@ -5,7 +5,7 @@ use App\Rules\AccountType;
 use App\Rules\AdminRole;
 use App\Rules\District;
 use App\Rules\Email;
-use App\Rules\emailUpdate;
+use App\Rules\EmailUpdate;
 use App\Rules\ValueChain;
 use App\Rules\PhoneNumber;
 use App\Rules\UserName;
@@ -52,6 +52,9 @@ class Validation extends BaseController
             'password' => 'required',
         ]);
     }
+    /**
+     * @param \Illuminate\Http\Request $data
+     */
     public function validateNewAccount($data)
     {
         $this->validate($data, [
@@ -70,7 +73,6 @@ class Validation extends BaseController
 
     public function validateAccountRequest($data)
     {
-        $db = getenv('DB_DATABASE');
         $this->validate($data, [
             'email' => ['required', 'email', new Email($data['email'])],
             'account_name' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
@@ -82,7 +84,6 @@ class Validation extends BaseController
 
     public function validateContactForm($data)
     {
-        $db = getenv('DB_DATABASE');
         $this->validate($data, [
             'email' => 'required|email',
             'name' => 'required||regex:/^([a-zA-z\s\-\+\(\)]*)$/',
@@ -99,7 +100,7 @@ class Validation extends BaseController
     public function validateExistingAccount($data, $id)
     {
         $this->validate($data, [
-            'email' => ['email', new emailUpdate($data['email'], $id)],
+            'email' => ['email', new EmailUpdate($data['email'], $id)],
             'account_type' => [new AccountType()],
             'firstname' => 'regex:/^([a-zA-z\s\-\(\)]*)$/',
             'lastname' => 'regex:/^([a-zA-Z\s\-\(\)]*)$/',
@@ -112,12 +113,13 @@ class Validation extends BaseController
         ]);
     }
     public function validateVillageAgentData($data) {
+      // dd($data);
       $this->validate($data, [
-        '*.va_gender' => 'required',
-        '*.va_region' => 'required',
-        '*.va_subcounty' => 'required',
-        '*.va_phonenumber' => ['required', new PhoneNumber()],
-        '*.va_district' => [new District()]
+        'villageAgents.*.va_gender' => 'required',
+        'villageAgents.*.va_region' => 'required',
+        'villageAgents.*.va_subcounty' => 'required',
+        'villageAgents.*.va_phonenumber' => ['required', new PhoneNumber()],
+        'villageAgents.*.va_district' => [new District()]
       ]);
     }
 

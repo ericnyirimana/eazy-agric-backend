@@ -6,13 +6,12 @@ use Illuminate\Support\Facades\DB;
 
 class UserName implements Rule
 {
-    private $username;
+    private $username, $db;
 
     public function __construct($username)
     {
         $this->username = $username;
         $this->db = getenv('DB_DATABASE');
-        $this->validation_error_message = 'Username has been taken.';
     }
 
     /**
@@ -22,10 +21,11 @@ class UserName implements Rule
      * @param  mixed  $value
      * @return bool
      */
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */
     public function passes($attribute, $value)
     {
-        $user_name = DB::select('SELECT * FROM ' . $this->db . ' WHERE username = ?', [strtolower($this->username)]);
-        if (!$user_name)   return $value;
+        $userName = DB::select('SELECT * FROM ' . $this->db . ' WHERE username = ?', [strtolower($this->username)]);
+        return (!$userName) ? $value : false;
     }
 
     /**
@@ -35,6 +35,6 @@ class UserName implements Rule
      */
     public function message()
     {
-        return $this->validation_error_message;
+        return 'Username has been taken.';
     }
 }

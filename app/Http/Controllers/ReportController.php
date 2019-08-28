@@ -32,7 +32,7 @@ class ReportController extends Controller
       $services = Helpers::getMostOrderedServices($type, $filter);
       $data['products'] = $products;
       $data['services'] = $services;
-      return Helpers::returnSuccess('', ['data' => $data], 200);
+      return Helpers::returnSuccess(200, ['data' => $data], "");
     } catch (Exception $e) {
       return Helpers::returnError('Something went wrong.', 503);
     }
@@ -54,7 +54,7 @@ class ReportController extends Controller
       $insuranceOrders = Insurance::query()->selectRaw('COUNT(*) AS insurance_farmer, COUNT(vaId) AS insurance_agent')->whereBetween('created_at', [$start_date, $end_date])->get()->toArray();
       $sprayingOrders = Spraying::query()->selectRaw('COUNT(*) AS spraying_farmer, COUNT(vaId) AS spraying_agent')->whereBetween('created_at', [$start_date, $end_date])->get()->toArray();
       $farmerOrders = array_merge($soilTestOrders, $gardenMappingOrders, $plantingOrders, $insuranceOrders, $sprayingOrders);
-      return Helpers::returnSuccess('', ['data' => $farmerOrders], 200);
+      return Helpers::returnSuccess(200, ['data' => $farmerOrders], "");
     } catch (Exception $e) {
       return Helpers::returnError('Something went wrong.', 503);
     }

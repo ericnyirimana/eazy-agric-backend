@@ -14,7 +14,7 @@ class FarmerProduceController extends Controller
     /**
      * Get top farm produce
      *
-     * @return http response object
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getTopFarmProduce(Request $request)
     {
@@ -34,11 +34,11 @@ class FarmerProduceController extends Controller
             }
             arsort($allFarmProduce);
             $topFarmProduce = array_slice($allFarmProduce, 0, 5, true);
-            return Helpers::returnSuccess("", ['farmProduceCount' => count($farmProduces),
+            return Helpers::returnSuccess(200, ['farmProduceCount' => count($farmProduces),
             'topFarmProduce' => $topFarmProduce,
-            'allFarmProduce' => $allFarmProduce], 200);
-        } catch (Exception $e) {
-            return Helpers::returnError("Something went wrong.", 503);
+            'allFarmProduce' => $allFarmProduce], "");
+        } catch (\Exception $e) {
+            return Helpers::returnError("Could not get top farm produce.", 503);
         }
     }
 }

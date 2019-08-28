@@ -31,7 +31,7 @@ class OffTaker extends Model
         'value_chain',
         'account_type',
         'status',
-        'type' => 'offtaker',
+        'type',
         '_id',
     ];
     /**

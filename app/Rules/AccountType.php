@@ -12,6 +12,7 @@ class AccountType implements Rule
      * @param  mixed  $value
      * @return bool
      */
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */
     public function passes($attribute, $value)
     {
         return $value === 'Custom' || $value === 'Generic' || $value === 'Test';

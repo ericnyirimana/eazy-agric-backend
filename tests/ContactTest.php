@@ -1,10 +1,8 @@
 <?php
-use App\Utils\MockData;
 
 class ContactTest extends TestCase
 {
     const URL = '/api/v1/contact';
-    const UPDATE_URL = '/api/v1/admin/contact';
 
     public function testShouldReturnSendContactForm()
     {

@@ -7,26 +7,25 @@ use Illuminate\Http\Request;
 
 class AuthenticateAdmin
 {
-    private $user_id;
+    private $userId;
     private $request;
 
     public function __construct(Request $request)
     {
         $this->request = $request;
-        $this->user_id = $this->request->auth;
+        $this->userId = $this->request->auth;
     }
     /**
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
-        $user_id = $this->request->auth;
-        $admin = Admin::where('_id', '=', $user_id)
+        $userId = $this->request->auth;
+        $admin = Admin::where('_id', '=', $userId)
             ->where('adminRole', 'Super Admin')->first();
 
         if (!$admin) {
@@ -34,7 +33,8 @@ class AuthenticateAdmin
                 'success' => false,
                 'error' => 'You are not an authorized user.'], 403);
         }
-        $this->request->admin = $admin;
+        $request->request->add(['admin' => $admin]);
+
         return $next($request);
     }
 }

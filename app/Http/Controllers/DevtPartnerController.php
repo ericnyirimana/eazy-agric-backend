@@ -8,15 +8,19 @@ use App\Utils\Validation;
 use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Utils\DateRequestFilter;
-use App\Http\Controllers\ActivityController;
 
+// @phan-file-suppress PhanPartialTypeMismatchProperty
 class DevtPartnerController extends BaseController
 {
-    private $request;
+    /** @var string $requestPassword */
+    private $requestPassword;
+    /** @var string */
+    private $email;
+    private $validate, $request, $helpers;
 
     /**
-     * Offtaker constructor
-     * @param object http request
+     * 
+     * @param object $request
      * @return void
      */
     public function __construct(Request $request)
@@ -32,7 +36,7 @@ class DevtPartnerController extends BaseController
     /**
      * Get all development partners
      *
-     * @return http response object
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getDevtPartners(Request $request)
     {
@@ -44,11 +48,11 @@ class DevtPartnerController extends BaseController
         $percentage = DateRequestFilter::getPercentage($startDateCount, $endDateCount);
 
         $result = DevtPartner::whereBetween('created_at', [$start_date, $end_date])->get();
-        return Helpers::returnSuccess("", [
+        return Helpers::returnSuccess(200, [
             'count' => count($result),
             'result' => $result,
             'percentage' => $percentage
-        ], 200);
+        ], "");
     }
 
     /**
@@ -57,9 +61,8 @@ class DevtPartnerController extends BaseController
      */
     public function createDevtPartner()
     {
-        try {
             $this->validate->validateNewAccount($this->request);
-
+        try {
             $devtPartner = DevtPartner::create($this->request->all() + ['_id' => Helpers::generateId()]);
 
             if (!$devtPartner) return Helpers::returnError("Could not create user.", 408);
@@ -72,9 +75,9 @@ class DevtPartnerController extends BaseController
                 'target_email' => $devtPartner->email,
             ], 'dev. partner account created.');
 
-            return Helpers::returnSuccess("Please check your mail for your login password.", ['devtPartner' => $devtPartner], 200);
-        } catch (Exception $e) {
-            return Helpers::returnError("Something went wrong", 408);
+            return Helpers::returnSuccess(200, ['devtPartner' => $devtPartner], "Please check your mail for your login password.");
+        } catch (\Exception $e) {
+            return Helpers::returnError("Could not create development partner", 408);
         }
     }
 }
