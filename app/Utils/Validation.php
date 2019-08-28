@@ -11,6 +11,7 @@ use App\Rules\ValueChain;
 use App\Rules\PhoneNumber;
 use App\Rules\UserName;
 use App\Rules\ValidateInputCategory;
+use App\Rules\AgronomicalInfo;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Validation extends BaseController
@@ -158,7 +159,21 @@ class Validation extends BaseController
     {
         $this->validate($data, [
           'photo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
-          'crop' => 'required|regex:/^([a-zA-Z\s\-\(\)]*)$/'
+          'crop' => 'required|regex:/^([a-zA-Z\s\-\(\)]*)$/']);
+    }
+    /**
+     * Catch unaccepted data types and formats passed in the request.
+     *
+     * @param  \Illuminate\Http\Request $data
+     *
+     */
+    public function validateAgronomicalInput($data)
+    {
+        $this->validate($data, [
+            'purpose'=>['sometimes', new AgronomicalInfo()],
+            'title'=>'sometimes',
+            'description' => 'sometimes',
+            'photo' => 'sometimes | mimes:jpeg,bmp,png,jpg| max:2048'
         ]);
     }
 }
