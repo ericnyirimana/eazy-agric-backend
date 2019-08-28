@@ -9,6 +9,7 @@ class ActivityLogTest extends TestCase
     protected $response, $token, $wrongUser, $mock, $activityLog, $data;
     const URL = '/api/v1/activity-log/?limit=17&offset=5';
     const ACTIVITYLOG_URL = '/api/v1/active-users';
+    const MOBILE_ACTIVITYLOG_URL = '/api/v1/active-mobile-users';
 
     public function setUp(): void
     {
@@ -61,5 +62,32 @@ class ActivityLogTest extends TestCase
         $this->seeJson(['success' => true]);
         $this->assertArrayHasKey('allUsersCount', $res_array);
         $this->assertArrayHasKey('activeUsersCount', $res_array);
+    }
+
+    public function testShouldReturnMobileActiveUsers()
+    {
+        $this->get(self::MOBILE_ACTIVITYLOG_URL, ['Authorization' => $this->token]);
+        $res_array = (array) json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
+        $this->assertArrayHasKey('allMobileUsersCount', $res_array);
+        $this->assertArrayHasKey('activeMobileUsersCount', $res_array);
+    }
+
+    public function testShouldReturnMobileActiveUsersWithDates()
+    {
+        $start_date = '2019-08-13';
+        $end_date   = '2019-08-18';
+        $this->get(
+            self::MOBILE_ACTIVITYLOG_URL . "?start_date=" . $start_date . "&end_date=" . $end_date,
+            ['Authorization' => $this->token]
+        );
+        $res_array = (array) json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
+        $this->assertArrayHasKey('allMobileUsersCount', $res_array);
+        $this->assertArrayHasKey('activeMobileUsersCount', $res_array);
     }
 }

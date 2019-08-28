@@ -1115,6 +1115,23 @@ Param `{user}` = `offtaker` or `masteragent`
 
 ========================================
 
+### Get all mobile active users
+
+#### Request
+
+`GET /api/v1/active-mobile-users`
+
+#### Response
+```
+{
+    "success": true,
+    "allMobileUsersCount": 40,
+    "activeMobileUsersCount": 2
+}
+```
+
+========================================
+
 ### Get all enterprise (crops)
 
 #### Request
