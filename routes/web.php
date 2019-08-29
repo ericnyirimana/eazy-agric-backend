@@ -59,6 +59,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->post('/village-agents', 'UserController@addVillageAgents');
             $router->get('/farmers', 'FarmerController@getFarmers');
             $router->get('/visitor', 'AnalyticsController@getNumberOfVistors');
+            $router->get('/orders/completed', 'OrderController@getCompletedOrders');
         });
         $router->get('/activity-log', 'ActivityController@getActivityLog');
     });

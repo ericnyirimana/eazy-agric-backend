@@ -1418,5 +1418,88 @@ Param `{date}` = `YYYY-MM-DD`
       "value_chain": "Coffee"
     }
   ]
+```
+```
+### Get completed orders
+
+ #### Request
+`GET api/v1/orders/completed`
+
+ #### Response body
+
+{
+    "success": true,
+    "completed_orders": [
+        {
+            "created_at": "2019-08-19 14:18:27",
+            "district": "Buhweju",
+            "name": "Mr. Lane Gulgowski",
+            "orders": [
+                {
+                    "category": "Farming tools",
+                    "price": 10000,
+                    "product": "Korn Kali",
+                    "qty": 165,
+                    "src": "http://138.197.220.176:3000/assets/images/f9ab1da7-cd63-4e3d-8a96-b1c7dcc2cb42.png",
+                    "stock": "",
+                    "supplier": "World Food Program",
+                    "unit": "50 Kgs"
+                },
+                {
+                    "category": "Farming tools",
+                    "price": 10000,
+                    "product": "Dudu Cypher",
+                    "qty": 2,
+                    "src": "http://138.197.220.176:3000/assets/images/Jmugo75136.png",
+                    "stock": "",
+                    "supplier": "World Food Program",
+                    "unit": "50 Kgs"
+                }
+            ],
+            "payment": "mm",
+            "phone": "1-487-610-6498 x36276",
+            "time": "2018-10-20T20:22:51",
+            "status": "Delivered",
+            "total_cost": 1670000,
+            "total_items": 2,
+            "updated_at": "2019-08-19 14:18:27"
+        },
+        {
+            "created_at": "2019-08-19 14:18:27",
+            "district": "Rukungiri",
+            "name": "Antonette Ruecker",
+            "orders": [
+                {
+                    "category": "Farming tools",
+                    "price": 10000,
+                    "product": "Blended fertilizer",
+                    "qty": 165,
+                    "src": "http://138.197.220.176:3000/assets/images/f9ab1da7-cd63-4e3d-8a96-b1c7dcc2cb42.png",
+                    "stock": "",
+                    "supplier": "World Food Program",
+                    "unit": "50 Kgs"
+                },
+                {
+                    "category": "Farming tools",
+                    "price": 10000,
+                    "product": "Dudu Cypher",
+                    "qty": 2,
+                    "src": "http://138.197.220.176:3000/assets/images/Jmugo75136.png",
+                    "stock": "",
+                    "supplier": "World Food Program",
+                    "unit": "50 Kgs"
+                }
+            ],
+            "payment": "mm",
+            "phone": "(880) 686-5228 x06574",
+            "time": "2018-10-20T20:22:51",
+            "status": "Delivered",
+            "total_cost": 1670000,
+            "total_items": 2,
+            "updated_at": "2019-08-19 14:18:27"
+        }
+    ],
+    "count": 2
 }
+
 ```

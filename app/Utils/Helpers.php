@@ -11,6 +11,7 @@ use App\Models\ActivityLog;
 use App\Models\Planting;
 use App\Models\SoilTest;
 use App\Models\Spraying;
+use App\Models\Order;
 use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
@@ -309,4 +310,35 @@ class Helpers extends BaseController
         ));
         return $result;
     }
+    
+   /**
+   * Returns all the completed orders
+   * 
+   *@params $request object HttpRequest
+   *@return $response object HttpResponse
+   */
+  public static function getCompletedOrders() {
+    $response = null;
+    try {
+      $completedOrders = Order::select(
+        'details.name',
+        'details.phone',
+        'details.time',
+        'details.district',
+        'status','payment',
+        'details.totalItems as total_items',
+        'details.totalCost as total_cost',
+        'orders',
+        'created_at',
+        'updated_at')
+        ->where('LOWER(status)', '=', 'delivered')
+        ->latest()
+        ->get();
+      $response = Helpers::returnSuccess("", ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], 200);
+    }
+    catch (Exception $e) {
+      $response = Helpers::returnError('Something went wrong.', 503);
+    }
+    return $response;
+  }
 }
