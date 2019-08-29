@@ -1503,3 +1503,20 @@ Param `{date}` = `YYYY-MM-DD`
 }
 
 ```
+
+### Get number of farmers who ordered inputs of different input categories
+
+#### Request
+`GET api/v1/farmers-orders`
+```
+{
+    "success": true,
+    "farmers_order": {
+        "Pesticide": 12,
+        "Seeds": 10,
+        "Farming Tools": 15,
+        "Fertilizer": 11,
+        "Herbicide": 7 
+    }
+} 
+```

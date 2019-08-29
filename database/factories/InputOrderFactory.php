@@ -26,6 +26,7 @@ class InputOrderFactory {
         $productTwo = $faker->randomElement($productsPoolTwo);
         $districts = ['Rukungiri', 'Rubirizi', 'Ntoroko', 'Buhweju', 'Bushenyi'];
         $district = $faker->randomElement($districts);
+        $categories = ['Seeds', 'Herbicide', 'Pesticide', 'Fertilizer', 'Farming Tools'];
         return [
             "details" => [
                 "district" => $district,
@@ -39,7 +40,7 @@ class InputOrderFactory {
               "eloquent_type" => "order",
               "orders" => [
                 [
-                    "category" => "Farming tools",
+                    "category" => $faker->randomElement($categories),
                     "price" => 10000,
                     "product" => $productOne,
                     "qty" => 165,
@@ -49,7 +50,7 @@ class InputOrderFactory {
                     "unit" => "50 Kgs"
                 ],
                 [
-                    "category" => "Farming tools",
+                    "category" => $faker->randomElement($categories),
                     "price" => 10000,
                     "product" => $productTwo,
                     "qty" => 2,
@@ -61,7 +62,7 @@ class InputOrderFactory {
               ],
               "payment" => "mm",
               "stature" => "new",
-              "status" => "Intransit",
+              "status" => $faker->randomElement(['Delivered', 'Intransit']),
               "type" => "order",
               "user_id" => function() {
                 return factory(Farmer::class)->create()->_id;

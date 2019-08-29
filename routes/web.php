@@ -60,7 +60,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/farmers', 'FarmerController@getFarmers');
             $router->get('/visitor', 'AnalyticsController@getNumberOfVistors');
             $router->get('/orders/completed', 'OrderController@getCompletedOrders');
-        });
+            $router->get('/farmers-orders', 'FarmersOrderController@getNumberOfFarmersWhoOrderedDifferentInputCategories');
+          });
         $router->get('/activity-log', 'ActivityController@getActivityLog');
     });
     $router->group(['middleware' => 'validateParams'], function () use ($router) {
