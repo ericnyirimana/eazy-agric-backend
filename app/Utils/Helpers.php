@@ -293,9 +293,9 @@ class Helpers extends BaseController
     {
         $result = (!empty($start_date) && isset($start_date) ? DB::select(
             'SELECT DISTINCT user_id FROM ' . $db .
-            ' WHERE (type = "order" OR type = "map_cordinates" OR
-        type = "soil_test"      OR type = "planting"       OR
-        type = "spraying"       OR type = "insurance")     AND
+            ' WHERE (type IN 
+            ["order", "map_cordinates", "soil_test", "planting", "spraying", "insurance"]) 
+                AND
         (
           DATE_FORMAT_STR(created_at, "1111-11-11") BETWEEN
           DATE_FORMAT_STR("' . $start_date . '", "1111-11-11") AND
@@ -303,9 +303,8 @@ class Helpers extends BaseController
         )'
         ) : DB::select(
             'SELECT DISTINCT user_id FROM ' . $db .
-            ' WHERE type = "order" OR type = "map_cordinates" OR
-        type = "soil_test"      OR type = "planting"       OR
-        type = "spraying"       OR type = "insurance"'
+            ' WHERE type IN 
+            ["order", "map_cordinates", "soil_test", "planting", "spraying", "insurance"] '
         ));
         return $result;
     }
@@ -345,5 +344,26 @@ class Helpers extends BaseController
     {
         $input = Input::where('_id', '=', $id);
         return $input ?  $input : false;
+    }
+     /**
+     * Get total number of orders
+     * @param  \Illuminate\Http\Request  request
+     * @return array query result
+     */
+    public static function getNewOrders($request)
+    {
+        $requestArray = DateRequestFilter::getRequestParam($request);
+
+        list($start_date, $end_date) = $requestArray;
+
+        $orders = DB::select("SELECT COUNT(1) AS newOrders
+        FROM " . getenv('DB_DATABASE') . "
+        WHERE type
+        IN ['order', 'planting', 'spraying', 'insurance', 'soil_test', 'map_cordinates']
+        AND status = 'new'
+        OR stature='new'
+        AND (created_at BETWEEN '" . $start_date . "' AND  '" . $end_date . "')");
+
+        return $orders;
     }
 }
