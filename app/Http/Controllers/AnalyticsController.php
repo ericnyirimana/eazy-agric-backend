@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Utils\Helpers;
 use App\Services\GoogleClient;
-use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class AnalyticsController extends BaseController
@@ -16,10 +15,9 @@ class AnalyticsController extends BaseController
     /**
      * Create a new controller instance.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return void
      */
-    public function __construct(Request $request)
+    public function __construct()
     {
       $this->profileId = getenv('GOOGLE_ANALYTICS_PROFILE_ID');
       $this->client= GoogleClient::initializeAnalytics();
@@ -38,8 +36,8 @@ class AnalyticsController extends BaseController
           'ga:users');
       $visitors_array = $resultObject->getRows();
       $visitors = $visitors_array[0][0];
-      return Helpers::returnSuccess("", [
+      return Helpers::returnSuccess(200, [
         'visitorsCount' => $visitors,
-      ], 200);
+      ], "");
   }
 }

@@ -13,6 +13,7 @@ class AdminRole implements Rule
      * @param  mixed  $value
      * @return bool
      */
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */
     public function passes($attribute, $value)
     {
         return $value === 'Super Admin' || $value === 'Analyst' || $value === 'Moderate Editor';

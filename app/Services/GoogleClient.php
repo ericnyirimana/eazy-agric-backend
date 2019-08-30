@@ -10,7 +10,7 @@ class GoogleClient
   /**
    * Initializes an Analytics Reporting API V4 service object.
    *
-   * @return An authorized Analytics Reporting API V4 service object.
+   * @return object authorized Analytics Reporting API V4 service object.
    */
   public static function initializeAnalytics()
   {
@@ -24,7 +24,7 @@ class GoogleClient
     $client->setApplicationName("EzyAgric Analytics Reporting");
     $client->setAuthConfig($KEY_FILE_LOCATION);
     $client->setScopes(['https://www.googleapis.com/auth/analytics.readonly']);
-    $analytics = new \Google_Service_Analytics($client);
+    $analytics = new \Google_Service_Analytics($client); // @phan-suppress-current-line PhanUndeclaredClassMethod
     return $analytics;
   }
 

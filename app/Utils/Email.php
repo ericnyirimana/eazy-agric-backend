@@ -4,16 +4,21 @@ namespace App\Utils;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use \Mailjet\Resources;
 
+/** @phan-file-suppress PhanPossiblyFalseTypeMismatchProperty, PhanPossiblyFalseTypeArgument */
 class Email extends BaseController
 {
-    /**
-     * setup email client.
-     */
+    /** @var string $adminEmail*/
+    protected $adminEmail;
+
     private function initMail()
     {
+        /** @var string $mailjetApiKey */
         $mailjetApiKey = getenv('MJ_APIKEY_PUBLIC');
+
+        /** @var string $mailjetSecret*/
         $mailjetSecret = getenv('MJ_API_SECRET_KEY');
-        $this->admin_email = getenv('MJ_API_EMAIL');
+
+        $this->adminEmail = getenv('MJ_API_EMAIL');
 
         return new \Mailjet\Client($mailjetApiKey, $mailjetSecret, true, ['version' => 'v3.1']);
     }
@@ -26,13 +31,13 @@ class Email extends BaseController
     {
         $to_email = explode(',', $to);
         foreach ($to_email as $email) {
-            $emails[] = ['Email' => $email, 'Name' => $email];
+            $emails = [['Email' => $email, 'Name' => $email]];
         }
-        return $body = [
+        return [
             'Messages' => [
                 [
                     'From' => [
-                        'Email' => $this->admin_email,
+                        'Email' => $this->adminEmail,
                         'Name' => "ezyagric",
                     ],
                     'To' => $emails,
@@ -53,7 +58,7 @@ class Email extends BaseController
         if ($content === strip_tags($content)) {
             $content = '<h4 style="margin: 0 auto; margin-bottom: 50px;">' . $content . '</h4>';
         }
-        return $htmlTemplate = '<div style="font-family:arial; margin: 20px;">
+        return '<div style="font-family:arial; margin: 20px;">
         <div style="display: inline-block; text-align: center; margin: 0 auto; width: 600px; margin: 0 auto; display: block;">
           <img src="' . env("EMAIL_BANNER", "http://www.mtic.go.ug/nids/slide/fruits.png") . '" style="width: 100%;">
 
@@ -88,11 +93,11 @@ class Email extends BaseController
     }
 
     /**
-     * send actual email to recipients
-     * @param $to {string} seperate multiple emails with commar
-     * @param $subject {string} subject of the email
-     * @param body {string/html} contains the actual message to be displayed to the user.
-     * @param $type {string} [optional] when omitted, will treat $body as string and not HTML
+     * Send actual email to recipients
+     * @param string $to  seperate multiple emails with commar
+     * @param string $subject  subject of the email
+     * @param string $body contains the actual message to be displayed to the user.
+     * @param string $type  [optional] when omitted, will treat $body as string and not HTML
      */
     public function sendMail($to, $subject, $body, $type = 'TEXT')
     {
@@ -102,16 +107,15 @@ class Email extends BaseController
             'html' => $body,
         ]);
         $response = $mail->post(Resources::$Email, ['body' => $body]);
-
         return $response->success() && ['status' => 'success'];
     }
 
     /**
      * Sends a predefined email containing information about password reset
-     * @param $to [string] email to send reset link to
-     * @param  $path [string] url to redirect user to
+     * @param string $to email to send reset link to
+     * @param string $path url to redirect user to
      */
-    public function mailWithTemplate($template = 'RESET_PASSWORD', $to, $path, $password = '')
+    public function mailWithTemplate($to, $path, $template = 'RESET_PASSWORD', $password = '')
     {
         $template = $this->getTemplate($template, $path, $password);
 

@@ -2,26 +2,29 @@
 
 namespace App\Utils;
 
+use App\Models\ActivityLog;
 use App\Models\Farmer;
 use App\Models\InputOrder;
 use App\Models\Insurance;
 use App\Models\MapCoordinate;
 use App\Models\MasterAgent;
-use App\Models\ActivityLog;
+use App\Models\Order;
 use App\Models\Planting;
 use App\Models\SoilTest;
 use App\Models\Spraying;
-use App\Models\Order;
 use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
+/** @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal, PhanPossiblyFalseTypeMismatchProperty */
+
 class Helpers extends BaseController
 {
-
-    private static $url, $mail, $db, $masterAgent;
+    /** @var string $url */
+    private static $url;
+    private static $mail, $db, $masterAgent;
     public static $user;
     public function __construct()
     {
@@ -34,7 +37,7 @@ class Helpers extends BaseController
     /**
      * Create a new token for user object.
      *
-     * @param  \App\User   $user
+     * @param array   $user
      * @param $db
      * @return string
      */
@@ -75,51 +78,49 @@ class Helpers extends BaseController
 
     /**
      * Send user password via mail
-     * @param string password
-     * @param string email
+     * @param string $password
+     * @param string $email
      * @return boolean true or false
      */
     public function sendPassword($password, $email)
     {
         $sendEmail = self::$mail->mailWithTemplate(
-            'LOGIN',
             $email,
             self::$url,
+            'LOGIN',
             $password
         );
 
-        if ($sendEmail) {
-            return true;
-        }
+        return ($sendEmail) ? true : false;
     }
 
     /**
      * Get a user by id
-     * @param string id
-     * @return object user
+     * @param string $id
+     * @return array $user
      */
 
     public static function queryUser($id)
     {
-        return $query = DB::select('select * from ' . self::$db . ' where _id = ?', [$id]);
+        return DB::select('select * from ' . self::$db . ' where _id = ?', [$id]);
     }
 
     public static function logActivity($info, $activity, $type = 'admin')
     {
-        return $activity = ActivityLog::create([
-        'email' => $info['email'],
-        'target_email' => $info['target_email'],
-        'target_account_name' => $info['target_account_name'],
-        'activity' => $activity,
-        'type' => $type
+        return ActivityLog::create([
+            'email' => $info['email'],
+            'target_email' => $info['target_email'],
+            'target_account_name' => $info['target_account_name'],
+            'activity' => $activity,
+            'type' => $type,
         ]);
     }
 
     /**
      * Change user account status
-     * @param string user id
-     * @param string status
-     *@return boolean true or false
+     * @param string $id userid
+     * @param string $status
+     * @return boolean true or false
      */
 
     public static function changeStatus($id, $status)
@@ -131,38 +132,34 @@ class Helpers extends BaseController
         $query = "UPDATE " . self::$db .
             " SET status='" . $status . "'WHERE _id= '" . $id .
             "' Returning * ";
-
-        $status = DB::statement($query);
-
-        if ($status->status === 'success') {
-            return true;
-        }
+        $result = DB::statement($query);
+        $resultArray = json_decode(json_encode($result), true);
+        return ($resultArray['status'] === 'success') ? true : false;
     }
 
     /**
      * delete user
-     * @param string id
-     * @return object query result
+     * @param string $id
+     * @return object|boolean query result
      */
     public static function deleteUser($id)
     {
 
-        $deleteAccount = DB::statement('delete from ' . self::$db . ' where _id = ? returning *', [$id]);
-        if ($deleteAccount) {
-
-            return $deleteAccount->rows;
+        $result = DB::statement('delete from ' . self::$db . ' where _id = ? returning *', [$id]);
+        $resultArray = json_decode(json_encode($result), true);
+        if ($resultArray) {
+            return $resultArray['rows'];
         }
         return false;
     }
     /**
      * Edit account
-     * @param string id
-     * @param array data
-     * @return object query result
+     * @param string $id
+     * @param array $data
+     * @return object|boolean query result
      */
     public static function editAccount($id, $data)
     {
-
         $fields = [];
         $values = [];
         foreach ($data as $key => $value) {
@@ -170,7 +167,7 @@ class Helpers extends BaseController
             $values[] = $value;
         }
         array_push($values, $id);
-        $query = 'UPDATE ' . self::$db . ' SET ' . join($fields, ",") . ' WHERE _id=?';
+        $query = 'UPDATE ' . self::$db . ' SET ' . join(",", $fields) . ' WHERE _id=?';
         $queryResult = DB::statement($query, $values);
         if (!$queryResult) {
             return false;
@@ -189,11 +186,11 @@ class Helpers extends BaseController
     {
         return response()->json([
             "success" => false,
-            "error" => $errorMessage
+            "error" => $errorMessage,
         ], $statusCode);
     }
 
-    public static function returnSuccess($successMessage = null, $data = [], $statusCode)
+    public static function returnSuccess($statusCode, $data = [], $successMessage = null)
     {
         $result = array_merge(array_filter(["success" => true, "message" => $successMessage]), $data);
         return response()->json($result, $statusCode);
@@ -219,13 +216,13 @@ class Helpers extends BaseController
      * Returns the most ordered products,
      * filtered by enterprise(crop) or district
      *
-     * @param string type - filter type
-     * @param string filter - filter value
+     * @param string $type - filter type
+     * @param string $filter - filter value
      * @return array products
      */
     public static function getMostOrderedProducts($type = 'enterprise', $filter = '')
     {
-        $products = "";
+        $products = [];
         if ($type == 'enterprises') {
             $enterpriseFarmers = Farmer::query()->select('_id')->where('value_chain', '=', $filter)->get()->toArray();
             $farmerIDs = array_map(function ($enterpriseFarmer) {
@@ -248,13 +245,13 @@ class Helpers extends BaseController
      * Returns the most ordered services,
      * filtered by enterprise(crop) or district
      *
-     * @param string type - filter type
-     * @param string filter - filter value
+     * @param string $type - filter type
+     * @param string $filter - filter value
      * @return array services
      */
     public static function getMostOrderedServices($type = 'enterprise', $filter = '')
     {
-        $services = "";
+        $services = [];
         if ($type == 'enterprises') {
             $enterpriseFarmers = Farmer::query()->select('_id')->where('value_chain', '=', $filter)->get()->toArray();
             $farmerIDs = array_map(function ($enterpriseFarmer) {
@@ -280,21 +277,20 @@ class Helpers extends BaseController
         }
         return $services;
     }
-
     /**
      * Return the list of active mobile users based on
      * accessed services
      *
-     * @param object $db
-     * @param date $start_date
-     * @param date $end_date
+     * @param string $db
+     * @param string $start_date
+     * @param string $end_date
      * @return array
      */
     public static function getActiveMobileUsers($db, $start_date, $end_date)
     {
         $result = (!empty($start_date) && isset($start_date) ? DB::select(
             'SELECT DISTINCT user_id FROM ' . $db .
-                ' WHERE (type = "order" OR type = "map_cordinates" OR
+            ' WHERE (type = "order" OR type = "map_cordinates" OR
         type = "soil_test"      OR type = "planting"       OR
         type = "spraying"       OR type = "insurance")     AND
         (
@@ -304,41 +300,42 @@ class Helpers extends BaseController
         )'
         ) : DB::select(
             'SELECT DISTINCT user_id FROM ' . $db .
-                ' WHERE type = "order" OR type = "map_cordinates" OR
+            ' WHERE type = "order" OR type = "map_cordinates" OR
         type = "soil_test"      OR type = "planting"       OR
         type = "spraying"       OR type = "insurance"'
         ));
         return $result;
     }
-    
-   /**
-   * Returns all the completed orders
-   * 
-   *@params $request object HttpRequest
-   *@return $response object HttpResponse
-   */
-  public static function getCompletedOrders() {
-    $response = null;
-    try {
-      $completedOrders = Order::select(
-        'details.name',
-        'details.phone',
-        'details.time',
-        'details.district',
-        'status','payment',
-        'details.totalItems as total_items',
-        'details.totalCost as total_cost',
-        'orders',
-        'created_at',
-        'updated_at')
-        ->where('LOWER(status)', '=', 'delivered')
-        ->latest()
-        ->get();
-      $response = Helpers::returnSuccess("", ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], 200);
+
+    /**
+     * Returns all the completed orders
+     *
+   * @return \Illuminate\Http\JsonResponse
+     */
+    public static function getCompletedOrders()
+    {
+        $response = null;
+        try {
+            $completedOrders = Order::select(
+                'details.name',
+                'details.phone',
+                'details.time',
+                'details.district',
+                'status',
+                'payment',
+                'details.totalItems as total_items',
+                'details.totalCost as total_cost',
+                'orders',
+                'created_at',
+                'updated_at'
+            )
+                ->where('LOWER(status)', '=', 'delivered')
+                ->latest()
+                ->get();
+            $response = Helpers::returnSuccess(200, ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], "");
+        } catch (\Exception $e) {
+            $response = Helpers::returnError('Something went wrong.', 503);
+        }
+        return $response;
     }
-    catch (Exception $e) {
-      $response = Helpers::returnError('Something went wrong.', 503);
-    }
-    return $response;
-  }
 }

@@ -22,10 +22,11 @@ class TotalPaymentController extends Controller
       $sumSpraying = Spraying::whereBetween('created_at', [$startDate, $endDate])->sum('total');
       return $sumMapCordinate + $sumOrder + $sumSoilTest + $sumPlanting + $sumSpraying;
   }
+
   /**
    * Get total payment made by farmers of EzyAgric
    *
-   * @return http response object
+   * @return \Illuminate\Http\JsonResponse
    */
   public function getTotalPayment(Request $request)
   {
@@ -51,12 +52,12 @@ class TotalPaymentController extends Controller
     $percentage = DateRequestFilter::getPercentage($startDateTotal, $endDateTotal);
 
     try {
-      return Helpers::returnSuccess("", [
+      return Helpers::returnSuccess(200, [
         'totalPayment' => $this->getPaymentSum($startDate, $endDate),
         'percentagePayment' => $percentage
-      ], 200);
-    } catch (Exception $e) {
-      return Helpers::returnError('Something went wrong.', 503);
+      ], "");
+    } catch (\Exception $e) {
+      return Helpers::returnError('Could not get total payment.', 503);
     }
   }
 }

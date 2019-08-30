@@ -5,7 +5,7 @@ namespace App\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 
-class emailUpdate implements Rule
+class EmailUpdate implements Rule
 {
   private $email, $id;
 
@@ -22,13 +22,12 @@ class emailUpdate implements Rule
    * @param  mixed  $value
    * @return bool
    */
-  public function passes($attribute, $value)
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */
+   public function passes($attribute, $value)
   {
     $db = getenv('DB_DATABASE');
     $user = DB::select('select * from ' . $db . ' where email = ? AND (type = "ma" OR type  = "offtaker" OR type = "admin" OR type="partner")', [$this->email]);
-    if (!$user || $user[0][$db]['_id'] === $this->id) {
-      return $value;
-    }
+    return (!$user || $user[0][$db]['_id'] === $this->id) ? $value : false;
   }
 
   /**

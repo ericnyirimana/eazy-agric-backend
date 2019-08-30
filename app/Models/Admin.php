@@ -47,7 +47,8 @@ class Admin extends Model
 
     /**
      * Hash password
-     * @var array
+     * @param string $password
+     * @return void
      */
     public function setPasswordAttribute($password)
     {

@@ -12,6 +12,7 @@ class ValueChain implements Rule
      * @param  mixed  $value
      * @return bool
      */
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */
     public function passes($attribute, $value)
     {
         return $value === 'Crop' || $value === 'Dairy' || $value === 'N/A';

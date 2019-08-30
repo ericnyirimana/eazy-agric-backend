@@ -14,7 +14,7 @@ use App\Utils\Validation;
 
 class ActivityController extends Controller
 {
-    private $request;
+    private $request, $db, $validate;
     
     /**
      * Create a new controller instance.
@@ -39,7 +39,7 @@ class ActivityController extends Controller
         $limit = $this->request->input('limit');
         $offset = $this->request->input('offset');
         $activity = ActivityLog::offset($offset)->limit($limit)->get();
-        return Helpers::returnSuccess("", ['activityLog' => $activity], 200);
+        return Helpers::returnSuccess(200, ['activityLog' => $activity], "");
     }
 
     public function getPercentages($startDate, $endDate)
@@ -79,7 +79,7 @@ class ActivityController extends Controller
         $percentageSoilTestAcreage = DateRequestFilter::getPercentage(array_sum($oldInputSoilTestAcreage), array_sum($newInputSoilTestAcreage));
         $percentageGardenMapped = DateRequestFilter::getPercentage($oldInputGardenMapped, $newInputGardenMapped);
 
-        return Helpers::returnSuccess("", [
+        return Helpers::returnSuccess(200, [
         'activities' => $this->getPercentages($startDate, $endDate),
         'activitiesPercentage' => [
             'Input orders' => $percentageInputOrders,
@@ -88,6 +88,6 @@ class ActivityController extends Controller
             'Garden Mapping' => $percentageGardenMapped,
             'Produce Sold' => 0,
         ]
-        ], 200);
+        ], "");
     }
 }

@@ -14,15 +14,15 @@ class AccountRequestTest extends TestCase
 
     public function testShouldReturnOfftakersRequestDetails()
     {
-       $response = $this->post('api/v1/request/offtaker', $this->mock->getAccountRequest());
-       $this->seeStatusCode(200);
-        $this->seeJson(['success' => true]);
+       $this->post('api/v1/request/offtaker', $this->mock->getAccountRequest());
+       $this->seeStatusCode(201);
+       $this->seeJson(['success' => true]);
     }
 
     public function testShouldReturnMasteragentRequestDetails()
     {
-        $response = $this->post('api/v1/request/masteragent', $this->mock->getAccountRequest());
-        $this->seeStatusCode(200);
+        $this->post('api/v1/request/masteragent', $this->mock->getAccountRequest());
+        $this->seeStatusCode(201);
         $this->seeJson(['success' => true]);
     }
 }

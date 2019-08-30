@@ -5,10 +5,9 @@ use Illuminate\Http\Request;
 
 use Carbon\Carbon;
 
-
+/** @phan-file-suppress PhanPartialTypeMismatchArgument */
 class DateRequestFilter {
 
-    private $percentage;
     /**
      * generate a start and end date value from the Request object
      * all params are required

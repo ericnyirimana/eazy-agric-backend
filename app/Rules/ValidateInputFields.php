@@ -3,6 +3,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 
+/** @phan-file-suppress PhanUnusedPublicMethodParameter, PhanPossiblyNullTypeArgumentInternal, PhanPossiblyFalseTypeMismatchProperty */
 class ValidateInputFields implements Rule
 {
     private static $data;
@@ -16,16 +17,12 @@ class ValidateInputFields implements Rule
      * Determine if the validation rule passes.
      *
      * @param  string  $attribute
-     * @param  mixed  $value
+     * @param  string  $value
      * @return bool
      */
     public function passes($attribute, $value)
     {
-        if ($this->string !== '') {
-
-            return $value;
-        }
-
+      return $value !== '';
     }
 
     /**

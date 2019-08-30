@@ -31,7 +31,7 @@ class EmailTest extends TestCase
 
     public function testShouldReturnAnErrorForResetPassword()
     {
-        $sentMail = $this->mailer->mailWithTemplate('RESET_PASSWORD', 'fakemail', 'some-random-token');
+        $sentMail = $this->mailer->mailWithTemplate('fakemail', '/hjbsfj', 'RESET_PASSWORD','some-random-token');
         $this->assertIsBool($sentMail);
         $this->assertFalse($sentMail);
     }
