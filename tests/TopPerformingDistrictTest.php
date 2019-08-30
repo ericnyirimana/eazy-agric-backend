@@ -4,6 +4,7 @@ use App\Utils\MockData;
 class TopPerformingDistrictTest extends TestCase
 {
   const URL = '/api/v1/top-performing-district';
+  const District_URL = '/api/v1/top-performing-district/bushenyi';
   protected $token;
   public function setUp(): void
   {
@@ -17,6 +18,14 @@ class TopPerformingDistrictTest extends TestCase
   public function testShouldReturnTopPerformingDistricts()
   {
     $this->get(self::URL, ['Authorization' => $this->token]);
+    $this->seeStatusCode(200);
+    $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+    $this->seeJson(['success' => true]);
+  }
+
+  public function testShouldReturnDistrictStatistics()
+  {
+    $this->get(self::District_URL, ['Authorization' => $this->token]);
     $this->seeStatusCode(200);
     $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
     $this->seeJson(['success' => true]);

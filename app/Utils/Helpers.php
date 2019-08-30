@@ -196,17 +196,19 @@ class Helpers extends BaseController
         return response()->json($result, $statusCode);
     }
 
-    /**
-     * Gets the top districts ranked by the number of app downloads
-     */
-    public static function getTopDistrictsByAppDownloads()
-    {
-        $topDistrictsByAppDownloads = DB::select("SELECT farmer.farmer_district AS name, COUNT(farmer.farmer_district) AS appDownloads
-      FROM " . self::$db . " farmer
-      INNER JOIN " . self::$db . " account
-      ON KEYS ('account::' || farmer.farmer_id)
+  /**
+   * Gets the top districts ranked by the number of app downloads
+   */
+  public static function getTopDistrictsByAppDownloads($district = null)
+  {
+    $districtClause = $district ? " AND farmer.farmer_district =='" . $district . "'"  : "";
+    $topDistrictsByAppDownloads = DB::select("SELECT farmer.farmer_district AS name, COUNT(farmer.farmer_district) AS appDownloads
+      FROM " . self::$db . " farmer 
+      INNER JOIN " . self::$db . " account 
+      ON KEYS ('account::' || farmer.farmer_id) 
       WHERE account.type == 'account'
-        AND farmer.type == 'farmer'
+        AND farmer.type == 'farmer'"
+      . $districtClause . "
       GROUP BY farmer.farmer_district
       ORDER BY appDownloads DESC LIMIT 5");
         return $topDistrictsByAppDownloads;

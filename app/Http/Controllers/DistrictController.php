@@ -66,11 +66,15 @@ class DistrictController extends Controller
   /**
    * Get top performing districts based on app downloads and web users
    */
-  public function getTopPerformingDistricts()
+  public function getTopPerformingDistricts($district = null)
   {
     try {
-      $topDistrictsByAppDownloads = Helpers::getTopDistrictsByAppDownloads();
-
+      if($district == null){
+        $topDistrictsByAppDownloads = Helpers::getTopDistrictsByAppDownloads();        
+      }
+      else {
+        $topDistrictsByAppDownloads = Helpers::getTopDistrictsByAppDownloads($district);        
+      }
       foreach ($topDistrictsByAppDownloads as $index => $topDistrictsByAppDownload) {
         $topDistrictWebUsers = DB::select("SELECT COUNT(1) AS district_web_users
         FROM " . $this->bucket . "
@@ -90,7 +94,7 @@ class DistrictController extends Controller
       return Helpers::returnError('Something went wrong.', 503);
     }
   }
-
+  
   /**
    * Gets all districts in the database
    * @return object http response
