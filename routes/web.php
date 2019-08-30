@@ -13,7 +13,7 @@ use App\Http\Controllers\UserController;
  */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+  return $router->app->version();
 });
 $router->group(['prefix' => 'api/v1'], function () use ($router) {
   $router->post('/contact', 'ContactController@sendContactForm');
@@ -62,10 +62,14 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->get('/visitor', 'AnalyticsController@getNumberOfVistors');
       $router->get('/orders/completed', 'OrderController@getCompletedOrders');
       $router->get('/farmers-orders', 'FarmersOrderController@getNumberOfFarmersWhoOrderedDifferentInputCategories');
+      // input routes
+      $router->get('/inputs/{id}', 'InputController@getInputDetails');
+      $router->put('/inputs/{id}', 'InputController@updateInput');
+      $router->delete('/inputs/{id}', 'InputController@deleteInput');
     });
     $router->get('/activity-log', 'ActivityController@getActivityLog');
-    });
-    $router->group(['middleware' => 'validateParams'], function () use ($router) {
-        $router->post('/request/{user}', 'UserController@requestAccount');
-    });
+  });
+  $router->group(['middleware' => 'validateParams'], function () use ($router) {
+    $router->post('/request/{user}', 'UserController@requestAccount');
+  });
 });

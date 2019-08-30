@@ -96,14 +96,10 @@ class MockData
 
     protected $validVaData = [
         "villageAgents" => [
-            [
-                'agriculture_experience_in_years' => 'NA',
-                'assets_held' => 'NA',
-                'certification_doc_url' => 'NA',
-                'education_doc_url' => 'NA',
-                'education_level' => 'NA',
-                'eloquent_type' => 'va',
-                'farmers_enterprises' => 'NA',
+          [
+                'agriculture_experience_in_years' => 'NA','assets_held' => 'NA',
+                'certification_doc_url' => 'NA', 'education_doc_url' => 'NA',
+                'education_level' => 'NA','eloquent_type' => 'va','farmers_enterprises' => 'NA',
                 'ma_id' => 'NA',
                 'other_occupation' => 'NA',
                 'partner_id' => 'NA',

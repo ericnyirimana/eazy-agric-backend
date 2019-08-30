@@ -16,6 +16,7 @@ use App\Utils\Email;
 use Crisu83\ShortId\ShortId;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\DB;
+use App\Models\InputSupplier as Input;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 /** @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal, PhanPossiblyFalseTypeMismatchProperty */
@@ -203,9 +204,9 @@ class Helpers extends BaseController
   {
     $districtClause = $district ? " AND farmer.farmer_district =='" . $district . "'"  : "";
     $topDistrictsByAppDownloads = DB::select("SELECT farmer.farmer_district AS name, COUNT(farmer.farmer_district) AS appDownloads
-      FROM " . self::$db . " farmer 
-      INNER JOIN " . self::$db . " account 
-      ON KEYS ('account::' || farmer.farmer_id) 
+      FROM " . self::$db . " farmer
+      INNER JOIN " . self::$db . " account
+      ON KEYS ('account::' || farmer.farmer_id)
       WHERE account.type == 'account'
         AND farmer.type == 'farmer'"
       . $districtClause . "
@@ -339,5 +340,10 @@ class Helpers extends BaseController
             $response = Helpers::returnError('Something went wrong.', 503);
         }
         return $response;
+    }
+    public static function checkInput($id)
+    {
+        $input = Input::where('_id', '=', $id);
+        return $input ?  $input : false;
     }
 }

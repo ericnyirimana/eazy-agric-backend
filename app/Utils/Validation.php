@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 use App\Rules\AccountType;
@@ -128,6 +129,19 @@ class Validation extends BaseController
         $this->validate($data, [
             'offset' => 'numeric',
             'limit' => 'numeric',
+        ]);
+    }
+    public function validateInput($data)
+    {
+        $this->validate($data, [
+            'name' => 'required|min:4',
+            'crops' => 'required|array',
+            'category' => 'required',
+            'description' => 'required|string',
+            'price' => 'required|array',
+            'unit' => 'required|array',
+            'supplier' => 'required|string',
+            'quantity' => 'required|numeric'
         ]);
     }
 }
