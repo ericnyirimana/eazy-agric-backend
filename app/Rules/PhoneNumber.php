@@ -16,7 +16,8 @@ class PhoneNumber implements Rule
    * @param  mixed  $value
    * @return bool
    */
-  public function passes($attribute, $value)
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */
+    public function passes($attribute, $value)
   {
     $this->phone = $value;
     return VillageAgent::where('va_phonenumber', $this->phone)->get()->count() < 1;

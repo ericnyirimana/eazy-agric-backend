@@ -35,7 +35,7 @@ class MasterAgent extends Model
         '_id',
         'ma_id',
         'ma_manager_name',
-        'type' => 'ma',
+        'type',
         'ma_email',
         'ma_value_chain',
         'manager_location',

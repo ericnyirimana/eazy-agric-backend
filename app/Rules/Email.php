@@ -20,14 +20,12 @@ class Email implements Rule
      * @param  mixed  $value
      * @return bool
      */
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */  
     public function passes($attribute, $value)
     {
         $db = getenv('DB_DATABASE');
         $user_email = DB::select('select * from ' . $db . ' where email = ?', [$this->email]);
-        if (!$user_email) {
-
-            return $value;
-        }
+        return (!$user_email) ? $value : false;
     }
 
     /**

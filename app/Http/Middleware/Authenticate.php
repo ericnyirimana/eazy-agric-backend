@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 use Closure;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
-use Illuminate\Contracts\Auth\Factory as Auth;
 
 class Authenticate
 {
@@ -13,16 +12,16 @@ class Authenticate
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
-     * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
         $token = $request->header('Authorization');
         if (!$token) {
             return response()->json(['success' => false, 'error' => 'Please log in first.'], 401);
         }
         try {
+            // @phan-suppress-next-line PhanPartialTypeMismatchArgument
             $credentials = JWT::decode($token, env('JWT_SECRET'), ['HS256']);
         } catch (ExpiredException $e) {
             return response()->json([
@@ -36,7 +35,7 @@ class Authenticate
         //Get subscriber
         $user = $credentials->sub;
         if ($user) {
-            $request->auth = $user;
+            $request->request->add(['auth' => $user]);
         }
         response()->json(['success' => false, 'error' => 'Invalid token. Please log in again.'], 400);
         return $next($request);

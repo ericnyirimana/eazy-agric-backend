@@ -9,6 +9,7 @@ use App\Utils\Helpers;
 
 class OrderController extends BaseController
 {
+    protected $request;
     public function __construct(Request $request)
     {
         $this->request = $request;

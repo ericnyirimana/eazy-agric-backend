@@ -83,7 +83,7 @@ class DevtPartnerTest extends TestCase
     }
     public function testShouldReturnUserIfTokenIsValid()
     {
-        $response = $this->post(self::URL, $this->mock->getNewDevtPartner(),
+        $this->post(self::URL, $this->mock->getNewDevtPartner(),
             ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);

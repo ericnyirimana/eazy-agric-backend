@@ -51,7 +51,7 @@ class CreateMasterAgentTest extends TestCase
     {
         $response = $this->post(self::URL, $this->mock->getNewMasterAgent(),
             ['Authorization' => $this->token]);    
-        $this->seeStatusCode(200);
+        $this->seeStatusCode(201);
         $this->seeJson(['success' => true]);
     }
     public function testShouldReturnErrorIfInvalidData()

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\InputSupplier;
 use App\Utils\Helpers;
-use Illuminate\Http\Request;
 use App\Models\Order;
 use stdClass;
 
+/** @phan-file-suppress PhanPossiblyNonClassMethodCall, PhanUndeclaredFunctionInCallable */
 
 class FarmersOrderController extends Controller
 {
@@ -33,7 +32,7 @@ class FarmersOrderController extends Controller
   /**
    * Returns number of Farmers who ordered inputs of different categories.
    * 
-   *@return $response object HttpResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public static function getNumberOfFarmersWhoOrderedDifferentInputCategories() {
 
@@ -43,7 +42,7 @@ class FarmersOrderController extends Controller
       // count unique farmers
       return $collection->unique('farmer')->count();
     });
-    return Helpers::returnSuccess("", ['farmers_orders' => $orders], 200);
+    return Helpers::returnSuccess(200, ['farmers_orders' => $orders], "");
   }
 
 

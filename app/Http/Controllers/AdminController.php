@@ -3,10 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\InputOrder;
-use App\Models\MapCoordinate;
-use App\Models\Planting;
-use App\Models\SoilTest;
 use App\Rules\ValidateInputFields;
 use App\Utils\DateRequestFilter;
 use App\Utils\Helpers;
@@ -17,9 +13,10 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Hash;
 
+// @phan-file-suppress PhanPartialTypeMismatchArgument
 class AdminController extends BaseController
 {
-  private $request, $validate, $db, $validateInput;
+  private $request, $validate, $db, $validateInput, $helpers;
 
   /**
    * Create a new controller instance.
@@ -45,10 +42,12 @@ class AdminController extends BaseController
     try {
       $result = Admin::all();
       if ($result) {
-        return Helpers::returnSuccess("", [
+        return Helpers::returnSuccess(200, [
           'count' => count($result),
           'result' => $result,
-        ], 200);
+        ], "");
+      } else {
+        return Helpers::returnError("Could not get admins.", 503);
       }
     } catch (Exception $e) {
       return Helpers::returnError("Something went wrong.", 503);
@@ -61,7 +60,6 @@ class AdminController extends BaseController
    */
   public function createAdmin()
   {
-    try {
       $this->validate->validateAdmin($this->request);
       try {
         if ($this->request->password === $this->request->confirmPassword) {
@@ -71,18 +69,15 @@ class AdminController extends BaseController
               'target_account_name' => $data->firstname. ' '.$data->lastname,
               'target_email' => $data->email
           ];
-          $activityLog =  $data ? Helpers::logActivity($userInfo, 'admin account created') : [];
+          $data ? Helpers::logActivity($userInfo, 'admin account created') : null;
 
           return $data ?
-            Helpers::returnSuccess("", ['admin' => $data], 200) : Helpers::returnError("Could not create user.", 408);
+            Helpers::returnSuccess(200, ['admin' => $data], "") : Helpers::returnError("Could not create user.", 408);
         }
         return Helpers::returnError("Passwords do not match.", 401);
       } catch (Exception $err) {
         return Helpers::returnError("Something went wrong.", 503);
       }
-    } catch (\Illuminate\Validate\ValidationException $e) {
-      return Helpers::returnError($e->getMessage(), 422);
-    }
   }
 
   public function getUser($id)
@@ -90,7 +85,7 @@ class AdminController extends BaseController
     try {
       $user = Helpers::checkUser($id);
       if ($user) {
-        return Helpers::returnSuccess("", ['user' => $user], 200);
+        return Helpers::returnSuccess(200, ['user' => $user], "");
       }
       return Helpers::returnError("User does not exist.", 404);
     } catch (Exception $e) {
@@ -100,8 +95,7 @@ class AdminController extends BaseController
 
   /**
    * Activate user account
-   * @param string $id
-   * @return object http response
+   * @return \Illuminate\Http\JsonResponse
    */
   public function accountAction()
   {
@@ -125,7 +119,7 @@ class AdminController extends BaseController
             ],
             str_replace(' successfully', '', $message));
 
-        return Helpers::returnSuccess($message, ['user' => $user[0][$this->db]], 200);
+        return Helpers::returnSuccess(200, ['user' => $user[0][$this->db]], $message);
       } else {
         return Helpers::returnError("User not found.", 404);
       }
@@ -137,11 +131,10 @@ class AdminController extends BaseController
   /**
    * Check if user credencial exists, if it does, send an email
    *
-   * @param  \App\User   $user
-   * @return array
+   * @return \Illuminate\Http\JsonResponse
    */
 
-  public function changePassword(Admin $admin)
+  public function changePassword()
   {
     try {
       $this->validate->validateAdminChangePassword($this->request);
@@ -154,7 +147,7 @@ class AdminController extends BaseController
             'target_email' => $user[0][$this->db]['email'],
         ], 'password changed.');
 
-        return Helpers::returnSuccess("Your Password has been changed successfully.", [], 200);
+        return Helpers::returnSuccess(200, [], "Your Password has been changed successfully.");
       }
       return Helpers::returnError("Current password is incorrect.", 400);
     } catch (Exception $e) {
@@ -185,13 +178,12 @@ class AdminController extends BaseController
         $agentOrderCount = DB::select("SELECT COUNT({$field}) AS order_count FROM
                 " . $this->db . " WHERE type = 'order' AND {$field}='" . $agent[$field] . "'");
         $topAgent['orderCount'] = $agentOrderCount[0]['order_count'];
-        $topPerformers = ($this->request->agent === 'ma') ? $this->masterAgent($agent,$field,$topAgent):$this->villageAgent($agent,$field,$topAgent);
+        $topPerformers = ($this->request->agent === 'ma') ? $this->masterAgent($agent,$field,$topAgent):$this->villageAgent($agent, $topAgent);
         array_push($topAgents, $topPerformers);
       }
      $result = array_filter($topAgents); 
-     return Helpers::returnSuccess("", ['data' => $result], 200);
-    } catch (Exception $e) {
-      var_dump($e->getMessage());
+     return Helpers::returnSuccess(200, ['data' => $result], "");
+    } catch (\Exception $e) {
       return Helpers::returnError("Something went wrong.", 503);
     }
   }
@@ -200,7 +192,7 @@ class AdminController extends BaseController
    * Returns top performing village agents filtered by date and location
    */
   
-  public function villageAgent($agent, $field, $topAgent){
+  public function villageAgent($agent, $topAgent){
     $district = $this->request->input('district');
     $agentNameQuery = "SELECT va_name AS agent_name FROM
     " . $this->db . " WHERE type = 'va' AND _id='" . $agent['vaId'] . "'";
@@ -217,7 +209,7 @@ class AdminController extends BaseController
   /**
    * Returns top performing master agents filtered by date and location
    */
-  public function masterAgent($agent, $field, $topAgent){
+  public function masterAgent($agent, $field, $topAgent) {
     $district = $this->request->input('district');
     $agentNameQuery = "SELECT account_name AS agent_name FROM
     " . $this->db . " WHERE type = 'ma' AND _id='" . $agent[$field] . "'";
@@ -230,8 +222,9 @@ class AdminController extends BaseController
       return $topAgent;
     }
   }
+  
   /** 
-   * @param string id
+   * @param string $id
    * @return object http response
    */
   public function deleteAccount($id)
@@ -245,7 +238,7 @@ class AdminController extends BaseController
             'target_account_name' => $user['firstname'] . ' '. $user['lastname'],
             'target_email' => $user['email'],
         ], 'Account deleted');
-        return Helpers::returnSuccess("Account deleted successfully.", [], 200);
+        return Helpers::returnSuccess(200, [], "Account deleted successfully.");
       } else return Helpers::returnError("Account could not be deleted.", 503);
     } catch (Exception $e) {
       return  Helpers::returnError("Something went wrong.", 503);
@@ -253,7 +246,7 @@ class AdminController extends BaseController
   }
 
   /**
-   * @param string id
+   * @param string $id
    * @return object http response
    */
 
@@ -266,7 +259,6 @@ class AdminController extends BaseController
     if ($isEmpty) return Helpers::returnError($isEmpty, 422);
     $this->validate->validateExistingAccount($this->request, $id);
 
-    try {
       if (Helpers::editAccount($id, $this->request->all())) {
         $updatedUser = Helpers::queryUser($id);
         unset($updatedUser[0][$this->db]['password']);
@@ -275,11 +267,8 @@ class AdminController extends BaseController
             'target_account_name' => $updatedUser[0][$this->db]['firstname'].' '.$updatedUser[0][$this->db]['lastname'],
             'target_email' => $updatedUser[0][$this->db]['email']
         ], 'account updated');
-        return Helpers::returnSuccess("Account updated successfully.", ["user" => $updatedUser[0][$this->db]], 200);
-      }
-    } catch (\Illuminate\Validate\ValidationException $e) {
-      return Helpers::returnError("Something went wrong.", 422);
-    }
+        return Helpers::returnSuccess(200, ["user" => $updatedUser[0][$this->db]], "Account updated successfully.");
+      } else return Helpers::returnError("Could not edit account", 503);
   }
 
   public function getUsers()
@@ -305,11 +294,11 @@ class AdminController extends BaseController
     $percentage = DateRequestFilter::getPercentage($startDateCount, $endDateCount);
 
     $result = $model::whereBetween('created_at', [$start_date, $end_date])->get();
-    return Helpers::returnSuccess("", [
+    return Helpers::returnSuccess(200, [
       'count' => count($result),
       'result' => $result,
       'percentage' => $percentage
-    ], 200);
+    ], "");
   }
   
 }

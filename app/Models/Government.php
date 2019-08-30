@@ -27,7 +27,7 @@ class Government extends Model
         'district',
         'contact_person',
         '_id',
-        'type' => 'government',
+        'type',
         'password',
     ];
     /**
