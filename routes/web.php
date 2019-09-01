@@ -59,7 +59,6 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->post('/village-agents', 'UserController@addVillageAgents');
       $router->get('/farmers', 'FarmerController@getFarmers');
       $router->get('/visitor', 'AnalyticsController@getNumberOfVistors');
-      $router->get('/orders/completed', 'OrderController@getCompletedOrders');
       $router->get('/farmers-orders', 'FarmersOrderController@getNumberOfFarmersWhoOrderedDifferentInputCategories');
       // input routes
       $router->get('/inputs/{id}', 'InputController@getInputDetails');
@@ -67,14 +66,15 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->delete('/inputs/{id}', 'InputController@deleteInput');
       $router->get('/orders', 'OrderController@getOrders');
       $router->get('/activity-log', 'ActivityController@getActivityLog');
-        $router->group(['middleware' => ['validateDiagnosisCategory', 'documentExist']], function () use ($router) {
-            $router->get('/diagnosis/{category}', 'DiagnosisController@getDiagnosis');
-            $router->get('/diagnosis/{category}/{id}', 'DiagnosisController@getDiagnosis');
-            $router->post('/diagnosis/{category}/{id}', 'DiagnosisController@editDiagnosisInformation');
-        });
-        $router->group(['middleware' => 'documentExist'], function () use ($router) {
-            $router->delete('/diagnosis/{id}', 'DiagnosisController@deleteDiagnosis');
-        });
+      $router->group(['middleware' => ['validateDiagnosisCategory', 'documentExist']], function () use ($router) {
+          $router->get('/diagnosis/{category}', 'DiagnosisController@getDiagnosis');
+          $router->get('/diagnosis/{category}/{id}', 'DiagnosisController@getDiagnosis');
+          $router->post('/diagnosis/{category}/{id}', 'DiagnosisController@editDiagnosisInformation');
+      });
+      $router->group(['middleware' => 'documentExist'], function () use ($router) {
+          $router->delete('/diagnosis/{id}', 'DiagnosisController@deleteDiagnosis');
+      });
+      $router->get('/orders/{type}', 'OrderController@getOrdersByType');
     });
   });
   $router->group(['middleware' => 'validateParams'], function () use ($router) {

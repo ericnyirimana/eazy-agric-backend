@@ -310,37 +310,6 @@ class Helpers extends BaseController
         return $result;
     }
 
-   /**
-   * Returns all the completed orders
-   *
-   *@params $request object HttpRequest
-   *@return $response object HttpResponse
-   */
-  public static function getCompletedOrders()
-  {
-      $response = null;
-      try {
-          $completedOrders = Order::select(
-              'details.name',
-              'details.phone',
-              'details.time',
-              'details.district',
-              'status', 'payment',
-              'details.totalItems as total_items',
-              'details.totalCost as total_cost',
-              'orders',
-              'created_at',
-              'updated_at')
-              ->where('LOWER(status)', '=', 'delivered')
-              ->latest()
-              ->get();
-          $response = Helpers::returnSuccess(200, ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], "");
-      } catch (Exception $e) {
-          $response = Helpers::returnError('Something went wrong.', 503);
-      }
-      return $response;
-  }
-
     /**
      * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null $file - uploaded file object
      * @param string $imagePath - path for the uploaded image
@@ -415,4 +384,31 @@ class Helpers extends BaseController
 
         return $orders;
     }
+
+    /**
+     * Returns all orders of the specified order type
+     *
+     * @param string $orderType
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public static function getOrdersByType($orderType)
+    {
+        $response = null;
+        $responseKey;
+        if($orderType == 'completed')
+        {
+            $orders = Order::queryOrdersByStatus('=', 'delivered');
+            $responseKey = 'completed_orders';
+        } else if ($orderType == 'received'){
+            $orders = Order::queryOrdersByStatus('!=', 'delivered');
+            $responseKey = 'received_orders';
+        } else {
+            $errorMessage = 'Invalid parameters supplied in request';
+            return Helpers::returnError($errorMessage, 400);
+        }
+        $response = Helpers::returnSuccess(200, [ $responseKey  => $orders, 'count' => count($orders)], "");
+    
+        return $response;
+    }
+    
 }

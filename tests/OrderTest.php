@@ -4,6 +4,7 @@ use App\Utils\MockData;
 class OrderTest extends TestCase
 {
     const COMPLETED_ORDERS_URL = '/api/v1/orders/completed';
+    const RECEIVED_ORDERS_URL = '/api/v1/orders/received';
     protected $token;
 
     public function setUp(): void
@@ -61,5 +62,28 @@ class OrderTest extends TestCase
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
         $this->seeJson(['error' => 'Could not get orders']);
+    }
+
+    public function testShouldReturnReceivedOrders()
+    {
+        $this->get(self::RECEIVED_ORDERS_URL, ['Authorization' => $this->token]);
+        $this->seeStatusCode(200);
+        $this->seeJson(['success' => true]);
+        $this->seeJsonStructure([
+            'received_orders'=> [],
+            'count',
+            'success'
+        ]);
+    }
+
+    public function testInvalidRouteParameterReturnsError()
+    {
+        $this->get('/api/v1/orders/wrong', ['Authorization' => $this->token]);
+        $this->seeStatusCode(400);
+        $this->seeJson(['success' => false]);
+        $this->seeJsonStructure([
+            'success',
+            'error'
+        ]);
     }
 }
