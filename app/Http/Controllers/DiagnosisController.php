@@ -36,7 +36,8 @@ class DiagnosisController extends Controller
         try {
             $category = ucfirst($category);
 
-            $diagnosisInformationQuery = Diagnosis::query()->select()->where('category', $category);
+            $diagnosisInformationQuery = Diagnosis::query()->select()->where('category', $category)
+                ->orderBy('updated_at', 'DESC');
 
             $diagnosisInformationQuery->when($id, function ($diagnosis) use ($id) {
                 return $diagnosis->where('_id', $id);
@@ -119,8 +120,8 @@ class DiagnosisController extends Controller
         try {
             $this->validate->validateDiagnosisInformation($request);
             $diagnosisInfo = $request->all();
-            $diagnosisInfo['category'] = $request->category;
-            $count = Diagnosis::where('name', $diagnosisInfo['name'])->where('category', $request->category)->count();
+            $diagnosisInfo['category'] = ucfirst($request->category);
+            $count = Diagnosis::where('name', $diagnosisInfo['name'])->where('category', $diagnosisInfo['category'])->count();
 
             if ($count > 0) {
                 return Helpers::returnError("The ". $diagnosisInfo['category'] ." name is already taken", 409);

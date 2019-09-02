@@ -51,7 +51,7 @@ class ManageDiagnosisTest extends TestCase
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeStatusCode(409);
         $this->seeJson(['success' => false]);
-        $this->seeJson(['error' => 'The pest name is already taken']);
+        $this->seeJson(['error' => 'The Pest name is already taken']);
         Helpers::deleteDiagnosis($validDiagnosis['name']);
     }
 
