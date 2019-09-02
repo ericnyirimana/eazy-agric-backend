@@ -32,14 +32,18 @@ class OrderController extends BaseController
     }
 
     /**
-     * GET /orders/completed
+     * Route - GET /orders/{type}
      *
      * @return object HTTP response
      */
 
-    public function getCompletedOrders()
+    public function getOrdersByType($type)
     {
-        $response = Helpers::getCompletedOrders();
+        try{
+            $response = Helpers::getOrdersByType($type);
+        } catch (\Exception $e) {
+            $response = Helpers::returnError('Could not get orders', 503);
+        }
         return $response;
     }
 }
