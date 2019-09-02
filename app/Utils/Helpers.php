@@ -2,6 +2,7 @@
 namespace App\Utils;
 
 use App\Models\ActivityLog;
+use App\Models\Diagnosis;
 use App\Models\InputSupplier as Input;
 use App\Models\MasterAgent;
 use App\Services\GoogleStorage;
@@ -219,5 +220,15 @@ class Helpers extends BaseController
         return ($user[0][self::$db]['type'] === 'admin') ?
         $user[0][self::$db]['firstname'] . ' ' . $user[0][self::$db]['lastname'] :
         $user[0][self::$db]['account_name'];
+    }
+
+    /**
+     * delete diagnosis by name for testing purpose
+     * @param string $name
+     * @return void
+     */
+    public static function deleteDiagnosis($name)
+    {
+        Diagnosis::where('type', 'diagnosis')->where('name', $name)->delete();
     }
 }

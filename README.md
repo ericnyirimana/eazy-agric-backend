@@ -1571,6 +1571,52 @@ Param `{date}` = `YYYY-MM-DD`
 }
 ```
 
+======================================================
+
+### Create Diagnonis information
+
+#### Request
+
+`POST api/v1/diagnosis/{category}`
+
+Param `{category}` = `pest` / `disease`
+
+#### Request Body (form-data)
+
+```
+name:Kolakolosis
+control:1. Okay control it well↵2. Go away
+explanation:This is a test explanation
+crop:Maize
+cause:Virus
+photo: (jpeg|png|jpg file)
+```
+
+#### Response
+
+```
+{
+    "success": true,
+    "message": "Diagnosis added successfully",
+    "diagnosis": {
+        "_id": "zmabBgk",
+        "category": "disease",
+        "cause": "lorem",
+        "control": "lorem ipsum",
+        "created_at": "2019-08-28 18:24:25",
+        "crop": "Nguba",
+        "eloquent_type": "diagnosis",
+        "explanation": "lorem",
+        "name": "Ankoro",
+        "photo_url": "https://storage.googleapis.com/ezyagric_dev_image_bucket/diagnosis/logo_1567016662.png",
+        "type": "diagnosis",
+        "updated_at": "2019-08-28 18:24:25"
+    }
+}
+```
+
+======================================================
+
 ### Get all diagnosis
 
 #### Request
