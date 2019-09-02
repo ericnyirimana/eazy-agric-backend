@@ -4,7 +4,8 @@ namespace database\factories;
 
 use Faker\Generator as Faker;
 
-class OffTakerFactory {
+class OffTakerFactory
+{
     public static function getFactory(Faker $faker)
     {
         $districts = ['Rukungiri', 'Rubirizi', 'Ntoroko', 'Buhweju', 'Bushenyi'];

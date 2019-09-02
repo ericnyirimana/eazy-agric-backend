@@ -20,7 +20,7 @@ class Email implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */  
+    /** @phan-suppress-next-line PhanUnusedPublicMethodParameter */
     public function passes($attribute, $value)
     {
         $db = getenv('DB_DATABASE');

@@ -4,7 +4,8 @@ namespace database\factories;
 
 use Faker\Generator as Faker;
 
-class RequestPasswordFactory {
+class RequestPasswordFactory
+{
     public static function getFactory(Faker $faker)
     {
         return [

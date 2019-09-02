@@ -14,7 +14,9 @@ use App\Utils\Validation;
 
 class ActivityController extends Controller
 {
-    private $request, $db, $validate;
+    private $request;
+    private $db;
+    private $validate;
     
     /**
      * Create a new controller instance.

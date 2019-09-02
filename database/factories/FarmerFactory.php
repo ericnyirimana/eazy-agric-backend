@@ -6,7 +6,8 @@ use Faker\Generator as Faker;
 use App\Models\MasterAgent;
 use App\Models\VillageAgent;
 
-class FarmerFactory {
+class FarmerFactory
+{
     public static function getFactory(Faker $faker)
     {
         $districts = ['Rukungiri', 'Rubirizi', 'Ntoroko', 'Buhweju', 'Bushenyi'];
@@ -39,7 +40,7 @@ class FarmerFactory {
             'garden_acreage_not_mapped_gps' => '2',
             'garden_mapped' => 'NA',
             'land_gps_url' => 'NA',
-            'ma_id' => function() {
+            'ma_id' => function () {
                 return factory(MasterAgent::class)->create()->_id;
             },
             'other_occupation' => 'NA',
@@ -51,7 +52,7 @@ class FarmerFactory {
             'status' => 'New',
             'time' => '2018-07-05T23:02:22:278902',
             'type' => 'farmer',
-            'vaId' => function() {
+            'vaId' => function () {
                 return factory(VillageAgent::class)->create()->_id;
             },
             'value_chain' => $valueChain

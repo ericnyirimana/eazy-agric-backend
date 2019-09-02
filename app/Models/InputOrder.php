@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class InputOrder extends Model {
-
+class InputOrder extends Model
+{
     protected $fillable = [];
     protected $table = 'order';
     protected $dates = [];

@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Spraying extends Model {
+class Spraying extends Model
+{
     /**
      * The document type
      * @var string

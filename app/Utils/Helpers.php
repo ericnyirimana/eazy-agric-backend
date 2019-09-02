@@ -20,13 +20,15 @@ use App\Models\InputSupplier as Input;
 use Laravel\Lumen\Routing\Controller as BaseController;
 use App\Services\GoogleStorage;
 
-/** @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal, PhanPossiblyFalseTypeMismatchProperty */
+/** @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal, PhanPossiblyFalseTypeMismatchProperty, PhanPossiblyNonClassMethodCall, PhanPossiblyNullTypeArgumentInternal, PhanPossiblyNonClassMethodCall, PhanPossiblyNullTypeArgument, PhanPartialTypeMismatchReturn, PhanPartialTypeMismatchArgument */
 
 class Helpers extends BaseController
 {
     /** @var string $url */
     private static $url;
-    private static $mail, $db, $masterAgent;
+    private static $mail;
+    private static $db;
+    private static $masterAgent;
     public static $user;
     public function __construct()
     {
@@ -146,7 +148,6 @@ class Helpers extends BaseController
      */
     public static function deleteUser($id)
     {
-
         $result = DB::statement('delete from ' . self::$db . ' where _id = ? returning *', [$id]);
         $resultArray = json_decode(json_encode($result), true);
         if ($resultArray) {
@@ -198,13 +199,13 @@ class Helpers extends BaseController
         return response()->json($result, $statusCode);
     }
 
-  /**
-   * Gets the top districts ranked by the number of app downloads
-   */
-  public static function getTopDistrictsByAppDownloads($district = null)
-  {
-    $districtClause = $district ? " AND farmer.farmer_district =='" . $district . "'"  : "";
-    $topDistrictsByAppDownloads = DB::select("SELECT farmer.farmer_district AS name, COUNT(farmer.farmer_district) AS appDownloads
+    /**
+     * Gets the top districts ranked by the number of app downloads
+     */
+    public static function getTopDistrictsByAppDownloads($district = null)
+    {
+        $districtClause = $district ? " AND farmer.farmer_district =='" . $district . "'"  : "";
+        $topDistrictsByAppDownloads = DB::select("SELECT farmer.farmer_district AS name, COUNT(farmer.farmer_district) AS appDownloads
       FROM " . self::$db . " farmer
       INNER JOIN " . self::$db . " account
       ON KEYS ('account::' || farmer.farmer_id)
@@ -236,7 +237,7 @@ class Helpers extends BaseController
             $products = array_map(function ($product) {
                 return $product['product'];
             }, $productOrders);
-        } else if ($type == 'districts') {
+        } elseif ($type == 'districts') {
             $productOrders = InputOrder::query()->select('orders[*].product')->where('details.district', '=', $filter)->get()->toArray();
             $products = array_map(function ($product) {
                 return $product['product'];
@@ -267,7 +268,7 @@ class Helpers extends BaseController
             $spraying = Spraying::query()->select('COUNT(*) AS spraying')->whereIn('user_id', $farmerIDs)->get()->toArray();
             $insurance = Insurance::query()->select('COUNT(*) AS insurance')->where('request.crop_insured', '=', $filter)->get()->toArray();
             $services = array_merge($mapCoordinates, $soilTest, $planting, $spraying, $insurance);
-        } else if ($type == 'districts') {
+        } elseif ($type == 'districts') {
             $enterpriseFarmers = Farmer::query()->select('_id')->where('farmer_district', '=', $filter)->get()->toArray();
             $farmerIDs = array_map(function ($enterpriseFarmer) {
                 return $enterpriseFarmer['_id'];
@@ -311,43 +312,44 @@ class Helpers extends BaseController
     }
 
     /**
-     * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null $file - uploaded file object
+     * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|string|array|null $file - uploaded file object
      * @param string $imagePath - path for the uploaded image
      * @return string - url of the uploaded image
      */
-    public static function processImageUpload($file, $imagePath) {
+    public static function processImageUpload($file, $imagePath)
+    {
         $originalPhoto = explode('.', $file->getClientOriginalName());
         $imageName =  $imagePath. $originalPhoto[0] . '_' . time() . '.' .  $file->getClientOriginalExtension();
         $newImageUrl = self::imageActions($imageName, $file, 'upload');
         return $newImageUrl;
     }
 
-  /**
-   * Checks if a document with supplied ID exist
-   *
-   * @param $id - id of the document to check for
-   * @return boolean true/false
-   */
-  public static function documentExist($id) {
-    $document = DB::select('SELECT * FROM ' . self::$db . ' WHERE _id="' .$id . '"');
-    $doesExist = $document ? true : false;
-    return $doesExist;
-  }
+    /**
+     * Checks if a document with supplied ID exist
+     *
+     * @param $id - id of the document to check for
+     * @return boolean true/false
+     */
+    public static function documentExist($id)
+    {
+        $document = DB::select('SELECT * FROM ' . self::$db . ' WHERE _id="' .$id . '"');
+        $doesExist = $document ? true : false;
+        return $doesExist;
+    }
 
-  /**
-   * Google Storage image actions
-   *
-   * @param string $imageName
-   * @param object|null $imageFile
-   * @param string $action
-   * @return string $imageURL
-   */
-  public static function imageActions($imageName, $imageFile = null, $action = 'upload')
-  {
-      switch ($action) {
+    /**
+     * Google Storage image actions
+     *
+     * @param string $imageName
+     * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|string|null $imageFile
+     * @param string $action
+     * @return string|void $imageURL
+     */
+    public static function imageActions($imageName, $imageFile = null, $action = 'upload')
+    {
+        switch ($action) {
           case 'upload':
               return GoogleStorage::uploadImage($imageName, $imageFile);
-              break;
 
           case 'delete':
               GoogleStorage::deleteImage($imageName);
@@ -356,18 +358,23 @@ class Helpers extends BaseController
           default:
               break;
       }
-  }
+    }
 
+    /**
+     * @param string $id
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public static function checkInput($id)
     {
         $input = Input::where('_id', '=', $id);
-        return $input ?  $input : false;
+        return $input ?: false; // @phan-suppress-current-line PhanTypeMismatchReturn
     }
-     /**
-     * Get total number of orders
-     * @param  \Illuminate\Http\Request  request
-     * @return array query result
-     */
+
+    /**
+    * Get total number of orders
+    * @param  \Illuminate\Http\Request $request
+    * @return array query result
+    */
     public static function getNewOrders($request)
     {
         $requestArray = DateRequestFilter::getRequestParam($request);
@@ -393,22 +400,14 @@ class Helpers extends BaseController
      */
     public static function getOrdersByType($orderType)
     {
-        $response = null;
-        $responseKey;
-        if($orderType == 'completed')
-        {
+        if ($orderType == 'completed') {
             $orders = Order::queryOrdersByStatus('=', 'delivered');
-            $responseKey = 'completed_orders';
-        } else if ($orderType == 'received'){
+        } elseif ($orderType == 'received') {
             $orders = Order::queryOrdersByStatus('!=', 'delivered');
-            $responseKey = 'received_orders';
         } else {
             $errorMessage = 'Invalid parameters supplied in request';
             return Helpers::returnError($errorMessage, 400);
         }
-        $response = Helpers::returnSuccess(200, [ $responseKey  => $orders, 'count' => count($orders)], "");
-    
-        return $response;
+        return Helpers::returnSuccess(200, [ $orderType.'_orders'  => $orders, 'count' => count($orders)], "");
     }
-    
 }

@@ -20,5 +20,4 @@ class CropInfo extends Model
     ];
 
     // Relationships
-
 }

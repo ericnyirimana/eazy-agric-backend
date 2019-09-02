@@ -16,7 +16,8 @@ class VerifyResetPasswordTokenTest extends TestCase
 
     public function testShouldReturnAnErrorIfTokenDoesNotExist()
     {
-        $this->post(self::URL, $this->mock->getFakeToken());        $this->seeStatusCode(401);
+        $this->post(self::URL, $this->mock->getFakeToken());
+        $this->seeStatusCode(401);
         $this->seeJson([
             "success" => false,
         ]);

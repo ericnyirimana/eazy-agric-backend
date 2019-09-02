@@ -12,11 +12,11 @@ class OurCropDocumentSeeder extends Seeder
      */
     public function run()
     {
-      factory(OurCrop::class, 1)->create();
+        factory(OurCrop::class, 1)->create();
 
-      // Additional seeders
-      $faker=Faker\Factory::create();
-      $crop = [
+        // Additional seeders
+        $faker=Faker\Factory::create();
+        $crop = [
         'type' => 'our_crops',
         'eloquent_type' => 'our_crops',
         '_id' => '',
@@ -25,11 +25,11 @@ class OurCropDocumentSeeder extends Seeder
         'crop' => '',
       ];
 
-      $cropSamples = ['Popcorn', 'Rice', 'Cassava', 'Coffee', 'Tobacco', 'Maize'];
-      for ($i = 0; $i < count($cropSamples); $i++) {
-        $crop['crop'] = $cropSamples[$i];
-        $crop['_id'] = $faker->uuid;
-        OurCrop::create($crop);
-      }
+        $cropSamples = ['Popcorn', 'Rice', 'Cassava', 'Coffee', 'Tobacco', 'Maize'];
+        for ($i = 0; $i < count($cropSamples); $i++) {
+            $crop['crop'] = $cropSamples[$i];
+            $crop['_id'] = $faker->uuid;
+            OurCrop::create($crop);
+        }
     }
 }

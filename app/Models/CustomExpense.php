@@ -20,5 +20,4 @@ class CustomExpense extends Model
     ];
 
     // Relationships
-
 }

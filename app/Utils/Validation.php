@@ -113,9 +113,10 @@ class Validation extends BaseController
             'adminRole' => [new AdminRole()],
         ]);
     }
-    public function validateVillageAgentData($data) {
-      // dd($data);
-      $this->validate($data, [
+    public function validateVillageAgentData($data)
+    {
+        // dd($data);
+        $this->validate($data, [
         'villageAgents.*.va_gender' => 'required',
         'villageAgents.*.va_region' => 'required',
         'villageAgents.*.va_subcounty' => 'required',
@@ -146,8 +147,9 @@ class Validation extends BaseController
         ]);
     }
 
-    public function validateDiagnosisInformation($data) {
-      $this->validate($data, [
+    public function validateDiagnosisInformation($data)
+    {
+        $this->validate($data, [
         'name' => 'required',
         'photo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
         'control' => 'required',

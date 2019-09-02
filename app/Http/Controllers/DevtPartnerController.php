@@ -16,10 +16,12 @@ class DevtPartnerController extends BaseController
     private $requestPassword;
     /** @var string */
     private $email;
-    private $validate, $request, $helpers;
+    private $validate;
+    private $request;
+    private $helpers;
 
     /**
-     * 
+     *
      * @param object $request
      * @return void
      */
@@ -61,11 +63,13 @@ class DevtPartnerController extends BaseController
      */
     public function createDevtPartner()
     {
-            $this->validate->validateNewAccount($this->request);
+        $this->validate->validateNewAccount($this->request);
         try {
             $devtPartner = DevtPartner::create($this->request->all() + ['_id' => Helpers::generateId()]);
 
-            if (!$devtPartner) return Helpers::returnError("Could not create user.", 408);
+            if (!$devtPartner) {
+                return Helpers::returnError("Could not create user.", 408);
+            }
 
             $this->helpers->sendPassword($this->requestPassword, $this->email);
 

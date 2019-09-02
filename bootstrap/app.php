@@ -20,6 +20,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 $app->register(Mpociot\Couchbase\CouchbaseServiceProvider::class);
+$app->register(STS\Fixer\FixerServiceProvider::class);
 
 $app->withFacades();
 $app->withEloquent();

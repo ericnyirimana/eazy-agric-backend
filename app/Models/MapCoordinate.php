@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class MapCoordinate extends Model {
-
+class MapCoordinate extends Model
+{
     protected $fillable = [];
     protected $table = 'map_cordinates';
     protected $dates = [];

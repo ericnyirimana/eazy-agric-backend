@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class SoilTest extends Model {
+class SoilTest extends Model
+{
     protected $fillable = [];
     protected $table = 'soil_test';
     protected $dates = [];

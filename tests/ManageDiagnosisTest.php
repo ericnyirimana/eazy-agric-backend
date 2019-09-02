@@ -56,9 +56,11 @@ class ManageDiagnosisTest extends TestCase
         $diagnosisInformation = $this->mock->getDiagnosisInformation();
         $diagnosis = Diagnosis::create($diagnosisInformation)->getAttributes();
         $category = $diagnosis['category'];
-        $this->post(self::SINGLE_DIAGNOSIS_URL . "$category/" . $diagnosis['_id'],
+        $this->post(
+            self::SINGLE_DIAGNOSIS_URL . "$category/" . $diagnosis['_id'],
             $this->mock->getEditDiagnosisData(),
-            ['Authorization' => $this->token]);
+            ['Authorization' => $this->token]
+        );
         $res_array = json_decode($this->response->content(), true);
         $this->seeStatusCode(200);
         $this->assertEquals($res_array['data']['name'], $this->mock->getEditDiagnosisData()['name']);

@@ -20,5 +20,4 @@ class Expense extends Model
     ];
 
     // Relationships
-
 }

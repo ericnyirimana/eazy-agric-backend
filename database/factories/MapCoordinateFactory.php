@@ -7,14 +7,15 @@ use App\Models\MasterAgent;
 use App\Models\VillageAgent;
 use Faker\Generator as Faker;
 
-class MapCoordinateFactory {
+class MapCoordinateFactory
+{
     public static function getFactory(Faker $faker)
     {
         return [
-            "vaId" => function() {
+            "vaId" => function () {
                 return factory(VillageAgent::class)->create()->_id;
             },
-            "ma_id" => function() {
+            "ma_id" => function () {
                 return factory(MasterAgent::class)->create()->_id;
             },
             '_id' => $faker->uuid,
@@ -52,8 +53,8 @@ class MapCoordinateFactory {
             'eloquent_type' => 'map_cordinates',
             'garden_name' => 'Moses',
             'time' => '2019-05-07T10:29:07',
-            'user_id' => function() {
-              return factory(Farmer::class)->create()->_id;
+            'user_id' => function () {
+                return factory(Farmer::class)->create()->_id;
             },
             'amount' => 7000,
         ];

@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\DB;
 
 class UserName implements Rule
 {
-    private $username, $db;
+    private $username;
+    private $db;
 
     public function __construct($username)
     {

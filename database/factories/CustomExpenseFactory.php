@@ -4,7 +4,8 @@ namespace database\factories;
 
 use Faker\Generator as Faker;
 
-class CustomExpenseFactory {
+class CustomExpenseFactory
+{
     public static function getFactory(Faker $faker)
     {
         return [

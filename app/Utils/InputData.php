@@ -2,7 +2,8 @@
 
 namespace App\Utils;
 
-class InputData extends MockData{
+class InputData extends MockData
+{
     protected $newInput = [
         'name' => 'Beans Beans', 'crops' => ['maize', 'beans'], 'category' => 'Pesticide',
         'description' => 'An Input of quality',

@@ -6,10 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class VillageAgent extends Model
 {
+    protected $table = 'va';
 
-  protected $table = 'va';
-
-  protected $fillable = [
+    protected $fillable = [
     'agriculture_experience_in_years',
     'assets_held',
     'certification_doc_url',
@@ -47,11 +46,11 @@ class VillageAgent extends Model
     'va_village'
   ];
 
-  protected $dates = [];
+    protected $dates = [];
 
-  public static $rules = [
+    public static $rules = [
     // Validation rules
   ];
 
-  // Relationships
+    // Relationships
 }

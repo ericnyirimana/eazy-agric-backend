@@ -7,7 +7,8 @@ use App\Models\MasterAgent;
 use App\Models\VillageAgent;
 use Faker\Generator as Faker;
 
-class InputOrderFactory {
+class InputOrderFactory
+{
     public static function getFactory(Faker $faker)
     {
         $productsPoolOne = [
@@ -64,13 +65,13 @@ class InputOrderFactory {
               "stature" => "new",
               "status" => $faker->randomElement(['Delivered', 'Intransit']),
               "type" => "order",
-              "user_id" => function() {
-                return factory(Farmer::class)->create()->_id;
+              "user_id" => function () {
+                  return factory(Farmer::class)->create()->_id;
               },
-              "vaId" => function() {
+              "vaId" => function () {
                   return factory(VillageAgent::class)->create()->_id;
               },
-              "ma_id" => function() {
+              "ma_id" => function () {
                   return factory(MasterAgent::class)->create()->_id;
               }
         ];

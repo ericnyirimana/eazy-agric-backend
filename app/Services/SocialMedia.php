@@ -68,7 +68,9 @@ class SocialMedia
         foreach ($posts as $post) {
             $postResponse = $fb->get('/' . $post['id'] . '?fields=shares', env('FB_ACCESS_TOKEN'));
             $share_count = $postResponse->getDecodedBody();
-            if (array_key_exists('shares', $share_count)) $shares += $share_count['shares']['count'];
+            if (array_key_exists('shares', $share_count)) {
+                $shares += $share_count['shares']['count'];
+            }
         }
         return ['fanCount' => $fanCount, 'shares' => $shares];
     }

@@ -5,7 +5,8 @@ namespace database\factories;
 use App\Models\Farmer;
 use Faker\Generator as Faker;
 
-class InsuranceFactory {
+class InsuranceFactory
+{
     public static function getFactory(Faker $faker)
     {
         $cropsInsured = ['Maize, Beans', 'Rice', 'Popcorn', 'Coffee', 'Cassava'];
@@ -53,8 +54,8 @@ class InsuranceFactory {
                         'yield_produced' => 1500,
                     ],
                 ],
-            'user_id' => function() {
-              return factory(Farmer::class)->create()->_id;
+            'user_id' => function () {
+                return factory(Farmer::class)->create()->_id;
             },
             '_id' => $faker->uuid,
             'request' =>

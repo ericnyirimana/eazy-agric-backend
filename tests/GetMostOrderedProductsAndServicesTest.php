@@ -29,21 +29,21 @@ class GetMostOrderedProductsAndServicesTest extends TestCase
 
     public function testShouldReturnMostOrderedProductsAndServicesForEnterprise()
     {
-      $this->get(self::URL.self::validEnterpriseQueryParameter, ['Authorization' => $this->token]);
-      $res_array = (array)json_decode($this->response->content());
-      $this->seeStatusCode(200);
-      $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
-      $this->seeJson(['success' => true]);
-      $this->assertArrayHasKey('data', $res_array);
-      $this->assertArrayHasKey('data', $res_array);
+        $this->get(self::URL.self::validEnterpriseQueryParameter, ['Authorization' => $this->token]);
+        $res_array = (array)json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => true]);
+        $this->assertArrayHasKey('data', $res_array);
+        $this->assertArrayHasKey('data', $res_array);
     }
 
     public function testShouldReturnErrorIfInvalidQueryParameterIsSupplied()
     {
-      $this->get(self::URL.self::invalidQueryParameter, ['Authorization' => $this->token]);
-      $this->seeStatusCode(422);
-      $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
-      $this->seeJson(['success' => false, 'error' => 'Please supply both the filter and type parameters.']);
+        $this->get(self::URL.self::invalidQueryParameter, ['Authorization' => $this->token]);
+        $this->seeStatusCode(422);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeJson(['success' => false, 'error' => 'Please supply both the filter and type parameters.']);
     }
 
     public function testShouldReturnErrorForNoToken()

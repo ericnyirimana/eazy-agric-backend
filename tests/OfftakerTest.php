@@ -3,7 +3,10 @@ use App\Utils\MockData;
 
 class OfftakerTest extends TestCase
 {
-    protected $mock, $response, $token, $wrongUser;
+    protected $mock;
+    protected $response;
+    protected $token;
+    protected $wrongUser;
     const URL = 'api/v1/users/offtakers';
     const POST_URL = 'api/v1/users/offtaker';
     const URL_FILTER = '/api/v1/users/offtakers?start_date=2019-10-12&end_date=2020-12-12';
@@ -65,10 +68,12 @@ class OfftakerTest extends TestCase
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => false]);
         $this->seeJson(['error' => 'An error occured while decoding token.']);
-        $this->post(self::URL,
+        $this->post(
+            self::URL,
             ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
             eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
-            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']);
+            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']
+        );
         $this->seeStatusCode(401);
     }
 
@@ -81,16 +86,22 @@ class OfftakerTest extends TestCase
 
     public function testShouldReturnUserIfTokenIsValid()
     {
-        $this->post(self::POST_URL, $this->mock->getNewOfftaker(),
-            ['Authorization' => $this->token]);
+        $this->post(
+            self::POST_URL,
+            $this->mock->getNewOfftaker(),
+            ['Authorization' => $this->token]
+        );
         $this->seeStatusCode(201);
         $this->seeJson(['success' => true]);
     }
 
     public function testShouldReturnErrorIfUserIsNotAdmin()
     {
-        $this->post(self::POST_URL, $this->mock->getNewOffTaker(),
-            ['Authorization' => $this->wrongUser]);
+        $this->post(
+            self::POST_URL,
+            $this->mock->getNewOffTaker(),
+            ['Authorization' => $this->wrongUser]
+        );
         $this->seeStatusCode(403);
     }
-  }
+}
