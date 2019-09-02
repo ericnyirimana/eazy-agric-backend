@@ -7,21 +7,18 @@ use Faker\Generator as Faker;
 class DiagnosisFactory {
     public static function getFactory(Faker $faker)
     {
+      $categories = ['Disease', 'Pest'];
+      $category = $faker->randomElement($categories);
         return [
             'cause' => 'Virus',
             'name' => 'Bean common mosaic virus',
-            'control' => '1. Use certified and disease-free seeds. 2. Control attacks of aphids and remove infected plants from the field.',
+            'control' => "<ol><li>First control.</li><li>Second control.</li></ol>",
             'type' => 'diagnosis',
             'eloquent_type' => 'diagnosis',
-            'category' => 'Disease',
+            'category' => $category,
             '_id' => $faker->uuid,
-            'photo_url' => '/images/uAge0125440.png',
-            'explanation' =>
-                [
-                    'Folding and twisting of leaves with a light and dark green patches',
-                    'The dark green patches are always near the veins. ',
-                    'Affected plants produce smaller, curved pods that appear slippery',
-                ],
+            'photo_url' => 'https://images.unsplash.com/photo-1512006410192-5e496c2c207b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=668&q=80',
+            'explanation' => "<ol><li>First explanation.</li><li>Second explanation.</li></ol>",
             'crop' => 'Beans',
         ];
     }

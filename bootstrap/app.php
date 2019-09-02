@@ -65,6 +65,8 @@ $app->routeMiddleware([
     'auth' => App\Http\Middleware\Authenticate::class,
     'admin' => App\Http\Middleware\AuthenticateAdmin::class,
     'validateParams' => App\Http\Middleware\ValidateParams::class,
+    'validateDiagnosisCategory' => App\Http\Middleware\ValidateDiagnosisCategory::class,
+    'documentExist' => App\Http\Middleware\DocumentExist::class,
 
 ]);
 

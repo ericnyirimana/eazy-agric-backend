@@ -12,6 +12,6 @@ class DiagnosisDocumentSeeder extends Seeder
      */
     public function run()
     {
-        factory(Diagnosis::class, 5)->create();
+        factory(Diagnosis::class, 15)->create();
     }
 }

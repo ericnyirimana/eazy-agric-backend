@@ -18,6 +18,7 @@ use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\DB;
 use App\Models\InputSupplier as Input;
 use Laravel\Lumen\Routing\Controller as BaseController;
+use App\Services\GoogleStorage;
 
 /** @phan-file-suppress PhanPossiblyFalseTypeArgumentInternal, PhanPossiblyFalseTypeMismatchProperty */
 
@@ -309,37 +310,85 @@ class Helpers extends BaseController
         return $result;
     }
 
+   /**
+   * Returns all the completed orders
+   *
+   *@params $request object HttpRequest
+   *@return $response object HttpResponse
+   */
+  public static function getCompletedOrders()
+  {
+      $response = null;
+      try {
+          $completedOrders = Order::select(
+              'details.name',
+              'details.phone',
+              'details.time',
+              'details.district',
+              'status', 'payment',
+              'details.totalItems as total_items',
+              'details.totalCost as total_cost',
+              'orders',
+              'created_at',
+              'updated_at')
+              ->where('LOWER(status)', '=', 'delivered')
+              ->latest()
+              ->get();
+          $response = Helpers::returnSuccess(200, ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], "");
+      } catch (Exception $e) {
+          $response = Helpers::returnError('Something went wrong.', 503);
+      }
+      return $response;
+  }
+
     /**
-     * Returns all the completed orders
-     *
-   * @return \Illuminate\Http\JsonResponse
+     * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|array|null $file - uploaded file object
+     * @param string $imagePath - path for the uploaded image
+     * @return string - url of the uploaded image
      */
-    public static function getCompletedOrders()
-    {
-        $response = null;
-        try {
-            $completedOrders = Order::select(
-                'details.name',
-                'details.phone',
-                'details.time',
-                'details.district',
-                'status',
-                'payment',
-                'details.totalItems as total_items',
-                'details.totalCost as total_cost',
-                'orders',
-                'created_at',
-                'updated_at'
-            )
-                ->where('LOWER(status)', '=', 'delivered')
-                ->latest()
-                ->get();
-            $response = Helpers::returnSuccess(200, ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], "");
-        } catch (\Exception $e) {
-            $response = Helpers::returnError('Something went wrong.', 503);
-        }
-        return $response;
+    public static function processImageUpload($file, $imagePath) {
+        $originalPhoto = explode('.', $file->getClientOriginalName());
+        $imageName =  $imagePath. $originalPhoto[0] . '_' . time() . '.' .  $file->getClientOriginalExtension();
+        $newImageUrl = self::imageActions($imageName, $file, 'upload');
+        return $newImageUrl;
     }
+
+  /**
+   * Checks if a document with supplied ID exist
+   *
+   * @param $id - id of the document to check for
+   * @return boolean true/false
+   */
+  public static function documentExist($id) {
+    $document = DB::select('SELECT * FROM ' . self::$db . ' WHERE _id="' .$id . '"');
+    $doesExist = $document ? true : false;
+    return $doesExist;
+  }
+
+  /**
+   * Google Storage image actions
+   *
+   * @param string $imageName
+   * @param object|null $imageFile
+   * @param string $action
+   * @return string $imageURL
+   */
+  public static function imageActions($imageName, $imageFile = null, $action = 'upload')
+  {
+      switch ($action) {
+          case 'upload':
+              return GoogleStorage::uploadImage($imageName, $imageFile);
+              break;
+
+          case 'delete':
+              GoogleStorage::deleteImage($imageName);
+              break;
+
+          default:
+              break;
+      }
+  }
+
     public static function checkInput($id)
     {
         $input = Input::where('_id', '=', $id);

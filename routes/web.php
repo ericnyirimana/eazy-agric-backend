@@ -67,6 +67,14 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
       $router->delete('/inputs/{id}', 'InputController@deleteInput');
       $router->get('/orders', 'OrderController@getOrders');
       $router->get('/activity-log', 'ActivityController@getActivityLog');
+        $router->group(['middleware' => ['validateDiagnosisCategory', 'documentExist']], function () use ($router) {
+            $router->get('/diagnosis/{category}', 'DiagnosisController@getDiagnosis');
+            $router->get('/diagnosis/{category}/{id}', 'DiagnosisController@getDiagnosis');
+            $router->post('/diagnosis/{category}/{id}', 'DiagnosisController@editDiagnosisInformation');
+        });
+        $router->group(['middleware' => 'documentExist'], function () use ($router) {
+            $router->delete('/diagnosis/{id}', 'DiagnosisController@deleteDiagnosis');
+        });
     });
   });
   $router->group(['middleware' => 'validateParams'], function () use ($router) {

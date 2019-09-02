@@ -11,7 +11,16 @@ class Diagnosis extends Model
      */
     protected $table = 'diagnosis';
 
-    protected $fillable = [];
+    protected $fillable = [
+        'cause',
+        'name',
+        'control',
+        'photo_url',
+        'explanation',
+        'crop',
+        'category',
+        '_id'
+    ];
 
     protected $dates = [];
 

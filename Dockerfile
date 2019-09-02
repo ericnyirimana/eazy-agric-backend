@@ -80,6 +80,9 @@ RUN cp -fr ./.circleci/Model.php ./vendor/developermarshak/laravel-couchbase/src
 ARG Google_Analytics_Service_Account=default_value
 RUN echo $Google_Analytics_Service_Account > app/Services/service-account-credentials.json
 
+ARG Google_Cloud_Storage_Service_Account=default_value
+RUN echo $Google_Cloud_Storage_Service_Account > app/Services/image-upload-service-credentials.json
+
 ARG db_connection=default_value
 ENV DB_CONNECTION=$db_connection
 ARG db_host=default_value
@@ -129,6 +132,8 @@ ARG yb_channel_id=default_value
 ENV YB_CHANNEL_ID=$yb_channel_id
 ARG Google_Analytics_Profile_ID=default_value
 ENV GOOGLE_ANALYTICS_PROFILE_ID=$Google_Analytics_Profile_ID
+ARG Google_Storage_Bucket=default_value
+ENV GOOGLE_STORAGE_BUCKET=$Google_Storage_Bucket
 
 
 RUN composer update --no-scripts
