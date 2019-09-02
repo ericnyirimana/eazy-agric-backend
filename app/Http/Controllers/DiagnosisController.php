@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 use App\Models\Diagnosis;
@@ -80,24 +81,30 @@ class DiagnosisController extends Controller
      */
     public function editDiagnosisInformation(Request $request, $id)
     {
-        $this->validate->validateDiagnosisInformation($request);
         try {
-            $newDiagnosisInformation = $request->all();
-            $diagnosisInformation = Diagnosis::query()->select()->where('_id', $id)->first();
-            if ($request->hasFile('photo')) {
-                // @codeCoverageIgnoreStart
-                $uploadedFile = $request->file('photo');
-                $newImageUrl = Helpers::processImageUpload($uploadedFile, self::IMAGE_PATH);
-                $newDiagnosisInformation['photo_url'] = $newImageUrl;
-                unset($newDiagnosisInformation['photo']);
-                $photoUrl = explode('/', $diagnosisInformation->attributesToArray()['photo_url']);
-                count($photoUrl) == 6 ? Helpers::imageActions($photoUrl[4] . '/'. $photoUrl[5], null, 'delete') : null;
-                // @codeCoverageIgnoreEnd
+            $this->validate->validateDiagnosisInformation($request);
+  
+            try {
+                $newDiagnosisInformation = $request->all();
+                $diagnosisInformation = Diagnosis::query()->select()->where('_id', $id)->first();
+                if ($request->hasFile('photo')) {
+                    // @codeCoverageIgnoreStart
+                    $uploadedFile = $request->file('photo');
+                    $newImageUrl = Helpers::processImageUpload($uploadedFile, self::IMAGE_PATH);
+                    $newDiagnosisInformation['photo_url'] = $newImageUrl;
+                    unset($newDiagnosisInformation['photo']);
+                    $photoUrl = explode('/', $diagnosisInformation->attributesToArray()['photo_url']);
+                    count($photoUrl) == 6 ? Helpers::imageActions($photoUrl[4] . '/'. $photoUrl[5], null, 'delete') : null;
+                    // @codeCoverageIgnoreEnd
+                }
+                $updatedDiagnosis = Diagnosis::query()->where('_id', $id)->update($newDiagnosisInformation);
+                return Helpers::returnSuccess(200, ['data' => $updatedDiagnosis], '');
+            } catch (Exception $e) {
+                return Helpers::returnError("Error editing diagnosis information", 503);
             }
-            $updatedDiagnosis = Diagnosis::query()->where('_id', $id)->update($newDiagnosisInformation);
-            return Helpers::returnSuccess(200, ['data' => $updatedDiagnosis], '');
-        } catch (Exception $e) {
-            return Helpers::returnError("Error editing diagnosis information", 503);
+        } catch (ValidationException $validationError) {
+          // @phan-suppress-next-line PhanUndeclaredProperty
+            return Helpers::returnError($validationError->response->original, 422);
         }
     }
 }

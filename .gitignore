@@ -1,5 +1,6 @@
 /vendor
 /.idea
+analysis.txt
 Homestead.json
 Homestead.yaml
 .env
@@ -11,4 +12,4 @@ Homestead.yaml
 app/Services/.DS_Store
 app/Services/image-upload-service-credentials.json
 .vscode
-analysis.txt
+analysis.txtcghooks.lock

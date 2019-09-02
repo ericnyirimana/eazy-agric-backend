@@ -27,10 +27,19 @@ jobs:
       - run: sudo apt-get update -o Acquire::CompressionTypes::Order::=gz
       - run: sudo apt-get update
       - run: sudo apt-get install libcouchbase-dev build-essential zlib1g-dev
-      - run: sudo pecl install couchbase
-      - run: echo "extension=couchbase.so" | sudo tee /usr/local/etc/php/php.ini > /dev/null
-
+      - run: sudo pecl install couchbase 
+      - run: sudo pecl install ast
+      - run: echo "extension=couchbase.so" | sudo tee -a /usr/local/etc/php/php.ini > /dev/null
+      - run: echo "extension=ast.so" | sudo tee -a /usr/local/etc/php/php.ini > /dev/null
+      - restore_cache:
+          keys:
+            - composer-v1-{{ checksum "composer.lock" }}
+            - composer-v1-
       - run: composer install -n --prefer-dist
+      - save_cache:
+          key: composer-v1-{{ checksum "composer.lock" }}
+          paths:
+            - vendor
       - run: cp -fr ./.circleci/HybridRelations.php ./vendor/developermarshak/laravel-couchbase/src/Mpociot/Couchbase/Eloquent/HybridRelations.php
       - run: cp -fr ./.circleci/Model.php ./vendor/developermarshak/laravel-couchbase/src/Mpociot/Couchbase/Eloquent/Model.php
       - run: sudo echo ${GOOGLE_ANALYTICS_SERVICE_ACCOUNT} > app/Services/service-account-credentials.json
@@ -41,6 +50,9 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
       - run: ./cc-test-reporter before-build
+      - run:
+          name: Run analysis
+          command: vendor/bin/phan --progress-bar
       - run:
           name: run tests
           command: composer run-script test --timeout=0

@@ -70,7 +70,7 @@
               "vendor/bin/phan --progress-bar -o analysis.txt"
             ],
             "pre-push": [
-                "php artisan fixer:fix --dry-run"
+              "php artisan fixer:fix --show-progress=estimating"
             ]
         }
     }

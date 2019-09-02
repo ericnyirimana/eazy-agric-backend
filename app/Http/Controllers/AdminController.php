@@ -258,7 +258,7 @@ class AdminController extends BaseController
 
     /**
      * @param string $id
-     * @return object http response
+     * @return \Illuminate\Http\JsonResponse
      */
 
     public function editAccount($id)

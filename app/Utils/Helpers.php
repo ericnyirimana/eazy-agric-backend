@@ -312,6 +312,42 @@ class Helpers extends BaseController
     }
 
     /**
+<<<<<<< HEAD
+=======
+    * Returns all the completed orders
+    *
+    * @params $request object HttpRequest
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public static function getCompletedOrders()
+    {
+        $response = null;
+        try {
+            $completedOrders = Order::select(
+                'details.name',
+                'details.phone',
+                'details.time',
+                'details.district',
+                'status',
+                'payment',
+                'details.totalItems as total_items',
+                'details.totalCost as total_cost',
+                'orders',
+                'created_at',
+                'updated_at'
+            )
+              ->where('LOWER(status)', '=', 'delivered')
+              ->latest()
+              ->get();
+            $response = Helpers::returnSuccess(200, ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], "");
+        } catch (\Exception $e) {
+            $response = Helpers::returnError('Something went wrong.', 503);
+        }
+        return $response;
+    }
+
+    /**
+>>>>>>> EW-213-task(analysis): add phan to continous integration
      * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|string|array|null $file - uploaded file object
      * @param string $imagePath - path for the uploaded image
      * @return string - url of the uploaded image
