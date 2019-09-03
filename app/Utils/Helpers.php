@@ -312,8 +312,6 @@ class Helpers extends BaseController
     }
 
     /**
-<<<<<<< HEAD
-=======
     * Returns all the completed orders
     *
     * @params $request object HttpRequest
@@ -347,7 +345,6 @@ class Helpers extends BaseController
     }
 
     /**
->>>>>>> EW-213-task(analysis): add phan to continous integration
      * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|string|array|null $file - uploaded file object
      * @param string $imagePath - path for the uploaded image
      * @return string - url of the uploaded image
