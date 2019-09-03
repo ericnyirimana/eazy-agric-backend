@@ -12,4 +12,4 @@ Homestead.yaml
 app/Services/.DS_Store
 app/Services/image-upload-service-credentials.json
 .vscode
-analysis.txtcghooks.lock
+cghooks.lock

@@ -103,7 +103,7 @@ class DiagnosisController extends Controller
                 return Helpers::returnError("Error editing diagnosis information", 503);
             }
         } catch (ValidationException $validationError) {
-          // @phan-suppress-next-line PhanUndeclaredProperty
+            // @phan-suppress-next-line PhanUndeclaredProperty
             return Helpers::returnError($validationError->response->original, 422);
         }
     }

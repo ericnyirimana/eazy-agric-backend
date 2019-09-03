@@ -1,4 +1,5 @@
 <?php
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -9,6 +10,7 @@
 | and give it the Closure to call when that URI is requested.
 |
  */
+
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
@@ -65,6 +67,9 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/orders', 'OrderController@getOrders');
             $router->get('/activity-log', 'ActivityController@getActivityLog');
             $router->get("/inputs", 'OrderController@getInputsStock');
+            $router->post('/crops', 'OurCropController@addCrop');
+            $router->get('/crops/{id}', 'OurCropController@getCrop');
+            $router->get('/crops', 'OurCropController@getCrops');
             $router->group(['middleware' => ['validateDiagnosisCategory', 'documentExist']], function () use ($router) {
                 $router->get('/diagnosis/{category}', 'DiagnosisController@getDiagnosis');
                 $router->get('/diagnosis/{category}/{id}', 'DiagnosisController@getDiagnosis');
@@ -80,5 +85,3 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         $router->post('/request/{user}', 'UserController@requestAccount');
     });
 });
-
-

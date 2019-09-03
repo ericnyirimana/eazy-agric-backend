@@ -11,7 +11,21 @@ class OurCrop extends Model
      */
     protected $table = 'our_crops';
 
-    protected $fillable = [];
+    protected $fillable = [
+            'photo_url',
+            'crop',
+            '_id'
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+
+    protected $attributes = [
+        'type' => 'our_crops',
+    ];
 
     protected $dates = [];
 

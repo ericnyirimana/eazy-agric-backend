@@ -278,8 +278,11 @@ class AdminTest extends TestCase
 
     public function testShouldReturnErrorIfInvalidAdminRole()
     {
-        $this->post(self::URL, $this->mock->getWrongAdminRole(),
-            ['Authorization' => $this->token]);
-            $this->seeStatusCode(422);
+        $this->post(
+            self::URL,
+            $this->mock->getWrongAdminRole(),
+            ['Authorization' => $this->token]
+        );
+        $this->seeStatusCode(422);
     }
 }

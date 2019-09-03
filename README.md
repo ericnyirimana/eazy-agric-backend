@@ -1701,6 +1701,7 @@ photo: (jpeg|png|jpg file)
         }
     ]
 }
+
 ```
 ### Get received orders
 
@@ -1783,7 +1784,95 @@ photo: (jpeg|png|jpg file)
     ],
     "count": 2
 }
+```
 
+```
+### Add crop 
+
+#### Request
+
+`POST /api/v1/crops`
+
+#### Request Body (form-data)
+
+```
+crop:Carrot
+photo: (jpeg|png|jpg file)
+```
+
+#### Response
+
+```
+{
+    "success": true,
+    "message": "Crop added successfully",
+    "Crop": {
+        "_id": "3hZF62Q",
+        "created_at": "2019-08-26 06:01:06",
+        "crop": "Carrot",
+        "eloquent_type": "our_crops",
+        "photo_url": "http://storage.googleapis.com/ezyagric.com/Cotton2.jpg",
+        "type": "our_crops",
+        "updated_at": "2019-08-26 06:01:06"
+    }
+}
+```
+======================================================
+
+#### Request
+
+`GET /api/v1/crops/{id}`
+
+#### Response
+
+```
+{
+    "success": true,
+    "data": [
+        {
+            "_id": "1rSFJvo",
+            "created_at": "2019-08-26 06:19:00",
+            "crop": "Carrot",
+            "eloquent_type": "our_crops",
+            "photo_url": "https://www.google.com/file/images/ae086c56-12cd-43cd-8f97-0b0e1267ab6c.png",
+            "type": "our_crops",
+            "updated_at": "2019-08-26 06:19:00"
+        }
+    ]
+}
+```
+======================================================
+
+#### Request
+
+`GET /api/v1/crops`
+
+#### Response
+
+```
+{
+    "success": true,
+    "data": [
+        {
+            "_id": "1rSFJvo",
+            "created_at": "2019-08-26 06:19:00",
+            "crop": "Carrot",
+            "eloquent_type": "our_crops",
+            "photo_url": "https://www.google.com/file/images/ae086c56-12cd-43cd-8f97-0b0e1267ab6c.png",
+            "type": "our_crops",
+            "updated_at": "2019-08-26 06:19:00"
+        }
+        {
+            "_id": "xu9RGL7",
+            "created_at": "2019-08-26 07:00:39",
+            "crop": "Carrot",
+            "eloquent_type": "our_crops",
+            "photo_url": "https://www.google.com/file/images/ae086c56-12cd-43cd-8f97-0b0e1267ab6c.png",
+            "type": "our_crops",
+            "updated_at": "2019-08-26 07:00:39"
+        }
+    ]
+}
 ```
 =======
 ### Get input stock

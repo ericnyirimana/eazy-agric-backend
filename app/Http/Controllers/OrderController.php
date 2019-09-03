@@ -54,10 +54,11 @@ class OrderController extends BaseController
     public function getInputsStock()
     {
         try {
-
             $stock = [];
             $inputs = InputSupplier::select(
-                'category', DB::raw('SUM(quantity) as quantity'))->groupBy('category')->get();
+                'category',
+                DB::raw('SUM(quantity) as quantity')
+            )->groupBy('category')->get();
 
             for ($i = 0; $i < count($inputs); $i++) {
                 $stock += [$inputs[$i]["category"] => $inputs[$i]["quantity"]];
@@ -67,12 +68,8 @@ class OrderController extends BaseController
                 "available_stock" => $stock,
                 "total" => array_sum($stock),
             ], "");
-
         } catch (\Exception $e) {
-
             return Helpers::returnError("Could not get input stock.", 503);
-
         }
-
     }
 }

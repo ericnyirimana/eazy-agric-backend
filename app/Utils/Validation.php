@@ -152,4 +152,12 @@ class Validation extends BaseController
         'cause' => 'required'
       ]);
     }
+
+    public function validateOurCropsData($data)
+    {
+        $this->validate($data, [
+          'photo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
+          'crop' => 'required|regex:/^([a-zA-Z\s\-\(\)]*)$/'
+        ]);
+    }
 }
