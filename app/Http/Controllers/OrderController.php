@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InputSupplier;
 use App\Utils\Helpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class OrderController extends BaseController
@@ -42,5 +44,35 @@ class OrderController extends BaseController
             $response = Helpers::returnError('Could not get orders', 503);
         }
         return $response;
+    }
+
+    /**
+     * GET available stock
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getInputsStock()
+    {
+        try {
+
+            $stock = [];
+            $inputs = InputSupplier::select(
+                'category', DB::raw('SUM(quantity) as quantity'))->groupBy('category')->get();
+
+            for ($i = 0; $i < count($inputs); $i++) {
+                $stock += [$inputs[$i]["category"] => $inputs[$i]["quantity"]];
+            }
+
+            return Helpers::returnSuccess(200, [
+                "available_stock" => $stock,
+                "total" => array_sum($stock),
+            ], "");
+
+        } catch (\Exception $e) {
+
+            return Helpers::returnError("Could not get input stock.", 503);
+
+        }
+
     }
 }

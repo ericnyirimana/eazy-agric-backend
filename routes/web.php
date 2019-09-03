@@ -64,6 +64,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->delete('/inputs/{id}', 'InputController@deleteInput');
             $router->get('/orders', 'OrderController@getOrders');
             $router->get('/activity-log', 'ActivityController@getActivityLog');
+            $router->get("/inputs", 'OrderController@getInputsStock');
             $router->group(['middleware' => ['validateDiagnosisCategory', 'documentExist']], function () use ($router) {
                 $router->get('/diagnosis/{category}', 'DiagnosisController@getDiagnosis');
                 $router->get('/diagnosis/{category}/{id}', 'DiagnosisController@getDiagnosis');
@@ -79,3 +80,5 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
         $router->post('/request/{user}', 'UserController@requestAccount');
     });
 });
+
+

@@ -26,6 +26,14 @@ class MockData
         'firstname' => 'maxxy',
         'lastname' => 'max',
     ];
+    protected $wrongAdminRole = [
+        'password' => 'admin12345',
+        'confirmPassword' => 'admin12345',
+        'adminRole' => 'Manager',
+        'firstname' => 'maxxy',
+        'lastname' => 'max',
+    ];
+
     protected $invalidToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
     eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
     jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs';
@@ -172,6 +180,12 @@ class MockData
         $this->newAdmin['email'] = $this->shortid->generate() . '@gmail.com';
         $this->newAdmin['_id'] = $this->shortid->generate();
         return $this->newAdmin;
+    }
+    public function getWrongAdminRole()
+    {
+        $this->wrongAdminRole['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->wrongAdminRole['_id'] = $this->shortid->generate();
+        return $this->wrongAdminRole;
     }
     public function getNewOffTaker()
     {
