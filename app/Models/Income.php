@@ -20,5 +20,4 @@ class Income extends Model
     ];
 
     // Relationships
-
 }

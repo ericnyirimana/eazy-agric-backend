@@ -29,5 +29,4 @@ class Diagnosis extends Model
     ];
 
     // Relationships
-
 }

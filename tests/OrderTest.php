@@ -39,7 +39,7 @@ class OrderTest extends TestCase
 
     public function testShouldReturnTotalOrders()
     {
-        $this->get( '/api/v1/orders', ['Authorization' => $this->token]);
+        $this->get('/api/v1/orders', ['Authorization' => $this->token]);
         $res_array = (array) json_decode($this->response->content());
         $this->seeStatusCode(200);
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));

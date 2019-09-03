@@ -19,7 +19,10 @@ class AuthController extends BaseController
  *
  * @var \Illuminate\Http\Request
  */
-    private $request, $email, $validate, $db;
+    private $request;
+    private $email;
+    private $validate;
+    private $db;
 
     /**
      * Create a new controller instance.
@@ -65,9 +68,9 @@ class AuthController extends BaseController
                 ], 200);
             }
             return response()->json(['success' => false, 'error' => 'The Email or password supplied is incorrect.'], 404);
-        } catch (\Exception $e) {return response()->json(['error' => 'Something went wrong.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Something went wrong.']);
         }
-
     }
 
     /**
@@ -85,9 +88,11 @@ class AuthController extends BaseController
                 $token = Helpers::jwt(['_id' => $user[0][$this->db]['_id'], 'email' => $user[0][$this->db]['email']]);
                 RequestPassword::create(['_id' => Helpers::generateId(), 'token' => $token]);
 
-                $this->email->mailWithTemplate($this->request->input('email'),
-                getenv('FRONTEND_URL') . "/confirm-password?token=$token",
-                'RESET_PASSWORD');
+                $this->email->mailWithTemplate(
+                    $this->request->input('email'),
+                    getenv('FRONTEND_URL') . "/confirm-password?token=$token",
+                    'RESET_PASSWORD'
+                );
 
                 return response()->json([
                     'success' => true,

@@ -2,7 +2,7 @@
 
 use App\Utils\Helpers;
 use Illuminate\Http\UploadedFile;
-use Symfony\Component\HttpFoundation\File\UploadedFile AS BaseUploadedFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile as BaseUploadedFile;
 
 class ImageActionsTest extends TestCase
 {
@@ -15,7 +15,8 @@ class ImageActionsTest extends TestCase
         parent::setUp();
     }
 
-    public function testShouldSuccessfullyUploadAndDeleteImage() {
+    public function testShouldSuccessfullyUploadAndDeleteImage()
+    {
         $imagePath = __DIR__ . "/stubs/images/crop_pest.jpeg";
         $file = UploadedFile::createFromBase(new BaseUploadedFile(
             $imagePath,

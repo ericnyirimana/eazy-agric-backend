@@ -4,15 +4,23 @@ use App\Utils\MockData;
 
 class AdminTest extends TestCase
 {
-    protected $response, $token, $wrongUser, $mock, $decodeUser, $data;
+    protected $response;
+    protected $token;
+    protected $wrongUser;
+    protected $mock;
+    protected $decodeUser;
+    protected $data;
     const URL = '/api/v1/admin';
 
     public function setUp(): void
     {
         parent::setUp();
         $this->mock = new MockData();
-        $this->response = $this->call('POST',
-            '/api/v1/auth/login', $this->mock->getLoginDetails());
+        $this->response = $this->call(
+            'POST',
+            '/api/v1/auth/login',
+            $this->mock->getLoginDetails()
+        );
 
         $this->data = json_decode($this->response->getContent(), true);
         $this->token = $this->data['token'];
@@ -31,32 +39,43 @@ class AdminTest extends TestCase
 
     public function testShouldReturnErrorIfInvalidToken()
     {
-        $this->post(self::URL,
+        $this->post(
+            self::URL,
             ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.
             eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJBQkFIQUpPSDc4ODAwNzY0NUFETUlOIiwiaWF0IjoxNTYwNTExMjY5LCJleHAiOjE1NjA1MTQ4Njl9.
-            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']);
+            jqNBT9TTG18iP9V4SbMBQOBi2b6K9ejTt87nNaCRFQs']
+        );
         $this->seeStatusCode(401);
     }
 
     public function testShouldReturnUserIfTokenIsValid()
     {
-        $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->token]);
+        $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token]
+        );
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }
     public function testShouldReturnValidationError()
     {
-        $this->post(self::URL, [$this->mock->getNewAdmin()],
-            ['Authorization' => $this->token]);
+        $this->post(
+            self::URL,
+            [$this->mock->getNewAdmin()],
+            ['Authorization' => $this->token]
+        );
         $res_array = (array) json_decode($this->response->content());
         $this->seeStatusCode(422);
         $this->seeJson(["email" => ["The email field is required."]]);
     }
     public function testShouldReturnErrorIfPasswordMismatch()
     {
-        $this->post(self::URL, $this->mock->getPasswordMismatchData(),
-            ['Authorization' => $this->token]);
+        $this->post(
+            self::URL,
+            $this->mock->getPasswordMismatchData(),
+            ['Authorization' => $this->token]
+        );
         $this->seeJson(['error' => 'Passwords do not match.']);
     }
     public function testShouldNotActivateAccountIfWrongId()
@@ -75,8 +94,11 @@ class AdminTest extends TestCase
 
     public function testShouldActivateAccount()
     {
-        $response = $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->token])->response->getData();
+        $response = $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token]
+        )->response->getData();
         $id = $response->admin->_id;
         $this->patch('/api/v1/activate/' . $id, [], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
@@ -92,8 +114,11 @@ class AdminTest extends TestCase
 
     public function testShouldSuspendAccount()
     {
-        $response = $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->token])->response->getData();
+        $response = $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token]
+        )->response->getData();
         $id = $response->admin->_id;
         $this->patch('/api/v1/suspend/' . $id, [], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
@@ -102,8 +127,11 @@ class AdminTest extends TestCase
 
     public function testShouldReturnErrorIfUserIsNotAdmin()
     {
-        $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->wrongUser]);
+        $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->wrongUser]
+        );
         $this->seeStatusCode(403);
     }
     public function testShouldReturnActivitySummary()
@@ -132,9 +160,11 @@ class AdminTest extends TestCase
 
     public function testShouldReturnChangeAdminPasswordSuccessful()
     {
-        $this->post('/api/v1/change-password',
+        $this->post(
+            '/api/v1/change-password',
             $this->mock->getChangePassword(),
-            ['Authorization' => $this->token]);
+            ['Authorization' => $this->token]
+        );
         $this->seeStatusCode(200);
         $this->seeJson([
             'success' => true,
@@ -142,9 +172,11 @@ class AdminTest extends TestCase
     }
     public function testShouldReturnChangeAdminPasswordDoesNotMatch()
     {
-        $this->post('/api/v1/change-password',
+        $this->post(
+            '/api/v1/change-password',
             $this->mock->getWrongChangePassword(),
-            ['Authorization' => $this->token]);
+            ['Authorization' => $this->token]
+        );
         $this->seeStatusCode(400);
         $this->seeJson([
             'success' => false,
@@ -159,8 +191,11 @@ class AdminTest extends TestCase
     }
     public function testShouldGetUser()
     {
-        $response = $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->token])->response->getData();
+        $response = $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token]
+        )->response->getData();
         $id = $response->admin->_id;
         $this->get('/api/v1/account/' . $id, ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
@@ -169,8 +204,11 @@ class AdminTest extends TestCase
 
     public function testShouldNotGetUser()
     {
-        $response = $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->token])->response->getData();
+        $response = $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token]
+        )->response->getData();
         $id = 'fake-id';
         $this->get('/api/v1/account/' . $id, ['Authorization' => $this->token]);
         $this->seeStatusCode(404);
@@ -179,8 +217,11 @@ class AdminTest extends TestCase
 
     public function testShouldUpdateAndDeleteUsers()
     {
-        $response = $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->token])->response->getData();
+        $response = $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token]
+        )->response->getData();
         $id = $response->admin->_id;
         $email = $response->admin->email;
         $this->patch('/api/v1/account/'.$id, ['email' => $email], ['Authorization' => $this->token]);
@@ -188,13 +229,15 @@ class AdminTest extends TestCase
         $this->seeJson(['message' => 'Account updated successfully.']);
         $this->delete('/api/v1/account/' . $id, [], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
-
     }
 
     public function testShouldReturnErrorIfUpdateEmailIsTaken()
     {
-        $response = $this->post(self::URL, $this->mock->getNewAdmin(),
-            ['Authorization' => $this->token])->response->getData();
+        $response = $this->post(
+            self::URL,
+            $this->mock->getNewAdmin(),
+            ['Authorization' => $this->token]
+        )->response->getData();
         $id = $response->admin->_id;
         $this->patch('/api/v1/account/'.$id, ['email' => 'admin2020@gmail.com'], ['Authorization' => $this->token]);
         $this->seeStatusCode(422);

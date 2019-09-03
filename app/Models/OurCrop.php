@@ -20,5 +20,4 @@ class OurCrop extends Model
     ];
 
     // Relationships
-
 }

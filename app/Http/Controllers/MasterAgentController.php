@@ -14,12 +14,12 @@ class MasterAgentController extends BaseController
    *
    * @return \Illuminate\Http\JsonResponse
    */
-  public function getMasterAgents()
-  {
-    $result = MasterAgent::all();
-    return Helpers::returnSuccess(200, [
+    public function getMasterAgents()
+    {
+        $result = MasterAgent::all();
+        return Helpers::returnSuccess(200, [
       'count' => count($result),
       'result' => $result
     ], "");
-  }
+    }
 }

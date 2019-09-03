@@ -4,11 +4,12 @@ namespace database\factories;
 
 use Faker\Generator as Faker;
 
-class DiagnosisFactory {
+class DiagnosisFactory
+{
     public static function getFactory(Faker $faker)
     {
-      $categories = ['Disease', 'Pest'];
-      $category = $faker->randomElement($categories);
+        $categories = ['Disease', 'Pest'];
+        $category = $faker->randomElement($categories);
         return [
             'cause' => 'Virus',
             'name' => 'Bean common mosaic virus',

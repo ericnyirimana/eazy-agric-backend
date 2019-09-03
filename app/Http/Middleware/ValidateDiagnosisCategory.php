@@ -15,10 +15,10 @@ class ValidateDiagnosisCategory
      */
     public function handle($request, Closure $next)
     {
-      $category = strtolower($request->category);
-      if ($category != 'pest' && $category != 'disease') {
-        return Helpers::returnError('Invalid category supplied.', 422);
-      }
+        $category = strtolower($request->category);
+        if ($category != 'pest' && $category != 'disease') {
+            return Helpers::returnError('Invalid category supplied.', 422);
+        }
         return $next($request);
     }
 }

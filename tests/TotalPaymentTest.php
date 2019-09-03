@@ -29,7 +29,7 @@ class TotalPaymentTest extends TestCase
         $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
         $this->seeJson(['success' => true]);
         $this->assertArrayHasKey('totalPayment', $res_array);
-        $this->assertArrayHasKey('percentagePayment', $res_array);  
+        $this->assertArrayHasKey('percentagePayment', $res_array);
     }
     public function testShouldReturnErrorForNoToken()
     {

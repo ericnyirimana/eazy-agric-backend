@@ -4,7 +4,8 @@ namespace database\factories;
 
 use Faker\Generator as Faker;
 
-class MilkLedgerFactory {
+class MilkLedgerFactory
+{
     public static function getFactory(Faker $faker)
     {
         return [

@@ -5,7 +5,10 @@ use App\Models\InputSupplier as InputModel;
 
 class InputTest extends TestCase
 {
-    protected $token, $response, $data, $mock;
+    protected $token;
+    protected $response;
+    protected $data;
+    protected $mock;
     protected $createInput;
     protected $modelPath = 'App\Models\InputSupplier';
     protected $URL = '/api/v1/inputs/';

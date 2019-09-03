@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Utils\Helpers;
 use App\Utils\Validation;
 
-
 class InputController extends Controller
 {
-    protected $request, $validate;
+    protected $request;
+    protected $validate;
     public function __construct(Request $request)
     {
         $this->validate = new Validation();
@@ -21,7 +21,6 @@ class InputController extends Controller
      */
     public function getInputDetails($id)
     {
-
         try {
             $input = Helpers::checkInput($id)->first();
             return $input ? Helpers::returnSuccess(200, [

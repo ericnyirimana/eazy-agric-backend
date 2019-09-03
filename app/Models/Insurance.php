@@ -20,5 +20,4 @@ class Insurance extends Model
     ];
 
     // Relationships
-
 }

@@ -3,7 +3,10 @@ use App\Utils\MockData;
 
 class CreateFarmerTest extends TestCase
 {
-    protected $response, $token, $wrongUser, $mock;
+    protected $response;
+    protected $token;
+    protected $wrongUser;
+    protected $mock;
 
     const URL = 'api/v1/farmers';
 
@@ -11,8 +14,11 @@ class CreateFarmerTest extends TestCase
     {
         parent::setUp();
         $this->mock = new MockData();
-        $this->response = $this->call('POST',
-            '/api/v1/auth/login', $this->mock->getLoginDetails());
+        $this->response = $this->call(
+            'POST',
+            '/api/v1/auth/login',
+            $this->mock->getLoginDetails()
+        );
 
         $data = json_decode($this->response->getContent(), true);
         $this->token = $data['token'];

@@ -12,7 +12,7 @@ class DistrictDocumentSeeder extends Seeder
      */
     public function run()
     {
-      $districts = [
+        $districts = [
         ['name' => 'Buikwe', 'type' => 'district'],
         ['name' => 'Buvuma', 'type' => 'district'],
         ['name' => 'Namayingo', 'type' => 'district'],
@@ -124,6 +124,6 @@ class DistrictDocumentSeeder extends Seeder
         ['name' => 'Kyenjojo', 'type' => 'district']
       ];
 
-      District::query()->insert($districts);
+        District::query()->insert($districts);
     }
 }

@@ -6,7 +6,8 @@ use Exception as ExceptionAlias;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class ClearBucket extends Command {
+class ClearBucket extends Command
+{
 
     /**
      * The name and signature of the console command.

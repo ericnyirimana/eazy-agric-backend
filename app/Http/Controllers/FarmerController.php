@@ -14,12 +14,12 @@ class FarmerController extends BaseController
    *
    * @return \Illuminate\Http\JsonResponse
    */
-  public function getFarmers()
-  {
-    $result = Farmer::all();
-    return Helpers::returnSuccess(200, [
+    public function getFarmers()
+    {
+        $result = Farmer::all();
+        return Helpers::returnSuccess(200, [
       'count' => count($result),
       'result' => $result
     ], "");
-  }
+    }
 }

@@ -6,32 +6,33 @@ use Closure;
 
 class DocumentExist
 {
-  private $helper;
+    private $helper;
 
-  /**
-   * DocumentExist constructor.
-   */
-  public function __construct() {
-    $this->helper = new Helpers();
-  }
-
-  /**
-   * Handle an incoming request.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \Closure  $next
-   * @return mixed
-   */
-  public function handle($request, Closure $next)
-  {
-    if (!$request->id) {
-      return $next($request);
+    /**
+     * DocumentExist constructor.
+     */
+    public function __construct()
+    {
+        $this->helper = new Helpers();
     }
 
-    if (!Helpers::documentExist($request->id)) {
-      return Helpers::returnError('Document not found', 404);
-    }
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        if (!$request->id) {
+            return $next($request);
+        }
 
-    return $next($request);
-  }
+        if (!Helpers::documentExist($request->id)) {
+            return Helpers::returnError('Document not found', 404);
+        }
+
+        return $next($request);
+    }
 }

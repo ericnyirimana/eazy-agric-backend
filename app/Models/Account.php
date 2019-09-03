@@ -20,5 +20,4 @@ class Account extends Model
     ];
 
     // Relationships
-
 }

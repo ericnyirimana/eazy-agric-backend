@@ -7,12 +7,13 @@ use App\Models\MasterAgent;
 use App\Models\VillageAgent;
 use Faker\Generator as Faker;
 
-class SoilTestFactory {
+class SoilTestFactory
+{
     public static function getFactory(Faker $faker)
     {
         $districts = ['Rukungiri', 'Rubirizi', 'Ntoroko', 'Buhweju', 'Bushenyi'];
         $district = $faker->randomElement($districts);
-        return array (
+        return array(
             'acreage' => '2',
             'district' => $district,
             'eloquent_type' => 'soil_test',
@@ -27,13 +28,13 @@ class SoilTestFactory {
             'total' => 250000,
             'type' => 'soil_test',
             'unit_cost' => 50000,
-            'user_id' => function() {
-              return factory(Farmer::class)->create()->_id;
+            'user_id' => function () {
+                return factory(Farmer::class)->create()->_id;
             },
-            "vaId" => function() {
+            "vaId" => function () {
                 return factory(VillageAgent::class)->create()->_id;
             },
-            "ma_id" => function() {
+            "ma_id" => function () {
                 return factory(MasterAgent::class)->create()->_id;
             }
         );

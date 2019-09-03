@@ -22,7 +22,7 @@ class ValidateInputFields implements Rule
      */
     public function passes($attribute, $value)
     {
-      return $value !== '';
+        return $value !== '';
     }
 
     /**
@@ -42,7 +42,6 @@ class ValidateInputFields implements Rule
             if (empty(trim($value))) {
                 array_push($errors, ucfirst($key) . ' cannot be empty.');
             }
-
         }
         if (count($errors) > 0) {
             return $errors;

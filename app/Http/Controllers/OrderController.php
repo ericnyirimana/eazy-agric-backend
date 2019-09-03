@@ -12,7 +12,6 @@ class OrderController extends BaseController
     public function __construct(Request $request)
     {
         $this->request = $request;
-
     }
 
     /**
@@ -24,8 +23,6 @@ class OrderController extends BaseController
         try {
             $order = Helpers::getNewOrders($this->request);
             return Helpers::returnSuccess(200, ['totalNewOrders' => $order[0]['newOrders']], "");
-
-
         } catch (\Exception $e) {
             return Helpers::returnError('Could not get orders', 503);
         }
@@ -39,7 +36,7 @@ class OrderController extends BaseController
 
     public function getOrdersByType($type)
     {
-        try{
+        try {
             $response = Helpers::getOrdersByType($type);
         } catch (\Exception $e) {
             $response = Helpers::returnError('Could not get orders', 503);

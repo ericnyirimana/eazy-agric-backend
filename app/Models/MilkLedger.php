@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MilkLedger extends Model {
+class MilkLedger extends Model
+{
 
     /**
      * The document type
@@ -21,5 +22,4 @@ class MilkLedger extends Model {
     ];
 
     // Relationships
-
 }

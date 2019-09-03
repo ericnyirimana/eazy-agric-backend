@@ -3,7 +3,10 @@ use App\Utils\MockData;
 
 class DevtPartnerTest extends TestCase
 {
-    protected $response, $token, $wrongUser, $mock;
+    protected $response;
+    protected $token;
+    protected $wrongUser;
+    protected $mock;
 
     const URL = '/api/v1/devt-partners';
     const URL_FILTER = '/api/v1/devt-partners/?start_date=2019-10-12&end_date=2020-12-12';
@@ -12,8 +15,11 @@ class DevtPartnerTest extends TestCase
     {
         parent::setUp();
         $this->mock = new MockData();
-        $this->response = $this->call('POST',
-            '/api/v1/auth/login', $this->mock->getLoginDetails());
+        $this->response = $this->call(
+            'POST',
+            '/api/v1/auth/login',
+            $this->mock->getLoginDetails()
+        );
 
         $data = json_decode($this->response->getContent(), true);
         $this->token = $data['token'];
@@ -69,24 +75,32 @@ class DevtPartnerTest extends TestCase
     }
     public function testShouldReturnErrorIfExpiredToken()
     {
-        $this->post(self::URL, $this->mock->getNewDevtPartner(),
-            ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJuMjlCQjB4IiwiaWF0IjoxNTYwNzk3OTYwLCJleHAiOjE1NjA4MDE1NjB9.htsI-0CmYkZom0_KDJokLc3AnaBovVmzRejKxw4Ffcs']);
+        $this->post(
+            self::URL,
+            $this->mock->getNewDevtPartner(),
+            ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJuMjlCQjB4IiwiaWF0IjoxNTYwNzk3OTYwLCJleHAiOjE1NjA4MDE1NjB9.htsI-0CmYkZom0_KDJokLc3AnaBovVmzRejKxw4Ffcs']
+        );
         $this->seeStatusCode(400);
         $this->seeJson(['error' => 'Your current session has expired, please log in again.']);
     }
 
     public function testShouldReturnErrorIfUserIsNotAdmin()
     {
-        $this->post(self::URL, $this->mock->getNewDevtPartner(),
-            ['Authorization' => $this->wrongUser]);
+        $this->post(
+            self::URL,
+            $this->mock->getNewDevtPartner(),
+            ['Authorization' => $this->wrongUser]
+        );
         $this->seeStatusCode(403);
     }
     public function testShouldReturnUserIfTokenIsValid()
     {
-        $this->post(self::URL, $this->mock->getNewDevtPartner(),
-            ['Authorization' => $this->token]);
+        $this->post(
+            self::URL,
+            $this->mock->getNewDevtPartner(),
+            ['Authorization' => $this->token]
+        );
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true]);
     }
-
 }

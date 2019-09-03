@@ -26,7 +26,6 @@ class Validation extends BaseController
             'adminRole' => ['required', new AdminRole],
         ]);
     }
-
     public function validateForgotPassword($data)
     {
         $this->validate($data, [
@@ -71,7 +70,6 @@ class Validation extends BaseController
             'value_chain' => ['required', new ValueChain()],
         ]);
     }
-
     public function validateAccountRequest($data)
     {
         $this->validate($data, [
@@ -82,7 +80,6 @@ class Validation extends BaseController
             'address' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
         ]);
     }
-
     public function validateContactForm($data)
     {
         $this->validate($data, [
@@ -113,9 +110,10 @@ class Validation extends BaseController
             'adminRole' => [new AdminRole()],
         ]);
     }
-    public function validateVillageAgentData($data) {
-      // dd($data);
-      $this->validate($data, [
+    public function validateVillageAgentData($data)
+    {
+        // dd($data);
+        $this->validate($data, [
         'villageAgents.*.va_gender' => 'required',
         'villageAgents.*.va_region' => 'required',
         'villageAgents.*.va_subcounty' => 'required',
@@ -123,7 +121,6 @@ class Validation extends BaseController
         'villageAgents.*.va_district' => [new District()]
       ]);
     }
-
     public function validateLimitAndOffset($data)
     {
         $this->validate($data, [
@@ -131,7 +128,6 @@ class Validation extends BaseController
             'limit' => 'numeric',
         ]);
     }
-
     public function validateInput($data)
     {
         $this->validate($data, [
@@ -145,9 +141,9 @@ class Validation extends BaseController
             'quantity' => 'required|numeric'
         ]);
     }
-
-    public function validateDiagnosisInformation($data) {
-      $this->validate($data, [
+    public function validateDiagnosisInformation($data)
+    {
+        $this->validate($data, [
         'name' => 'required',
         'photo' => 'sometimes|image|mimes:jpeg,png,jpg|max:2048',
         'control' => 'required',
