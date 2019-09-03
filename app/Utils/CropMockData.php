@@ -21,4 +21,11 @@ class CropMockData extends MockData
     {
         return $this->invalidNewCropData;
     }
+
+    public function getEditCropData()
+    {
+        $editCropData = $this->newCrop;
+        $editCropData['crop'] = "Pineapple";
+        return $editCropData;
+    }
 }

@@ -90,4 +90,54 @@ class OurCropController extends Controller
             return Helpers::returnError("Could not get crop.", 503);
         }
     }
+
+    /**
+    * Delete crop
+    *
+    * @param string $id - id of the crop
+    * @return \Illuminate\Http\JsonResponse response
+    */
+    public function deleteCrop($id)
+    {
+        try {
+            $singleCropInfo = OurCrop::where('_id', $id)->first();
+            $photoUrl = explode('/', $singleCropInfo->attributesToArray()['photo_url']);
+            count($photoUrl) == 6 ? Helpers::imageActions($photoUrl[4] . '/'. $photoUrl[5], null, 'delete') : null;
+            OurCrop::query()->select()->where('_id', $id)->delete();
+            return Helpers::returnSuccess(200, ['data' => null], '');
+        } catch (Exception $e) {
+            return Helpers::returnError("Could not delete crop.", 503);
+        }
+    }
+
+    /**
+    * edit crop information
+    *
+    * @param string $id - id of the crop information
+    * @return \Illuminate\Http\JsonResponse response
+    */
+    public function editCrop($id)
+    {
+        try {
+            $this->validate->validateOurCropsData($this->request);
+            $newCropInfo = $this->request->all();
+            $getCrop = OurCrop::query()->select()->where('_id', $id)->first();
+          
+            if ($this->request->hasFile('photo')) {
+            
+              // @codeCoverageIgnoreStart
+                $uploadedFile = $this->request->file('photo');
+                $newImageUrl = Helpers::processImageUpload($uploadedFile, self::IMAGE_PATH);
+                $newCropInfo['photo_url'] = $newImageUrl;
+                unset($newCropInfo['photo']);
+                $photoUrl = explode('/', $getCrop->attributesToArray()['photo_url']);
+                count($photoUrl) == 6 ? Helpers::imageActions($photoUrl[4] . '/'. $photoUrl[5], null, 'delete') : null;
+                // @codeCoverageIgnoreEnd
+            }
+            $getCrop->update($newCropInfo);
+            return Helpers::returnSuccess(200, ['data' => $getCrop], '');
+        } catch (Exception $e) {
+            return Helpers::returnError("Could not edit crop.", 503);
+        }
+    }
 }
