@@ -312,39 +312,6 @@ class Helpers extends BaseController
     }
 
     /**
-    * Returns all the completed orders
-    *
-    * @params $request object HttpRequest
-    * @return \Illuminate\Http\JsonResponse
-    */
-    public static function getCompletedOrders()
-    {
-        $response = null;
-        try {
-            $completedOrders = Order::select(
-                'details.name',
-                'details.phone',
-                'details.time',
-                'details.district',
-                'status',
-                'payment',
-                'details.totalItems as total_items',
-                'details.totalCost as total_cost',
-                'orders',
-                'created_at',
-                'updated_at'
-            )
-              ->where('LOWER(status)', '=', 'delivered')
-              ->latest()
-              ->get();
-            $response = Helpers::returnSuccess(200, ['completed_orders' => $completedOrders, 'count' => count($completedOrders)], "");
-        } catch (\Exception $e) {
-            $response = Helpers::returnError('Something went wrong.', 503);
-        }
-        return $response;
-    }
-
-    /**
      * @param \Illuminate\Http\UploadedFile|\Illuminate\Http\UploadedFile[]|string|array|null $file - uploaded file object
      * @param string $imagePath - path for the uploaded image
      * @return string - url of the uploaded image
@@ -442,5 +409,50 @@ class Helpers extends BaseController
             return Helpers::returnError($errorMessage, 400);
         }
         return Helpers::returnSuccess(200, [ $orderType.'_orders'  => $orders, 'count' => count($orders)], "");
+    }
+
+    /**
+     * Loops through an object's attributes setting the fields specified in an
+     * array to uppercase first.
+     *
+     * @param object $instance
+     * @param array $fields
+     *
+     * @return boolean
+     */
+
+    public static function mutateAttributes($instance, $fields)
+    {
+        $attributes = $instance->getAttributes();
+        unset($attributes['password']);
+        
+        foreach ($attributes as $attributeKey => $attributeValue) {
+            if (in_array($attributeKey, $fields, true)) {
+                $attributeValue = Helpers::stringToUcFirst($attributeValue);
+                $instance->setAttribute($attributeKey, $attributeValue);
+            } else {
+                $instance->setAttribute($attributeKey, $attributeValue);
+            }
+        }
+        
+        return true;
+    }
+
+    /**
+     * transforms each word in a string containing space
+     * separate words to uppercase first
+     *
+     * @param string $multipleWords
+     *
+     * @return string
+     */
+    private static function stringToUcFirst($multipleWords)
+    {
+        $temp = explode(" ", $multipleWords);
+        foreach ($temp as $key => $value) {
+            $temp[$key] = ucfirst($value);
+        }
+        $multipleWords = implode(" ", $temp);
+        return $multipleWords;
     }
 }
