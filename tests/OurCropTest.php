@@ -63,4 +63,45 @@ class OurCropTest extends TestCase
         $this->seeJson(['success' => true]);
         $this->assertArrayHasKey('data', $res_array);
     }
+
+    public function testShouldCorrectlyEditCropInformation()
+    {
+        $cropInfo = $this->cropMock->getNewCropData();
+        $crop = OurCrop::create($cropInfo)->getAttributes();
+        $this->post(
+            self::URL. $crop['id'],
+            $this->cropMock->getEditCropData(),
+            ['Authorization' => $this->token]
+        );
+        $res_array = json_decode($this->response->content(), true);
+        $this->seeStatusCode(200);
+        $this->assertEquals($res_array['data']['crop'], $this->cropMock->getEditCropData()['crop']);
+    }
+
+    public function testShouldDeleteSingleCropInformationSuccessfully()
+    {
+        $cropInfo = $this->cropMock->getNewCropData();
+        $crop = OurCrop::create($cropInfo)->getAttributes();
+        $this->delete(self::URL . $crop['id'], [], ['Authorization' => $this->token]);
+        $res_array = json_decode($this->response->content(), true);
+        $this->seeStatusCode(200);
+        $this->assertEquals($res_array['data'], null);
+    }
+
+    public function testShouldReturnErrorForInvalidCropIDOnDeleted()
+    {
+        $cropInfo = $this->cropMock->getNewCropData();
+        $crop = OurCrop::create($cropInfo)->getAttributes();
+        $fakeID= 345;
+        $this->delete(self::URL . $fakeID, [], ['Authorization' => $this->token]);
+        $this->seeStatusCode(500);
+    }
+
+    public function testShouldReturnErrorIfInvalidCropIsEdited()
+    {
+        $cropInfo = $this->cropMock->getNewCropData();
+        $crop = OurCrop::create($cropInfo)->getAttributes();
+        $this->post(self::URL. $crop['id'], [], ['Authorization' => $this->token]);
+        $this->seeStatusCode(503);
+    }
 }

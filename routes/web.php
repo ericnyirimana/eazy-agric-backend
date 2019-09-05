@@ -70,6 +70,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->post('/crops', 'OurCropController@addCrop');
             $router->get('/crops/{id}', 'OurCropController@getCrop');
             $router->get('/crops', 'OurCropController@getCrops');
+            $router->post('/crops/{id}', 'OurCropController@editCrop');
+            $router->delete('/crops/{id}', 'OurCropController@deleteCrop');
             $router->group(['middleware' => ['validateDiagnosisCategory', 'documentExist']], function () use ($router) {
                 $router->get('/diagnosis/{category}', 'DiagnosisController@getDiagnosis');
                 $router->get('/diagnosis/{category}/{id}', 'DiagnosisController@getDiagnosis');

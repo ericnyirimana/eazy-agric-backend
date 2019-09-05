@@ -1874,6 +1874,48 @@ photo: (jpeg|png|jpg file)
     ]
 }
 ```
+### Edit Crop information
+
+#### Request
+`POST api/v1/crops/{id}`
+
+#### Request Body (form-data)
+
+```
+crop:Maize
+photo: (jpeg|png|jpg file)
+```
+
+#### Response
+```
+{
+    "success": true,
+    "data": {
+        "_id": "0e28q83",
+        "created_at": "2019-09-03 08:26:22",
+        "crop": "Beans",
+        "eloquent_type": "our_crops",
+        "photo_url": "https://storage.googleapis.com/ezyagric_dev_image_bucket/crops/Screenshot 2019-07-15 at 19_1567530720.png",
+        "type": "our_crops",
+        "updated_at": "2019-09-03 17:12:03"
+    }
+}
+
+```
+
+### Delete Crop
+
+#### Request
+`DELETE api/v1/crops/{id}`
+
+#### Response
+
+```
+{
+    "success": true,
+    "data": null
+}
+```
 =======
 ### Get input stock
 
