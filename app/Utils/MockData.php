@@ -142,6 +142,17 @@ class MockData
         ],
     ];
 
+    protected $newGovernmentPartner = [
+        'password' => 'govAgent12345',
+        'account_type' => 'Custom',
+        'value_chain' => 'Crop',
+        'account_name' => 'govagent',
+        'contact_person' => 'Samuel',
+        'phone_number' => '234567897654',
+        'district' => 'Kitgum',
+        'address' => 'somewhere',
+    ];
+
     public $shortid;
     /**
      * Class constructor.
@@ -267,5 +278,11 @@ class MockData
     public function getInvalidVaData()
     {
         return $this->validVaData;
+    }
+    public function getNewGovernmentPartner()
+    {
+        $this->newGovernmentPartner['email'] = $this->shortid->generate() . '@gmail.com';
+        $this->newGovernmentPartner['username'] = $this->shortid->generate();
+        return $this->newGovernmentPartner;
     }
 }
