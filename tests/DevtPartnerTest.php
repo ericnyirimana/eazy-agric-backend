@@ -1,5 +1,6 @@
 <?php
 use App\Utils\MockData;
+use App\Utils\UserMockData;
 
 class DevtPartnerTest extends TestCase
 {
@@ -7,6 +8,7 @@ class DevtPartnerTest extends TestCase
     protected $token;
     protected $wrongUser;
     protected $mock;
+    protected $userMock;
 
     const URL = '/api/v1/devt-partners';
     const URL_FILTER = '/api/v1/devt-partners/?start_date=2019-10-12&end_date=2020-12-12';
@@ -15,6 +17,7 @@ class DevtPartnerTest extends TestCase
     {
         parent::setUp();
         $this->mock = new MockData();
+        $this->userMock = new userMockData();
         $this->response = $this->call(
             'POST',
             '/api/v1/auth/login',
@@ -23,7 +26,7 @@ class DevtPartnerTest extends TestCase
 
         $data = json_decode($this->response->getContent(), true);
         $this->token = $data['token'];
-        $data2 = $this->call('POST', '/api/v1/auth/login', $this->mock->getMasterAgentData());
+        $data2 = $this->call('POST', '/api/v1/auth/login', $this->userMock->getMasterAgentData());
 
         $decoded_data = json_decode($data2->getContent(), true);
         $this->wrongUser = $decoded_data['token'];
@@ -77,7 +80,7 @@ class DevtPartnerTest extends TestCase
     {
         $this->post(
             self::URL,
-            $this->mock->getNewDevtPartner(),
+            $this->userMock->getNewDevtPartner(),
             ['Authorization' => 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsdW1lbi1qd3QiLCJzdWIiOiJuMjlCQjB4IiwiaWF0IjoxNTYwNzk3OTYwLCJleHAiOjE1NjA4MDE1NjB9.htsI-0CmYkZom0_KDJokLc3AnaBovVmzRejKxw4Ffcs']
         );
         $this->seeStatusCode(400);
@@ -88,7 +91,7 @@ class DevtPartnerTest extends TestCase
     {
         $this->post(
             self::URL,
-            $this->mock->getNewDevtPartner(),
+            $this->userMock->getNewDevtPartner(),
             ['Authorization' => $this->wrongUser]
         );
         $this->seeStatusCode(403);
@@ -97,7 +100,7 @@ class DevtPartnerTest extends TestCase
     {
         $this->post(
             self::URL,
-            $this->mock->getNewDevtPartner(),
+            $this->userMock->getNewDevtPartner(),
             ['Authorization' => $this->token]
         );
         $this->seeStatusCode(200);

@@ -1,5 +1,6 @@
 <?php
 use App\Utils\MockData;
+use App\Utils\UserMockData;
 
 class CreateFarmerTest extends TestCase
 {
@@ -7,6 +8,7 @@ class CreateFarmerTest extends TestCase
     protected $token;
     protected $wrongUser;
     protected $mock;
+    protected $userMock;
 
     const URL = 'api/v1/farmers';
 
@@ -14,6 +16,7 @@ class CreateFarmerTest extends TestCase
     {
         parent::setUp();
         $this->mock = new MockData();
+        $this->userMock = new UserMockData();
         $this->response = $this->call(
             'POST',
             '/api/v1/auth/login',
@@ -34,7 +37,7 @@ class CreateFarmerTest extends TestCase
 
     public function testShouldReturnErrorInvalidToken()
     {
-        $this->get('api/v1/farmers', $this->mock->getAdminData(), ['Authorization' => 'sfdsfeftrgfbdfd5648970457534']);
+        $this->get('api/v1/farmers', $this->userMock->getAdminData(), ['Authorization' => 'sfdsfeftrgfbdfd5648970457534']);
         $this->seeStatusCode(401);
         $this->seeJson(['success' => false]);
     }

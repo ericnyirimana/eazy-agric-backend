@@ -5,7 +5,7 @@ namespace App\Utils;
 class InputData extends MockData
 {
     protected $newInput = [
-        'name' => 'Beans Beans', 'crops' => 'maize, beans', 'category' => 'Pesticide',
+        'name' => 'Beans corn', 'crops' => 'maize, beans', 'category' => 'Pesticide',
        'description' => 'An Input of quality',
        'price' => '100,200', 'unit' => 'Kg,Ton', 'supplier' => 'east cooperative', 'quantity' => 20
     ];

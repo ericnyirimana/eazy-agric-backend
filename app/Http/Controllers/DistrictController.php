@@ -1,23 +1,21 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\District;
 use App\Models\Farmer;
-
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Utils\DateRequestFilter;
 use App\Utils\Helpers;
+use App\Utils\Queries;
 
 class DistrictController extends Controller
 {
-
-  /** @var string */
+    /** @var string */
     protected $bucket;
     protected $helpers;
-
+    protected $queries;
     /**
      * DistrictController constructor.
      */
@@ -26,8 +24,8 @@ class DistrictController extends Controller
         // @phan-suppress-next-line PhanPossiblyFalseTypeMismatchProperty
         $this->bucket = getenv('DB_DATABASE');
         $this->helpers = new Helpers();
+        $this->queries = new Queries();
     }
-
     /**
      * Get top performing districts
      *
@@ -37,11 +35,9 @@ class DistrictController extends Controller
     {
         $requestArray = DateRequestFilter::getRequestParam($request);
         list($start_date, $end_date) = $requestArray;
-
         $startDateCount = Farmer::where('created_at', '<=', $start_date)->get()->count();
         $endDateCount = Farmer::where('created_at', '<=', $end_date)->get()->count();
         $percentage = DateRequestFilter::getPercentage($startDateCount, $endDateCount);
-
         $districts = ($start_date && $end_date) ? Farmer::whereBetween('created_at', [$start_date, $end_date])
       ->pluck('farmer_district')->toArray() : Farmer::pluck('farmer_district')->toArray();
         $allDistricts = [];
@@ -62,7 +58,6 @@ class DistrictController extends Controller
       'percentage' => $percentage
     ], "");
     }
-
     /**
      * Get top performing districts based on app downloads and web users
      */
@@ -70,21 +65,19 @@ class DistrictController extends Controller
     {
         try {
             if ($district == null) {
-                $topDistrictsByAppDownloads = Helpers::getTopDistrictsByAppDownloads();
+                $topDistrictsByAppDownloads = Queries::getTopDistrictsByAppDownloads();
             } else {
-                $topDistrictsByAppDownloads = Helpers::getTopDistrictsByAppDownloads($district);
+                $topDistrictsByAppDownloads = Queries::getTopDistrictsByAppDownloads($district);
             }
             foreach ($topDistrictsByAppDownloads as $index => $topDistrictsByAppDownload) {
                 $topDistrictWebUsers = DB::select("SELECT COUNT(1) AS district_web_users
         FROM " . $this->bucket . "
         WHERE type IN ['ma', 'offtaker', 'va'] 
         AND ((district = '" . $topDistrictsByAppDownload['name'] . "') OR (va_district = '" . $topDistrictsByAppDownload['name'] . "'))");
-
                 $topDistrictAppPurchases = DB::select("SELECT COUNT(1) AS district_app_purchases
         FROM " . $this->bucket . "
         WHERE type IN ['planting', 'spraying', 'order', 'soil_test'] 
         AND ((district = '" . $topDistrictsByAppDownload['name'] . "') OR (details.district = '" . $topDistrictsByAppDownload['name'] . "'))");
-
                 $topDistrictsByAppDownloads[$index]['webUsers'] = $topDistrictWebUsers[0]['district_web_users'];
                 $topDistrictsByAppDownloads[$index]['appPurchases'] = $topDistrictAppPurchases[0]['district_app_purchases'];
             }

@@ -1,5 +1,6 @@
 <?php
 use App\Utils\MockData;
+use App\Utils\UserMockData;
 
 class GovernmentTest extends TestCase
 {
@@ -7,6 +8,7 @@ class GovernmentTest extends TestCase
     protected $token;
     protected $wrongUser;
     protected $mock;
+    protected $userMock;
 
     const URL = '/api/v1/users/government';
 
@@ -14,6 +16,8 @@ class GovernmentTest extends TestCase
     {
         parent::setUp();
         $this->mock = new MockData();
+        $this->userMock = new UserMockData();
+
         $this->response = $this->call(
             'POST',
             '/api/v1/auth/login',
@@ -28,7 +32,7 @@ class GovernmentTest extends TestCase
     {
         $this->post(
             self::URL,
-            $this->mock->getNewGovernmentPartner(),
+            $this->userMock->getNewGovernmentPartner(),
             ['Authorization' => $this->token]
         );
         $this->seeStatusCode(201);

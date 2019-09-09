@@ -1,9 +1,8 @@
 <?php
-
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use App\Models\InputCategory;
+use Illuminate\Contracts\Validation\Rule;
 
 class ValidateInputCategory implements Rule
 {
@@ -21,7 +20,6 @@ class ValidateInputCategory implements Rule
         $this->category = $value;
         return InputCategory::where('name', $this->category)->get()->count() === 1;
     }
-
     /**
      * Get the validation error message.
      *
