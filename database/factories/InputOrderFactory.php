@@ -28,15 +28,22 @@ class InputOrderFactory
         $districts = ['Rukungiri', 'Rubirizi', 'Ntoroko', 'Buhweju', 'Bushenyi'];
         $district = $faker->randomElement($districts);
         $categories = ['Seeds', 'Herbicide', 'Pesticide', 'Fertilizer', 'Farming Tools'];
+        $paymentMethods = ['mm', 'cash'];
+        $numberOfOrders = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+        $totalCosts = [123000, 1000000, 756000, 1200000, 1400000, 1670000, 230000, 405000, 560000, 350000, 111000];
+        $totalCost = $faker->randomElement($totalCosts);
+        $orderNum = $faker->randomElement($numberOfOrders);
+        $paymentMethod = $faker->randomElement($paymentMethods);
+        $date = $faker->dateTime()->format("Y-m-d H:i:s");
         return [
             "details" => [
                 "district" => $district,
                 "name" => $faker->name,
                 "phone" => $faker->phoneNumber,
                 "photo" => "",
-                "time" => "2018-10-20T20:22:51",
-                "totalCost" => 1670000,
-                "totalItems" => 2
+                "time" => $date,
+                "totalCost" => $totalCost,
+                "totalItems" => $orderNum
             ],
               "eloquent_type" => "order",
               "orders" => [
@@ -54,14 +61,14 @@ class InputOrderFactory
                     "category" => $faker->randomElement($categories),
                     "price" => 10000,
                     "product" => $productTwo,
-                    "qty" => 2,
+                    "qty" => $orderNum,
                     "src" => "http://138.197.220.176:3000/assets/images/Jmugo75136.png",
                     "stock" => "",
                     "supplier" => "World Food Program",
                     "unit" => "50 Kgs"
                 ]
               ],
-              "payment" => "mm",
+              "payment" => $paymentMethod,
               "stature" => "new",
               "status" => $faker->randomElement(['Delivered', 'Intransit']),
               "type" => "order",
