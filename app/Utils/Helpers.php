@@ -381,12 +381,11 @@ class Helpers extends BaseController
 
         list($start_date, $end_date) = $requestArray;
 
-        $orders = DB::select("SELECT COUNT(1) AS newOrders
+        $orders = DB::select("SELECT count(1) as newOrders
         FROM " . getenv('DB_DATABASE') . "
         WHERE type
         IN ['order', 'planting', 'spraying', 'insurance', 'soil_test', 'map_cordinates']
-        AND status = 'new'
-        OR stature='new'
+        AND status IN ['new', 'Intransit']
         AND (created_at BETWEEN '" . $start_date . "' AND  '" . $end_date . "')");
 
         return $orders;
