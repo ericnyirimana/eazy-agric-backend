@@ -74,12 +74,11 @@ class OurCropController extends Controller
 
     /**
      * Get single crop information
-     *
+     * @param string $id - id of the crop
      * @return \Illuminate\Http\JsonResponse response
      */
-    public function getCrop()
+    public function getCrop($id)
     {
-        $id = $this->request->input('id');
         try {
             $singleCropInfo = OurCrop::query()
               ->select()
