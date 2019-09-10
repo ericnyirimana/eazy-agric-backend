@@ -1,6 +1,7 @@
 <?php
 
 use App\Utils\MockData;
+use App\Utils\UserMockData;
 
 class AdminTest extends TestCase
 {
@@ -10,12 +11,14 @@ class AdminTest extends TestCase
     protected $mock;
     protected $decodeUser;
     protected $data;
+    protected $userMock;
     const URL = '/api/v1/admin';
 
     public function setUp(): void
     {
         parent::setUp();
         $this->mock = new MockData();
+        $this->userMock = new UserMockData();
         $this->response = $this->call(
             'POST',
             '/api/v1/auth/login',
@@ -24,7 +27,7 @@ class AdminTest extends TestCase
 
         $this->data = json_decode($this->response->getContent(), true);
         $this->token = $this->data['token'];
-        $data2 = $this->call('POST', '/api/v1/auth/login', $this->mock->getMasterAgentData());
+        $data2 = $this->call('POST', '/api/v1/auth/login', $this->userMock->getMasterAgentData());
 
         $decoded_data = json_decode($data2->getContent(), true);
         $this->wrongUser = $decoded_data['token'];
@@ -32,7 +35,7 @@ class AdminTest extends TestCase
 
     public function testShouldReturnErrorIfNoToken()
     {
-        $this->post(self::URL, $this->mock->getAdminData());
+        $this->post(self::URL, $this->userMock->getAdminData());
         $this->seeStatusCode(401);
         $this->seeJson(['error' => 'Please log in first.']);
     }
@@ -52,7 +55,7 @@ class AdminTest extends TestCase
     {
         $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->token]
         );
         $this->seeStatusCode(200);
@@ -62,7 +65,7 @@ class AdminTest extends TestCase
     {
         $this->post(
             self::URL,
-            [$this->mock->getNewAdmin()],
+            [$this->userMock->getNewAdmin()],
             ['Authorization' => $this->token]
         );
         $res_array = (array) json_decode($this->response->content());
@@ -96,7 +99,7 @@ class AdminTest extends TestCase
     {
         $response = $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->token]
         )->response->getData();
         $id = $response->admin->_id;
@@ -116,7 +119,7 @@ class AdminTest extends TestCase
     {
         $response = $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->token]
         )->response->getData();
         $id = $response->admin->_id;
@@ -129,7 +132,7 @@ class AdminTest extends TestCase
     {
         $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->wrongUser]
         );
         $this->seeStatusCode(403);
@@ -193,7 +196,7 @@ class AdminTest extends TestCase
     {
         $response = $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->token]
         )->response->getData();
         $id = $response->admin->_id;
@@ -206,7 +209,7 @@ class AdminTest extends TestCase
     {
         $response = $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->token]
         )->response->getData();
         $id = 'fake-id';
@@ -219,7 +222,7 @@ class AdminTest extends TestCase
     {
         $response = $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->token]
         )->response->getData();
         $id = $response->admin->_id;
@@ -235,7 +238,7 @@ class AdminTest extends TestCase
     {
         $response = $this->post(
             self::URL,
-            $this->mock->getNewAdmin(),
+            $this->userMock->getNewAdmin(),
             ['Authorization' => $this->token]
         )->response->getData();
         $id = $response->admin->_id;
@@ -280,7 +283,7 @@ class AdminTest extends TestCase
     {
         $this->post(
             self::URL,
-            $this->mock->getWrongAdminRole(),
+            $this->userMock->getWrongAdminRole(),
             ['Authorization' => $this->token]
         );
         $this->seeStatusCode(422);

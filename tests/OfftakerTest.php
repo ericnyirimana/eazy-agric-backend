@@ -1,5 +1,6 @@
 <?php
 use App\Utils\MockData;
+use App\Utils\UserMockData;
 
 class OfftakerTest extends TestCase
 {
@@ -7,6 +8,7 @@ class OfftakerTest extends TestCase
     protected $response;
     protected $token;
     protected $wrongUser;
+    protected $userMock;
     const URL = 'api/v1/users/offtakers';
     const POST_URL = 'api/v1/users/offtaker';
     const URL_FILTER = '/api/v1/users/offtakers?start_date=2019-10-12&end_date=2020-12-12';
@@ -15,11 +17,12 @@ class OfftakerTest extends TestCase
     {
         parent::setUp();
         $this->mock = new MockData();
+        $this->userMock = new UserMockData();
         $this->response = $this->call('POST', '/api/v1/auth/login', $this->mock->getLoginDetails());
         $data = json_decode($this->response->getContent(), true);
         $this->token = $data['token'];
 
-        $data2 = $this->call('POST', '/api/v1/auth/login', $this->mock->getMasterAgentData());
+        $data2 = $this->call('POST', '/api/v1/auth/login', $this->userMock->getMasterAgentData());
 
         $decoded_data = json_decode($data2->getContent(), true);
         $this->wrongUser = $decoded_data['token'];
@@ -79,7 +82,7 @@ class OfftakerTest extends TestCase
 
     public function testShouldReturnErrorIfNoToken()
     {
-        $this->post(self::POST_URL, $this->mock->getAdminData());
+        $this->post(self::POST_URL, $this->userMock->getAdminData());
         $this->seeStatusCode(401);
         $this->seeJson(['error' => 'Please log in first.']);
     }
@@ -88,7 +91,7 @@ class OfftakerTest extends TestCase
     {
         $this->post(
             self::POST_URL,
-            $this->mock->getNewOfftaker(),
+            $this->userMock->getNewOfftaker(),
             ['Authorization' => $this->token]
         );
         $this->seeStatusCode(201);
@@ -99,7 +102,7 @@ class OfftakerTest extends TestCase
     {
         $this->post(
             self::POST_URL,
-            $this->mock->getNewOffTaker(),
+            $this->userMock->getNewOffTaker(),
             ['Authorization' => $this->wrongUser]
         );
         $this->seeStatusCode(403);

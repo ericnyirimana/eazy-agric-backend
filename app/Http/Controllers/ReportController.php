@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Insurance;
@@ -7,13 +6,25 @@ use App\Models\MapCoordinate;
 use App\Models\Planting;
 use App\Models\SoilTest;
 use App\Models\Spraying;
+use App\Services\SocialMedia;
 use App\Utils\DateRequestFilter;
 use App\Utils\Helpers;
+use App\Utils\Queries;
 use Exception;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
+    private $queries;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->queries = new Queries();
+    }
     /**
      * Gets the most ordered products and services,
      * filtered by district or an enterprise
@@ -24,14 +35,13 @@ class ReportController extends Controller
     public function getMostOrdered(Request $request)
     {
         try {
-            [ 'type' => $type, 'filter' => $filter ] = $request->all();
+            ['type' => $type, 'filter' => $filter] = $request->all();
             if (!$type || !$filter) {
                 return Helpers::returnError('Please supply both the filter and type parameters.', 422);
             }
-
             $data = [];
-            $products = Helpers::getMostOrderedProducts($type, $filter);
-            $services = Helpers::getMostOrderedServices($type, $filter);
+            $products = Queries::getMostOrderedProducts($type, $filter);
+            $services = Queries::getMostOrderedServices($type, $filter);
             $data['products'] = $products;
             $data['services'] = $services;
             return Helpers::returnSuccess(200, ['data' => $data], "");
@@ -39,7 +49,6 @@ class ReportController extends Controller
             return Helpers::returnError('Something went wrong.', 503);
         }
     }
-
     /**
      * Gets the farmers and agents-farmer order breakdown,
      *
@@ -60,6 +69,49 @@ class ReportController extends Controller
             return Helpers::returnSuccess(200, ['data' => $farmerOrders], "");
         } catch (Exception $e) {
             return Helpers::returnError('Something went wrong.', 503);
+        }
+    }
+
+    /**
+     * Returns twitter account number of followers and tweets
+     * @return object \Illuminate\Http\JsonResponse
+     */
+    public function getTwitterReport()
+    {
+        try {
+            $twitterReport = SocialMedia::getTwitterSummary();
+            return Helpers::returnSuccess(200, ['data' => $twitterReport], "");
+        } catch (\Exception $e) {
+            return Helpers::returnError(["Something went wrong", $e->getMessage()], 503);
+        }
+    }
+
+    /**
+     * Returns Youtube report
+     * @return object \Illuminate\Http\JsonResponse
+     */
+    public function getYoutubeReport()
+    {
+        try {
+            $youtubeChannelSummary = SocialMedia::getYoutubeSummary();
+            $statistics = $youtubeChannelSummary->items[0]->statistics;
+            return Helpers::returnSuccess(200, ['data' => $statistics], "");
+        } catch (Exception $e) {
+            return Helpers::returnError("Something went wrong", 503);
+        }
+    }
+
+    /**
+     * Returns facebook page likes and post shares count
+     * @return object \Illuminate\Http\JsonResponse
+     */
+    public function getFacebookReport()
+    {
+        try {
+            $facebookReport = SocialMedia::getFacebookSummary();
+            return Helpers::returnSuccess(200, ['data' => $facebookReport], "");
+        } catch (Exception $e) {
+            return Helpers::returnError("Something went wrong", 503);
         }
     }
 }
