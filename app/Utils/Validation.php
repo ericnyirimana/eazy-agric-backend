@@ -10,6 +10,7 @@ use App\Rules\EmailUpdate;
 use App\Rules\ValueChain;
 use App\Rules\PhoneNumber;
 use App\Rules\UserName;
+use App\Rules\ValidateInputCategory;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 class Validation extends BaseController
@@ -128,16 +129,16 @@ class Validation extends BaseController
             'limit' => 'numeric',
         ]);
     }
-    public function validateInput($data)
+    public function validateInputData($data)
     {
         $this->validate($data, [
-            'name' => 'required|min:4',
-            'crops' => 'required|array',
-            'category' => 'required',
+            'name' => 'required|regex:/^([a-zA-z\s\-\(\)]*)$/',
+            'crops' => 'required',
+            'category' => [new ValidateInputCategory()],
             'description' => 'required|string',
-            'price' => 'required|array',
-            'unit' => 'required|array',
-            'supplier' => 'required|string',
+            'price' => 'required',
+            'unit' => 'required',
+            'supplier' => 'required|string|max:20',
             'quantity' => 'required|numeric'
         ]);
     }

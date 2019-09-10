@@ -2,6 +2,7 @@
 
 use App\Utils\InputData;
 use App\Models\InputSupplier as InputModel;
+use App\Utils\InputSupplierHelpers;
 
 class InputTest extends TestCase
 {
@@ -81,7 +82,7 @@ class InputTest extends TestCase
     {
         // given user should not update Input when he/she is not authenticated
         $input = InputModel::all()->last();
-        $URL =$this->URL . $input->_id;
+        $URL = $this->URL . $input->_id;
         $this->put($URL, []);
         $this->seeStatusCode(401);
         $this->seeJson(['error' => 'Please log in first.']);
@@ -92,7 +93,7 @@ class InputTest extends TestCase
     {
         // given user should delete input
         $input = InputModel::all()->last();
-        $URL = $this->URL. $input->_id;
+        $URL = $this->URL . $input->_id;
         $this->delete($URL, [], ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
         $this->seeJson(['success' => true, 'message' => 'Input has been removed.']);
@@ -103,7 +104,7 @@ class InputTest extends TestCase
         // given user should not delete input
         // when input does not exist
 
-        $URL = $this->URL.'e4f9235e-7656-3c73-96fe-b058ac436cf7';
+        $URL = $this->URL . 'e4f9235e-7656-3c73-96fe-b058ac436cf7';
         $this->delete($URL, [], ['Authorization' => $this->token]);
         $this->seeStatusCode(404);
         $this->seeJson(['success' => false, 'error' => 'Input does not exist.']);
@@ -119,5 +120,59 @@ class InputTest extends TestCase
         $this->put($URL, $data, ['Authorization' => $this->token]);
         $this->seeJson(['error' => 'Error occurred while updating inputs.']);
         $this->seeStatusCode(503);
+    }
+    /**
+     * @group input
+     */
+    public function testShouldReturnInputs()
+    {
+        $this->get('/api/v1/input-list/', ['Authorization' => $this->token]);
+        $res_array = (array) json_decode($this->response->content());
+        $this->seeStatusCode(200);
+        $this->assertArrayHasKey('result', $res_array);
+    }
+    /**
+     * @group input
+     */
+    public function testShouldCreateInput()
+    {
+        $this->post(
+            $this->URL,
+            $this->mock->getInputsData(),
+            ['Authorization' => $this->token]
+        );
+        $this->seeStatusCode(201);
+    }
+    /**
+     * @group input
+     */
+    public function testShouldReturnErrorIfInputExist()
+    {
+        $validInput = $this->mock->getInputsData();
+        $this->post(
+            $this->URL,
+            $validInput,
+            ['Content-type'=>'multipart/form-data', 'Authorization' => $this->token]
+        );
+        $this->seeStatusCode(409);
+        $value = InputSupplierHelpers::deleteInput($validInput['name']);
+    }
+    /**
+     * @group input
+     */
+    public function testShouldCatchInvalidData()
+    {
+        $this->post(
+            $this->URL,
+            $this->mock->getInvalidInputData(),
+            ['Content-type'=>'multipart/form-data', 'Authorization' => $this->token]
+        );
+
+        $this->seeStatusCode(422);
+        $this->seeJson([
+            'crops'  => ['The crops field is required.'],
+            'name'       => ['The name format is invalid.'],
+            'quantity'   => ['The quantity must be a number.']
+        ]);
     }
 }

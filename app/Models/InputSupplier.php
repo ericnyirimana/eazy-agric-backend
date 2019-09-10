@@ -14,5 +14,9 @@ class InputSupplier extends Model
         // Validation rules
     ];
 
+    protected $attributes = [
+        'type' => 'input'
+    ];
+
     // Relationships
 }
