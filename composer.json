@@ -20,7 +20,7 @@
         "google/cloud-storage": "^1.14",
         "laravel/lumen-framework": "5.8.*",
         "mailjet/mailjet-apiv3-php": "^1.4",
-        "phan/phan": "^2.2",
+        "phan/phan": "^2.2",	
         "stechstudio/laravel-php-cs-fixer": "^1.2",
         "vlucas/phpdotenv": "^3.3",
         "wn/lumen-generators": "^1.3"
