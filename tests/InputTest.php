@@ -63,21 +63,21 @@ class InputTest extends TestCase
     {
         // given user should not update input
         // when input not exist
-        $URL = $this->URL . 'e4f9235e-7656-3c73-96fe-b058ac436cf7';
+        $URL = $this->URL . 'e4f9235e';
         $this->put($URL, $this->mock->getInputsData(), ['Authorization' => $this->token]);
         $this->seeStatusCode(404);
         $this->seeJson(['success' => false, 'error' => 'Input does not exist.']);
     }
     public function testShouldUpdateInput()
     {
-        // given user should update input
-
         $input = InputModel::all()->last();
         $URL = $this->URL . $input->_id;
-        $this->put($URL, $this->mock->getInputsData(), ['Authorization' => $this->token]);
+        $inputs = $this->mock->getInputsData();
+        $this->put($URL, $inputs, ['Authorization' => $this->token]);
         $this->seeStatusCode(200);
-        $this->seeJson(['success' => true, 'message' => 'updated successfully.']);
+        $this->seeJson(['success' => true, 'message' => 'Input has been successfully Edited.']);
     }
+
     public function testUnauthorizedWhenUserTriedToUpdateInput()
     {
         // given user should not update Input when he/she is not authenticated
@@ -87,28 +87,9 @@ class InputTest extends TestCase
         $this->seeStatusCode(401);
         $this->seeJson(['error' => 'Please log in first.']);
     }
-
-    //
-    public function testShouldDeleteInput()
-    {
-        // given user should delete input
-        $input = InputModel::all()->last();
-        $URL = $this->URL . $input->_id;
-        $this->delete($URL, [], ['Authorization' => $this->token]);
-        $this->seeStatusCode(200);
-        $this->seeJson(['success' => true, 'message' => 'Input has been removed.']);
-    }
-
-    public function testShouldReturn404ErrorOnDeleteRequest()
-    {
-        // given user should not delete input
-        // when input does not exist
-
-        $URL = $this->URL . 'e4f9235e-7656-3c73-96fe-b058ac436cf7';
-        $this->delete($URL, [], ['Authorization' => $this->token]);
-        $this->seeStatusCode(404);
-        $this->seeJson(['success' => false, 'error' => 'Input does not exist.']);
-    }
+    /**
+     * should throw error when error occurs
+     */
     public function testShouldThrowExceptionError()
     {
         // given user should not update input
@@ -120,6 +101,28 @@ class InputTest extends TestCase
         $this->put($URL, $data, ['Authorization' => $this->token]);
         $this->seeJson(['error' => 'Error occurred while updating inputs.']);
         $this->seeStatusCode(503);
+    }
+
+    //
+    public function testShouldDeleteInput()
+    {
+        // given user should delete input
+        $input = InputModel::all()->last();
+        $URL = $this->URL . $input->_id;
+        $this->delete($URL, [], ['Authorization' => $this->token]);
+        $this->seeStatusCode(200);
+        $this->seeJson(['success' => true, 'message' => 'Input has been successfully deleted.']);
+    }
+
+    public function testShouldReturn404ErrorOnDeleteRequest()
+    {
+        // given user should not delete input
+        // when input does not exist
+
+        $URL = $this->URL . 'e4f9235e-7656-3c73-96fe-b058ac436cf7';
+        $this->delete($URL, [], ['Authorization' => $this->token]);
+        $this->seeStatusCode(404);
+        $this->seeJson(['success' => false, 'error' => 'Input does not exist.']);
     }
     /**
      * @group input
@@ -152,7 +155,7 @@ class InputTest extends TestCase
         $this->post(
             $this->URL,
             $validInput,
-            ['Content-type'=>'multipart/form-data', 'Authorization' => $this->token]
+            ['Content-type' => 'multipart/form-data', 'Authorization' => $this->token]
         );
         $this->seeStatusCode(409);
         $value = InputSupplierHelpers::deleteInput($validInput['name']);
@@ -165,7 +168,7 @@ class InputTest extends TestCase
         $this->post(
             $this->URL,
             $this->mock->getInvalidInputData(),
-            ['Content-type'=>'multipart/form-data', 'Authorization' => $this->token]
+            ['Content-type' => 'multipart/form-data', 'Authorization' => $this->token]
         );
 
         $this->seeStatusCode(422);
