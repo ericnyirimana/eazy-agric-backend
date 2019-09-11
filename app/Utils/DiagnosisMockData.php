@@ -17,6 +17,14 @@ class DiagnosisMockData extends MockData
         "crop" => "Beans"
     ];
 
+    protected $validData = [
+        'name'       => 'Bean common Virus',
+        'cause'      => 'We dont know',
+        'crop'       => 'Beans',
+        'control'    => 'Lorem Ipsum is simply',
+        'explanation' => '1. Ipsum is simply, 2. Lorem Ipsum is simply',
+    ];
+
     public function getDiagnosisInformation()
     {
         $faker = Factory::create();
@@ -38,5 +46,10 @@ class DiagnosisMockData extends MockData
         $editDiagnosis['_id'] = $faker->uuid;
         $editDiagnosis['photo_url'] = 'https://example.com/bucket/category/image.jpg';
         return $editDiagnosis;
+    }
+
+    public function getValidData()
+    {
+        return $this->validData;
     }
 }

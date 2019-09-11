@@ -3,6 +3,7 @@
 use App\Utils\DiagnosisMockData;
 use App\Models\Diagnosis;
 use App\Http\Controllers\DiagnosisController;
+use App\Utils\Helpers;
 
 class ManageDiagnosisTest extends TestCase
 {
@@ -16,10 +17,59 @@ class ManageDiagnosisTest extends TestCase
     {
         parent::setUp();
         $this->mock = new DiagnosisMockData();
+        $this->helper = new Helpers();
         $this->response = $this->call('POST', '/api/v1/auth/login', $this->mock->getLoginDetails());
         $data = json_decode($this->response->getContent(), true);
         $this->token = $data['token'];
     }
+
+    public function testShouldCreateDiseaseDiagnosis()
+    {
+        $validDiagnosis = $this->mock->getValidData();
+        $this->post(self::DISEASE_URL, $validDiagnosis, ['Authorization' => $this->token]);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeStatusCode(201);
+        $this->seeJson(['success' => true]);
+        $this->seeJson(['message' => 'Diagnosis added successfully']);
+        $this->helper->deleteDiagnosis($validDiagnosis['name']);
+    }
+
+    public function testShouldCreatePestDiagnosis()
+    {
+        $validDiagnosis = $this->mock->getValidData();
+        $this->post(self::PEST_URL, $validDiagnosis, ['Authorization' => $this->token]);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeStatusCode(201);
+        $this->seeJson(['success' => true]);
+        $this->seeJson(['message' => 'Diagnosis added successfully']);
+    }
+
+    public function testShouldCatchDuplicateName()
+    {
+        $validDiagnosis = $this->mock->getValidData();
+        $this->post(self::PEST_URL, $validDiagnosis, ['Authorization' => $this->token]);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeStatusCode(409);
+        $this->seeJson(['success' => false]);
+        $this->seeJson(['error' => 'The pest name is already taken']);
+        Helpers::deleteDiagnosis($validDiagnosis['name']);
+    }
+
+    public function testShouldCatchInvalidData()
+    {
+        $this->post(self::DISEASE_URL, [], ['Authorization' => $this->token]);
+        $this->assertEquals('application/json', $this->response->headers->get('Content-Type'));
+        $this->seeStatusCode(422);
+        $this->seeJson(['success' => false]);
+        $this->seeJson(['error' => [
+            "name"        => ["The name field is required."],
+            "control"     => ["The control field is required."],
+            "explanation" => ["The explanation field is required."],
+            "crop"        => ["The crop field is required."],
+            "cause"       => ["The cause field is required."]
+        ]]);
+    }
+
     public function testShouldReturnAllPestDiagnosisInformation()
     {
         $this->get(self::PEST_URL, ['Authorization' => $this->token]);

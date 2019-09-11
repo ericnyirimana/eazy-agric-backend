@@ -28,5 +28,7 @@ class Diagnosis extends Model
         // Validation rules
     ];
 
-    // Relationships
+    protected $attributes = [
+        'type' => 'diagnosis',
+    ];
 }

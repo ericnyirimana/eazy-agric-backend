@@ -52,7 +52,7 @@ class DiagnosisController extends Controller
     /**
      * Delete diagnosis information
      *
-     * @param $id - id of the diagnosis information
+     * @param string $id - id of the diagnosis information
      * @return \Illuminate\Http\JsonResponse response
      */
     public function deleteDiagnosis($id)
@@ -83,7 +83,7 @@ class DiagnosisController extends Controller
     {
         try {
             $this->validate->validateDiagnosisInformation($request);
-  
+
             try {
                 $newDiagnosisInformation = $request->all();
                 $diagnosisInformation = Diagnosis::query()->select()->where('_id', $id)->first();
@@ -105,6 +105,44 @@ class DiagnosisController extends Controller
         } catch (ValidationException $validationError) {
             // @phan-suppress-next-line PhanUndeclaredProperty
             return Helpers::returnError($validationError->response->original, 422);
+        }
+    }
+
+    /**
+     * create diagnosis information
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse response
+     */
+    public function createDiagnosis(Request $request)
+    {
+        try {
+            $this->validate->validateDiagnosisInformation($request);
+            $diagnosisInfo = $request->all();
+            $diagnosisInfo['category'] = $request->category;
+            $count = Diagnosis::where('name', $diagnosisInfo['name'])->where('category', $request->category)->count();
+
+            if ($count > 0) {
+                return Helpers::returnError("The ". $diagnosisInfo['category'] ." name is already taken", 409);
+            }
+
+            if ($request->hasFile('photo')) {
+                // @codeCoverageIgnoreStart
+                $uploadedFile = $request->file('photo');
+                $imgUrl = Helpers::processImageUpload($uploadedFile, self::IMAGE_PATH);
+                $diagnosisInfo['photo_url'] = $imgUrl;
+                // @codeCoverageIgnoreEnd
+            }
+            Diagnosis::create($diagnosisInfo + ['_id' => Helpers::generateId()]);
+            $response = Diagnosis::latest()->first();
+            return Helpers::returnSuccess(201, [
+                'diagnosis' => $response
+            ], "Diagnosis added successfully", );
+        } catch (ValidationException $e) {
+            // @phan-suppress-next-line PhanUndeclaredProperty
+            return Helpers::returnError($e->response->original, 422);
+        } catch (Exception $e) {
+            return Helpers::returnError("Could not create diagnosis information", 503);
         }
     }
 }
