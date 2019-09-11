@@ -22,6 +22,8 @@ class InputController extends Controller
     }
     /**
      * View single Input
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getInputDetails($id)
     {
@@ -48,13 +50,22 @@ class InputController extends Controller
             if (!$input->first()) {
                 return Helpers::returnError("Input does not exist.", 404);
             }
+            // upload image
+            if ($this->request->hasFile('photo')) {
+                // @codeCoverageIgnoreStart
+                $uploadedFile = $this->request->file('photo');
+                $newImageUrl = Helpers::processImageUpload($uploadedFile, self::IMAGE_PATH);
+                $newInputInfo['photo_url'] = $newImageUrl;
+                // @codeCoverageIgnoreEnd
+            }
             $newInputInfo['price'] = Helpers::stringToArray(',', $this->request->input('price'));
             $newInputInfo['crops'] = Helpers::stringToArray(',', $this->request->input('crops'));
             $newInputInfo['unit'] = Helpers::stringToArray(',', $this->request->input('unit'));
-            $updates = $input->update($newInputInfo);
+
+            // update input
+            $input->update($newInputInfo);
             return Helpers::returnSuccess(200, [
-                'message' => 'updated successfully.',
-                'result' => $updates
+                'message' => 'Input has been successfully Edited.'
             ], "");
         } catch (\Exception $e) {
             return Helpers::returnError("Error occurred while updating inputs.", 503);
@@ -63,6 +74,8 @@ class InputController extends Controller
 
     /**
      * delete Input
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function deleteInput($id)
     {
@@ -73,7 +86,7 @@ class InputController extends Controller
             }
             $input->delete();
             return Helpers::returnSuccess(200, [
-                'message' => 'Input has been removed.',
+                'message' => 'Input has been successfully deleted.',
             ], "");
         } catch (\Exception $e) {
             return Helpers::returnError("Error occurred while removing input, please try again later.", 503);
@@ -116,9 +129,9 @@ class InputController extends Controller
                 return Helpers::returnError("This input already exist", 409);
             }
             $userInfo = [
-              'email' => $this->request->admin->email,
-              'target_account_name' => $this->request->admin->firstname . ' ' . $this->request->admin->lastname,
-              'target_email' => $this->request->admin->email
+                'email' => $this->request->admin->email,
+                'target_account_name' => $this->request->admin->firstname . ' ' . $this->request->admin->lastname,
+                'target_email' => $this->request->admin->email
             ];
             Helpers::logActivity($userInfo, 'User created an input');
 
