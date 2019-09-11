@@ -34,7 +34,7 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->post('/admin', 'AdminController@createAdmin');
             $router->get('/masteragents', 'MasterAgentController@getMasterAgents');
             $router->post('/devt-partners', 'DevtPartnerController@createDevtPartner');
-            $router->get('/users/{user}', 'UserController@getUsers');
+            $router->get('/users/{user}', 'AdminExtendedController@getUsers');
             $router->get('/devt-partners', 'DevtPartnerController@getDevtPartners');
             $router->get('/top-districts', 'DistrictController@getTopDistricts');
             $router->get('/activity-summary', 'ActivityController@getActivitySummary');
@@ -44,8 +44,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/youtube-report', 'ReportController@getYoutubeReport');
             $router->get('/facebook-report', 'ReportController@getFacebookReport');
             $router->get('/admins', 'AdminController@getAdmins');
-            $router->delete('/account/{id}', 'AdminController@deleteAccount');
-            $router->patch('/account/{id}', 'AdminController@editAccount');
+            $router->delete('/account/{id}', 'AdminExtendedController@deleteAccount');
+            $router->patch('/account/{id}', 'AdminExtendedController@editAccount');
             $router->get('/top-produce', 'FarmerProduceController@getTopFarmProduce');
             $router->get('/top-performing/{agent}', 'AdminController@getTopAgents');
             $router->get('/top-performing-district', 'DistrictController@getTopPerformingDistricts');
