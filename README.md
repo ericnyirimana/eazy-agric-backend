@@ -2115,3 +2115,58 @@ quantity: 29
     ]
 }
 ```
+
+
+#### Agronomical Info
+
+#### Request Body (form-data)
+`POST /api/v1/agronomical-info/{id}`
+{
+    purpose: Land Preparationsss,
+    description: Identify places with fertile soils, deep soil support proper root development.
+    title: Site selections
+    photo: (jpeg|png|jpg file)
+}
+
+#### Response
+```
+{
+    "success": true,
+    "message": "update successful",
+    "data": {
+        "_id": "5e199e37-0865-3cc4-bf57-a7f207a99f04",
+        "admin": {
+            "_id": "b34287ed-9044-3609-ba1a-b825ef3aa3c5",
+            "adminRole": "Super Admin",
+            "created_at": "2019-09-07 14:22:49",
+            "eloquent_type": "admin",
+            "email": "admin2020@gmail.com",
+            "firstname": "Johnson",
+            "lastname": "Smith",
+            "type": "admin",
+            "updated_at": "2019-09-10 06:47:21"
+        },
+        "auth": "b34287ed-9044-3609-ba1a-b825ef3aa3c5",
+        "created_at": "2019-09-07 14:23:17",
+        "crop": "Beans",
+        "description": "for nothing",
+        "eloquent": "cropinf",
+        "eloquent_type": "cropinf",
+        "photo_url": "https://storage.googleapis.com/ezyagric_dev_image_bucket/crop_info/Screen Shot 2019-05-27 at 20_1568271864.png",
+        "purpose": "Land Preparation",
+        "title": "cool",
+        "type": "cropinf",
+        "updated_at": "2019-09-12 07:04:29"
+    }
+}
+```
+
+`POST /api/v1/agronomical-info/{id}`
+
+#### Response
+```
+{
+    "success": true,
+    "message": "Gronomical info successfully deleted"
+}
+```

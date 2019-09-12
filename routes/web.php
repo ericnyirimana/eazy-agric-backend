@@ -74,6 +74,8 @@ $router->group(['prefix' => 'api/v1'], function () use ($router) {
             $router->get('/crops', 'OurCropController@getCrops');
             $router->post('/crops/{id}', 'OurCropController@editCrop');
             $router->delete('/crops/{id}', 'OurCropController@deleteCrop');
+            $router->post('agronomical-info/{id}', 'AgronomicalController@updateAgronomicalInfo');
+            $router->delete('agronomical-info/{id}', 'AgronomicalController@deleteAgronomicalInfo');
             $router->group(['middleware' => ['validateDiagnosisCategory', 'documentExist']], function () use ($router) {
                 $router->post('/diagnosis/{category}', 'DiagnosisController@createDiagnosis');
                 $router->get('/diagnosis/{category}', 'DiagnosisController@getDiagnosis');

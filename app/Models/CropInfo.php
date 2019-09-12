@@ -11,7 +11,27 @@ class CropInfo extends Model
      */
     protected $table = 'cropinf';
 
-    protected $fillable = [];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'description',
+        'photo_url',
+        'title',
+        'purpose',
+        'crop',
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'type' => 'cropinf',
+    ];
 
     protected $dates = [];
 
