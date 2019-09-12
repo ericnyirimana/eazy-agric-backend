@@ -17,7 +17,7 @@ class ActivityController extends Controller
     private $request;
     private $db;
     private $validate;
-    
+
     /**
      * Create a new controller instance.
      *
@@ -39,9 +39,8 @@ class ActivityController extends Controller
     {
         $this->validate->validateLimitAndOffset($this->request);
         $limit = $this->request->input('limit');
-        $offset = $this->request->input('offset');
-        $activity = ActivityLog::offset($offset)->limit($limit)->get();
-        return Helpers::returnSuccess(200, ['activityLog' => $activity], "");
+        $activities = ActivityLog::paginate($limit);
+        return Helpers::returnSuccess(200, ['count' => $activities->total(),'activityLog' => $activities->items()], "");
     }
 
     public function getPercentages($startDate, $endDate)

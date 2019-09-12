@@ -128,6 +128,7 @@ class Validation extends BaseController
         $this->validate($data, [
             'offset' => 'numeric',
             'limit' => 'numeric',
+            'page' => 'numeric'
         ]);
     }
     public function validateInputData($data)
