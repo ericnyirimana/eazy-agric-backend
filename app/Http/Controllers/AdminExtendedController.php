@@ -37,7 +37,7 @@ class AdminExtendedController extends BaseController
         $this->helpers = new Helpers();
         $this->validateInput = new ValidateInputFields($this->request->all());
     }
-    
+
     /**
      * @param string $id
      * @return \Illuminate\Http\JsonResponse
@@ -123,6 +123,8 @@ class AdminExtendedController extends BaseController
         if (!preg_match('/\b(government|offtakers|village-agents|input-suppliers)\b/', $this->request->user)) {
             return Helpers::returnError("Invalid parameters supplied.", 400);
         }
+        $this->validate->validateLimitAndOffset($this->request);
+        $limit = $this->request->input('limit');
         $model = [
       "offtakers" => "OffTaker",
       "village-agents" => "VillageAgent",
@@ -137,11 +139,11 @@ class AdminExtendedController extends BaseController
         $endDateCount = $model::where('created_at', '<=', $end_date)->get()->count();
         $percentage = DateRequestFilter::getPercentage($startDateCount, $endDateCount);
 
-        $result = $model::whereBetween('created_at', [$start_date, $end_date])->get();
+        $result = $model::whereBetween('created_at', [$start_date, $end_date])->paginate($limit);
         $this->editVillageAgents($result);
         return Helpers::returnSuccess(200, [
-      'count' => count($result),
-      'result' => $result,
+      'count' => $result->total(),
+      'result' => $result->items(),
       'percentage' => $percentage
     ], "");
     }
